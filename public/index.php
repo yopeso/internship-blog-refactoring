@@ -1,6 +1,12 @@
 <?php
 require('../model/model.php');
 
-$posts = getPosts();
+if (isset($_GET['id']) && $_GET['id'] > 0) {
+    $post = getPost($_GET['id']);
+    $comments = getComments($_GET['id']);
+    require('template/postView.php');
+}
+else {
+    echo 'Erreur : aucun identifiant de billet envoyé';
+}
 
-require('../template/indexView.php');
