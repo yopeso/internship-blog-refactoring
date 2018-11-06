@@ -1,4 +1,8 @@
 <?php
+
+use jucarre\Blog\Model\PostManager;
+use jucarre\Blog\Model\CommentManager;
+
 // Chargement des classes
 require_once('model/PostManager.php');
 require_once('model/CommentManager.php');
