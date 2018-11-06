@@ -4,46 +4,26 @@
 <header class="masthead bg-primary text-white text-center">
       <div class="container">
         <h1>Mon super blog !</h1>
-        <p><a href="index.php">Retour à la liste des billets</a></p>
+        <p><a href="index.php">Modifier votre commentaire</a></p>
         </div>
 </header>
 
     <section class="portfolio" id="portfolio">
+      
         <div class="container">
-            <h3 class="text-center text-uppercase text-secondary mb-0">
-                <?= htmlspecialchars($post['title']) ?>
-                <em>le <?= $post['creation_date_fr'] ?></em>
-            </h3>
-
-            <p>
-            <?= nl2br(htmlspecialchars($post['content'])) ?>
-            </p>
+            <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?></p>
+            <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
         </div>
-
-<h3 class="text-center text-uppercase text-secondary mb-0">Commentaires</h3>
-
-<?php
-while ($comment = $comments->fetch())
-{
-?>  
-    <div class="container">
-        <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?> (<a href="index.php?action=comment&amp;id=<?= htmlspecialchars($comment['id'])?>">modifier</a>)</p>
-        <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
-    </div>
-<?php
-}
-$comments->closeCursor();
-?>
-</section>
+    </section>
 
  <section id="contact">
       <div class="container">
-        <h5 class="text-center text-uppercase text-secondary mb-0">Ajouter un commentaire</h5>
+        <h5 class="text-center text-uppercase text-secondary mb-0">Modifier votre commentaire</h5>
         <hr class="star-dark mb-5">
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-            <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+            <form action="index.php?action=editComment&amp;id=<?= $comment['id'] ?>" method="post">
                     
 
                         <div class="control-group">
