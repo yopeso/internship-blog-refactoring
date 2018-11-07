@@ -3,7 +3,7 @@
 <?php ob_start(); ?>
 <header class="masthead bg-primary text-white text-center">
       <div class="container">
-        <h1>Mon super blog !</h1>
+        <h1>Article</h1>
         <p><a href="index.php">Retour à la liste des billets</a></p>
         </div>
 </header>
