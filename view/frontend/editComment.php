@@ -1,6 +1,4 @@
-<?php $title = 'Mon blog'; 
-$postId = $_GET['postId'];
-?>
+<?php $title = 'Mon blog';?>
 
 <?php ob_start(); ?>
 <header class="masthead bg-primary text-white text-center">
@@ -25,13 +23,13 @@ $postId = $_GET['postId'];
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-            <form action="index.php?action=editComment&amp;commentId=<?= $comment['id']?>&amp;postId=<?= $postId?>" method="post">
+            <form action="index.php?action=editComment&amp;commentId=<?= $comment['id']?>&amp;postId=<?=$_GET['postId']?>" method="post">
                     
 
                         <div class="control-group">
                             <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label for="author">Auteur</label>
-                                <input class="form-control" type="text" id="author" name="author" placeholder="Auteur" required="required"/>
+                                <input class="form-control" type="text" id="author" name="author" value="<?= htmlspecialchars($comment['author']) ?>" required="required">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -39,7 +37,7 @@ $postId = $_GET['postId'];
                         <div class="control-group">
                              <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label>Commentaire</label>
-                                <textarea class="form-control" id="message" name="comment" rows="5" placeholder="Commentaire" required="required"></textarea>
+                                <textarea class="form-control" id="message" name="comment" rows="5" required="required"><?= nl2br(htmlspecialchars($comment['comment'])) ?></textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
