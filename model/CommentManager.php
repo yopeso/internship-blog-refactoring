@@ -37,16 +37,15 @@ class CommentManager extends Manager
 
     public function updateComment($commentId, $author, $comment)
     {
-
-        /*
-        Requête a corriger car elle ne fonction pas ...
-        */
+        $date=date("Y-m-d");
         $db = $this->dbConnect();
-        $req = $db->prepare('UPDATE comments SET (author, comment, comment_date) VALUES(:auteur, :commentaire, NOW()) WHERE id = ?');
+        $req = $db->prepare('UPDATE comments SET author = :author, comment = :comment ,comment_date = :comment_date WHERE id = :id');
         $affectedLines = $req->execute(array(
             ':id'=>$commentId, 
-            ':auteur'=>$author, 
-            ':commentaire'=>$comment));
+            ':author'=>$author, 
+            ':comment'=>$comment,
+            ':comment_date'=>$date
+        ));
 
         return $affectedLines;
     }

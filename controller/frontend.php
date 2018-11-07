@@ -44,12 +44,12 @@ function comment()
 {
     $commentManager = new CommentManager();
 
-    $comment = $commentManager->getComment($_GET['id']);
+    $comment = $commentManager->getComment($_GET['commentId']);
 
     require('view/frontend/editComment.php');
 }
 
-function editComment($commentId, $author, $comment)
+function editComment($commentId, $author, $comment, $postId)
 {
     $commentManager = new CommentManager();
 
@@ -59,6 +59,6 @@ function editComment($commentId, $author, $comment)
         throw new Exception('Impossible de modifier le commentaire !');
     }
     else {
-        header('Location: index.php?action=editComment&id=' . $commentId);
+        header('Location: index.php?action=post&id=' . $postId);
     }
 }

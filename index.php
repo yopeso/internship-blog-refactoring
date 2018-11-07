@@ -31,22 +31,22 @@ try { // On essaie de faire des choses
             }
         }
         elseif ($_GET['action'] == 'comment') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
+            if (isset($_GET['commentId']) && $_GET['commentId'] > 0) {
                 comment();
             }
             else {
                 // Autre exception
-                throw new Exception('Aucun identifiant de billet envoyé(commentaire)');
+                throw new Exception('Aucun identifiant de billet envoyé');
             }
         }
         elseif ($_GET['action'] == 'editComment') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
+            if (isset($_GET['commentId']) && $_GET['commentId'] > 0) {
                 if (!empty($_POST['author']) && !empty($_POST['comment'])) {
-                    editComment($_GET['id'], $_POST['author'], $_POST['comment']);
+                    editComment($_GET['commentId'], $_POST['author'], $_POST['comment'], $_GET['postId']);
                 }
                 else {
                     // Autre exception
-                    throw new Exception('Tous les champs ne sont pas remplis !');
+                    throw new Exception('Tous les champs ne sont pas remplis !(commentaire)');
                 }
             }
             else {

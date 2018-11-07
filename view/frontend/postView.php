@@ -27,7 +27,7 @@ while ($comment = $comments->fetch())
 {
 ?>  
     <div class="container">
-        <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?> (<a href="index.php?action=comment&amp;id=<?= htmlspecialchars($comment['id'])?>">modifier</a>)</p>
+        <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?> (<a href="index.php?action=comment&amp;commentId=<?= htmlspecialchars($comment['id'])?>&amp;postId=<?= htmlspecialchars($post['id'])?>">modifier</a>)</p>
         <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
     </div>
 <?php

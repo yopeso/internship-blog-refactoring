@@ -1,4 +1,6 @@
-<?php $title = 'Mon blog'; ?>
+<?php $title = 'Mon blog'; 
+$postId = $_GET['postId'];
+?>
 
 <?php ob_start(); ?>
 <header class="masthead bg-primary text-white text-center">
@@ -23,7 +25,7 @@
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-            <form action="index.php?action=editComment&amp;id=<?= $comment['id'] ?>" method="post">
+            <form action="index.php?action=editComment&amp;commentId=<?= $comment['id']?>&amp;postId=<?= $postId?>" method="post">
                     
 
                         <div class="control-group">
