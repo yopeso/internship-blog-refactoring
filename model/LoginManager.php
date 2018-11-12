@@ -8,8 +8,8 @@ class LoginManager extends Manager
 {
     public function getLogin($pseudo, $pass)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare('SELECT id, pass FROM users WHERE pseudo = :pseudo');
+        $bdd= $this->dbConnect();
+        $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = :pseudo');
         $req->execute(array(
             'pseudo' => $pseudo));
         

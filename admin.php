@@ -7,16 +7,14 @@ try { // On essaie de faire des choses
         if ($_GET['action'] == 'admin') {
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 interfaceAdmin();
-            }
-            else {
+            } else {
                 require('view/backend/loginView.php');
             }
         } 
         elseif ($_GET['action'] == 'login') {
             if (!empty($_POST['pseudo']) && !empty($_POST['pass'])) {
                 connect($_POST['pseudo'], $_POST['pass']);
-            }
-            else {
+            } else {
                 throw new Exception('Tous les champs ne sont pas remplis !');
             }
         }
@@ -24,8 +22,7 @@ try { // On essaie de faire des choses
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 if (!empty($_POST['id'])) {
                     commentsValid($_POST['id']);
-                }
-                else {
+                } else {
                     throw new Exception('Aucun identifiant de billet envoyé');
                 }
             }
@@ -36,8 +33,7 @@ try { // On essaie de faire des choses
         elseif ($_GET['action'] == 'post'){
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 require('view/backend/addPostView.php');
-            }
-            else{
+            } else{
                 require('view/backend/loginView.php');
             }
         }
@@ -45,13 +41,11 @@ try { // On essaie de faire des choses
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['chapo'])) {
                     addPostManager($_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
-                }
-                else {
+                } else {
                     // Autre exception
                     throw new Exception('Tous les champs ne sont pas remplis !(commentaire)');
                 }
-            }
-            else{
+            } else {
                 require('view/backend/loginView.php');
             }
         }
@@ -59,12 +53,10 @@ try { // On essaie de faire des choses
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 if (!empty($_GET['id'])) {
                     post($_GET['id']);
-                }
-                else {
+                } else {
                     throw new Exception('Aucun identifiant de billet envoyé');
                 }
-            }
-            else{
+            } else {
                 require('view/backend/loginView.php');
             }
         }
@@ -72,19 +64,16 @@ try { // On essaie de faire des choses
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 if (!empty($_GET['postId']) && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['chapo'])) {
                     editPostManager($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
-                }
-                else {
+                } else {
                     // Autre exception
                     throw new Exception('Tous les champs ne sont pas remplis !(commentaire)');
                 }
-            }
-            else{
+            } else {
                 require('view/backend/loginView.php');
             }
         }
         
-    }
-    else {
+    } else {
         require('view/backend/loginView.php');
     }
     

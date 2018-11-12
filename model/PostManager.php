@@ -8,16 +8,16 @@ class PostManager extends Manager
 {
     public function getPosts()
     {
-        $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
+        $bdd= $this->dbConnect();
+        $req = $bdd->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
 
         return $req;
     }
 
     public function getPost($postId)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare('SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = ?');
+        $bdd= $this->dbConnect();
+        $req = $bdd->prepare('SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = ?');
         $req->execute(array($postId));
         $post = $req->fetch();
 
@@ -26,16 +26,16 @@ class PostManager extends Manager
 
     public function getPostPreview()
     {
-        $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC');
+        $bdd= $this->dbConnect();
+        $req = $bdd->query('SELECT id, title, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC');
 
         return $req;
     }
 
     public function setPost($postId, $title, $chapo, $content, $idUser)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare('UPDATE posts SET title = :title, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id');
+        $bdd= $this->dbConnect();
+        $req = $bdd->prepare('UPDATE posts SET title = :title, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id');
         $req->execute(array(
             ':id'=>$postId,
             ':title'=>$title,
@@ -49,8 +49,8 @@ class PostManager extends Manager
     
     public function addPost($title, $chapo, $content, $idUser)
     {
-        $db = $this->dbConnect();
-        $req = $db->prepare('INSERT INTO posts (title, chapo, content, id_user, creation_date) VALUES (:title, :chapo, :content, :iduser, NOW())');
+        $bdd= $this->dbConnect();
+        $req = $bdd->prepare('INSERT INTO posts (title, chapo, content, id_user, creation_date) VALUES (:title, :chapo, :content, :iduser, NOW())');
         $req->execute(array(
             ':title'=>$title,
             ':chapo'=>$chapo,

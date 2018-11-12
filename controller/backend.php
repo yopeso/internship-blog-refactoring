@@ -28,8 +28,7 @@ function connect($pseudo, $pass)
             $_SESSION['id'] = $login['id'];
             $_SESSION['pseudo'] = $pseudo;
             header('Location: admin.php?action=admin');
-        }
-        else {
+        } else {
             throw new Exception('Mauvais identifiant ou mot de passe !');
         }
     }
@@ -61,8 +60,7 @@ function commentsValid($commentId)
 
     if ($affectedLines === false) {
         throw new Exception('Impossible de valider le commentaire !');
-    }
-    else {
+    } else {
         header('Location: admin.php?action=admin');
     }
 
@@ -74,8 +72,7 @@ function addPostManager($title, $chapo, $content, $idUser)
     $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
     if ($affectedLines === false) {
         throw new Exception("Impossible d'ajouter cette article.");
-    }
-    else {
+    } else {
         header('Location: admin.php?action=admin');
     }
 }
@@ -95,8 +92,7 @@ function editPostManager()
     $affectedLines = $postManager->setPost($postId, $title, $chapo, $content, $idUser);
     if ($affectedLines === false) {
         throw new Exception("Impossible de modifier cette article.");
-    }
-    else {
+    } else {
         header('Location: admin.php?action=admin');
     }
 }

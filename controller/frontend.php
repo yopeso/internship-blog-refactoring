@@ -34,8 +34,7 @@ function addComment($postId, $author, $comment)
 
     if ($affectedLines === false) {
         throw new Exception('Impossible d\'ajouter le commentaire !');
-    }
-    else {
+    } else {
         header('Location: index.php?action=post&id=' . $postId);
     }
 }
@@ -57,8 +56,7 @@ function editComment($commentId, $author, $comment, $postId)
 
     if ($affectedLines === false) {
         throw new Exception('Impossible de modifier le commentaire !');
-    }
-    else {
+    } else {
         header('Location: index.php?action=post&id=' . $postId);
     }
 }
