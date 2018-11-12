@@ -67,3 +67,15 @@ function commentsValid($commentId)
     }
 
 }
+
+function addPostManager($title, $chapo, $content, $idUser)
+{
+    $addpost = new PostManager();
+    $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
+    if ($affectedLines === false) {
+        throw new Exception("Impossible d'ajouter cette article.");
+    }
+    else {
+        header('Location: admin.php?action=admin');
+    }
+}

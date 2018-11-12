@@ -44,7 +44,7 @@ try { // On essaie de faire des choses
         elseif ($_GET['action'] == 'addPost'){
             if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
                 if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['chapo'])) {
-                    addPost($_POST['title'], $_POST['content'], $_POST['chapo']);
+                    addPostManager($_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
                 }
                 else {
                     // Autre exception
