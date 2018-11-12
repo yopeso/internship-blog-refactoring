@@ -9,7 +9,7 @@ class PostManager extends Manager
     public function getPosts()
     {
         $db = $this->dbConnect();
-        $req = $db->query('SELECT id, title, content, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
+        $req = $db->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
 
         return $req;
     }
@@ -44,7 +44,7 @@ class PostManager extends Manager
             ':iduser'=>$idUser
         ));
 
-        return $post;
+        return $affectedLines;
     }
     
     public function addPost($title, $chapo, $content, $idUser)

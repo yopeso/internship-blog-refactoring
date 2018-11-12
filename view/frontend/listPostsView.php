@@ -21,9 +21,9 @@ while ($data = $posts->fetch())
         </h3>
         
         <p>
-            <?= nl2br(htmlspecialchars($data['content'])) ?>
+            <?= nl2br(htmlspecialchars($data['chapo'])) ?>
             <br />
-            <em><a href="index.php?action=post&id=<?= $data['id'] ?>">Afficher les commentaires</a></em>
+            <em><a href="index.php?action=post&id=<?= $data['id'] ?>">Lire la suite ...</a></em>
         </p>
     </div>
 <?php

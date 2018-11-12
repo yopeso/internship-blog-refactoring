@@ -55,6 +55,33 @@ try { // On essaie de faire des choses
                 require('view/backend/loginView.php');
             }
         }
+        elseif ($_GET['action'] == 'previewPost'){
+            if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+                if (!empty($_GET['id'])) {
+                    post($_GET['id']);
+                }
+                else {
+                    throw new Exception('Aucun identifiant de billet envoyé');
+                }
+            }
+            else{
+                require('view/backend/loginView.php');
+            }
+        }
+        elseif ($_GET['action'] == 'editPost'){
+            if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+                if (!empty($_GET['postId']) && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['chapo'])) {
+                    editPostManager($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
+                }
+                else {
+                    // Autre exception
+                    throw new Exception('Tous les champs ne sont pas remplis !(commentaire)');
+                }
+            }
+            else{
+                require('view/backend/loginView.php');
+            }
+        }
         
     }
     else {

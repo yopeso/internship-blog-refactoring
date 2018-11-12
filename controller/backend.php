@@ -79,3 +79,24 @@ function addPostManager($title, $chapo, $content, $idUser)
         header('Location: admin.php?action=admin');
     }
 }
+
+function post()
+{
+    $postManager = new PostManager();
+
+    $post = $postManager->getPost($_GET['id']);
+
+    require('view/backend/editPostView.php');
+}
+
+function editPostManager()
+{
+    $postManager = new PostManager();
+    $affectedLines = $postManager->setPost($postId, $title, $chapo, $content, $idUser);
+    if ($affectedLines === false) {
+        throw new Exception("Impossible de modifier cette article.");
+    }
+    else {
+        header('Location: admin.php?action=admin');
+    }
+}

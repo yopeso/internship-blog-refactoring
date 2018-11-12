@@ -32,7 +32,7 @@
             <td><?= htmlspecialchars($dataPosts['title']) ?></td>
             <td><?= htmlspecialchars($dataPosts['creation_date_fr']) ?></td>
             <td>
-              <a class="btn btn-primary" href="?action=edit&id=<?= htmlspecialchars($dataPosts['id']) ?>">Modifier</a>
+              <a class="btn btn-primary" href="?action=previewPost&id=<?= htmlspecialchars($dataPosts['id']) ?>">Modifier</a>
 
               <form action="?action=delete" method="post">
                 <input type="hidden" name="id" value="<?= htmlspecialchars($dataPosts['id']) ?>">
