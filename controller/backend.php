@@ -60,9 +60,9 @@ function commentsValid($commentId)
 
     if ($affectedLines === false) {
         throw new Exception('Impossible de valider le commentaire !');
-    } else {
-        header('Location: admin.php?action=admin');
     }
+
+    header('Location: admin.php?action=admin');
 
 }
 
@@ -72,9 +72,10 @@ function addPostManager($title, $chapo, $content, $idUser)
     $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
     if ($affectedLines === false) {
         throw new Exception("Impossible d'ajouter cette article.");
-    } else {
-        header('Location: admin.php?action=admin');
     }
+
+    header('Location: admin.php?action=admin');
+
 }
 
 function post()
@@ -92,7 +93,8 @@ function editPostManager()
     $affectedLines = $postManager->setPost($postId, $title, $chapo, $content, $idUser);
     if ($affectedLines === false) {
         throw new Exception("Impossible de modifier cette article.");
-    } else {
-        header('Location: admin.php?action=admin');
     }
+
+    header('Location: admin.php?action=admin');
+
 }
