@@ -17,8 +17,10 @@ class PostManager extends Manager
     public function getPost($postId)
     {
         $bdd= $this->dbConnect();
-        $req = $bdd->prepare('SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = ?');
-        $req->execute(array($postId));
+        $req = $bdd->prepare('SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = :postId');
+        $req->execute(array(
+            ':postId'=>$postId
+        ));
         $post = $req->fetch();
 
         return $post;
@@ -66,7 +68,7 @@ class PostManager extends Manager
         $bdd= $this->dbConnect();
         $req = $bdd->prepare('DELETE FROM posts WHERE id = :postId');
         $req->execute(array(
-            ':postId'=>$postId,
+            ':postId'=>$postId
         ));
         $affectedLines = $req;
 
