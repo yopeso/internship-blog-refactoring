@@ -98,3 +98,14 @@ function editPostManager()
     header('Location: admin.php?action=admin');
 
 }
+
+function removePostManager()
+{
+    $postDelete = new PostManager();
+    $affectedLines = $postDelete->removePost($_POST['postId']);
+    if ($affectedLines === false) {
+        throw new Exception("Impossible de suprrimer cette article.");
+    }
+    header('Location: admin.php?action=admin');
+
+}

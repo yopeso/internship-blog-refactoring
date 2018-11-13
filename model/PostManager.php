@@ -36,7 +36,7 @@ class PostManager extends Manager
     {
         $bdd= $this->dbConnect();
         $req = $bdd->prepare('UPDATE posts SET title = :title, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id');
-        $req->execute(array(
+        $affectedLines = $req->execute(array(
             ':id'=>$postId,
             ':title'=>$title,
             ':chapo'=>$chapo,
@@ -51,12 +51,24 @@ class PostManager extends Manager
     {
         $bdd= $this->dbConnect();
         $req = $bdd->prepare('INSERT INTO posts (title, chapo, content, id_user, creation_date) VALUES (:title, :chapo, :content, :iduser, NOW())');
-        $req->execute(array(
+        $affectedLines = $req->execute(array(
             ':title'=>$title,
             ':chapo'=>$chapo,
             ':content'=>$content,
             ':iduser'=>$idUser
         ));
+
+        return $affectedLines;
+    }
+
+    public function removePost($postId)
+    {
+        $bdd= $this->dbConnect();
+        $req = $bdd->prepare('DELETE FROM posts WHERE id = :postId');
+        $req->execute(array(
+            ':postId'=>$postId,
+        ));
+        $affectedLines = $req;
 
         return $affectedLines;
     }

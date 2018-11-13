@@ -72,6 +72,9 @@ try { // On essaie de faire des choses
                 require('view/backend/loginView.php');
             }
         }
+        elseif (($_GET['action'] == 'delete') && isset($_SESSION['id']) && isset($_SESSION['pseudo']) && ($_POST['postId'])){
+            removePostManager($_POST['postId']); 
+        }
         
     } else {
         require('view/backend/loginView.php');

@@ -35,7 +35,7 @@
               <a class="btn btn-primary" href="?action=previewPost&id=<?= htmlspecialchars($dataPosts['id']) ?>">Modifier</a>
 
               <form action="?action=delete" method="post">
-                <input type="hidden" name="id" value="<?= htmlspecialchars($dataPosts['id']) ?>">
+                <input type="hidden" name="postId" value="<?= htmlspecialchars($dataPosts['id']) ?>">
                 <button type="submit" class="btn btn-danger" href="">Supprimer</button>
               </form>
 
