@@ -9,9 +9,9 @@ class PostManager extends Manager
     public function getPosts()
     {
         $bdd= $this->dbConnect();
-        $req = $bdd->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
+        $listposts = $bdd->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
 
-        return $req;
+        return $listposts;
     }
 
     public function getPost($postId)

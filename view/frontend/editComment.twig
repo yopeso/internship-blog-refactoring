@@ -1,6 +1,6 @@
-<?php $title = 'Mon blog';?>
-
-<?php ob_start(); ?>
+{% extends 'template.twig'%}
+{% block title %}Modifier votre commentaire{% endblock %}
+{% block content %}
 <header class="masthead bg-primary text-white text-center">
       <div class="container">
         <h1>Mon super blog !</h1>
@@ -11,8 +11,8 @@
     <section class="portfolio" id="portfolio">
       
         <div class="container">
-            <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?></p>
-            <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+            <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}</p>
+            <p>{{data_comment.comment}}</p>
         </div>
     </section>
 
@@ -23,13 +23,13 @@
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-            <form action="index.php?action=editComment&amp;commentId=<?= $comment['id']?>&amp;postId=<?=$_GET['postId']?>" method="post">
+            <form action="index.php?action=editComment&amp;commentId={{data_comment.id}}&amp;postId={{ _get.postId }}" method="post">
                     
 
                         <div class="control-group">
                             <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label for="author">Auteur</label>
-                                <input class="form-control" type="text" id="author" name="author" value="<?= htmlspecialchars($comment['author']) ?>" required="required">
+                                <input class="form-control" type="text" id="author" name="author" value="{{data_comment.author}}" required="required">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                         <div class="control-group">
                              <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label>Commentaire</label>
-                                <textarea class="form-control" id="message" name="comment" rows="5" required="required"><?= nl2br(htmlspecialchars($comment['comment'])) ?></textarea>
+                                <textarea class="form-control" id="message" name="comment" rows="5" required="required">{{data_comment.comment}}</textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -53,7 +53,4 @@
             </div>
         </div>
 </section>
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>
+{% endblock %}

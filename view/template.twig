@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?= $title ?></title>
+    <title>{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,7 @@
       </div>
     </nav>
 
-    <?= $content ?>
+   {% block content %}{% endblock %}
     
     <footer class="footer text-center">
       <div class="container">

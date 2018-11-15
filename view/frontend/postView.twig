@@ -1,39 +1,34 @@
-<?php $title = 'Mon blog'; ?>
-
-<?php ob_start(); ?>
+{% extends 'template.twig'%}
+{% block title %}Article{% endblock %}
+{% block content %}
 <header class="masthead bg-primary text-white text-center">
       <div class="container">
         <h1>Article</h1>
-        <p><a href="index.php">Retour à la liste des billets</a></p>
+        <p ><a href="index.php?action=listPosts">Retour au Blog</a></p>
         </div>
 </header>
 
     <section class="portfolio" id="portfolio">
-        <div class="container">
-            <h3 class="text-center text-uppercase text-secondary mb-0">
-                <?= htmlspecialchars($post['title']) ?>
-                <em>le <?= $post['creation_date_fr'] ?></em>
+        <div class="container mb-5">
+            <h3 class="text-center text-uppercase text-secondary mb-5">
+                {{data_post.title}}
+                <em>le {{data_post.creation_date_fr}}</em>
             </h3>
 
-            <p>
-            <?= nl2br(htmlspecialchars($post['content'])) ?>
+             <p class="lead">
+                {{data_post.content}}
             </p>
         </div>
 
-<h3 class="text-center text-uppercase text-secondary mb-0">Commentaires</h3>
+<h3 class="text-center text-uppercase text-secondary mb-5">Commentaires</h3>
+{% for data_comment in data_comments %}
 
-<?php
-while ($comment = $comments->fetch())
-{
-?>  
-    <div class="container">
-        <p><strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?> (<a href="index.php?action=comment&amp;commentId=<?= htmlspecialchars($comment['id'])?>&amp;postId=<?= htmlspecialchars($post['id'])?>">modifier</a>)</p>
-        <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+    <div class="container mb-5">
+        <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}(<a href="index.php?action=comment&amp;commentId={{data_comment.id}}&amp;postId={{data_post.id}}">modifier</a>)</p>
+        <p>{{data_comment.comment}}</p>
     </div>
-<?php
-}
-$comments->closeCursor();
-?>
+
+{% endfor %}
 </section>
 
  <section id="contact">
@@ -43,7 +38,7 @@ $comments->closeCursor();
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-            <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+            <form action="index.php?action=addComment&amp;id={{data_post.id}}" method="post">
                     
 
                         <div class="control-group">
@@ -73,7 +68,4 @@ $comments->closeCursor();
             </div>
         </div>
 </section>
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>
+{% endblock %}
