@@ -1,6 +1,6 @@
-<?php $title = 'Admin interface';?>
-
-<?php ob_start(); ?>
+{% extends 'template.twig'%}
+{% block title %}Admin interface{% endblock %}
+{% block content %}
 <header class="masthead bg-primary text-white text-center">
       <div class="container">
         <h1>Admin interface</h1>
@@ -15,12 +15,12 @@
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-                <form action="admin.php?action=editPost&amp;postId=<?= $post['id']?>" method="post">
+                <form action="admin.php?action=editPost&amp;postId={{data_post.id}}" method="post">
                     
                         <div class="control-group">
                             <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label>Titre</label>
-                                <input class="form-control" type="text" id="titre" name="title" value="<?= htmlspecialchars($post['title']) ?>" required="required">
+                                <input class="form-control" type="text" id="titre" name="title" value="{{data_post.title}}" required="required">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -28,14 +28,14 @@
                         <div class="control-group">
                              <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label>Contenu de l'article</label>
-                                <textarea class="form-control" id="message" name="content" rows="10" required="required"><?= nl2br(htmlspecialchars($post['content'])) ?></textarea>
+                                <textarea class="form-control" id="message" name="content" rows="10" required="required">{{data_post.content}}</textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="control-group">
                              <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label>Aperçu de l'article</label>
-                                <textarea class="form-control" id="message" name="chapo" rows="5" required="required"><?= nl2br(htmlspecialchars($post['chapo'])) ?></textarea>
+                                <textarea class="form-control" id="message" name="chapo" rows="5" required="required">{{data_post.chapo}}</textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -52,6 +52,4 @@
     </div>
 </section>
 
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>
+{% endblock %}

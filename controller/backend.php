@@ -9,103 +9,111 @@ require_once('model/LoginManager.php');
 require_once('model/PostManager.php');
 require_once('model/CommentManager.php');
 
-function connect($pseudo, $pass)
-{
-    $loginManager = new LoginManager;
+class backendController extends TwigRenderer {
 
-    $login = $loginManager->getLogin($pseudo, $pass);
-
-    $isPasswordCorrect = password_verify($pass, $login['pass']);
-
-    if (!$login)
+    function loginView()
     {
-        throw new Exception('Mauvais identifiant ou mot de passe !');
+        $this->render('backend/loginView');
     }
-    else
+
+    function connect($pseudo, $pass)
     {
-        if ($isPasswordCorrect) {
-            session_start();
-            $_SESSION['id'] = $login['id'];
-            $_SESSION['pseudo'] = $pseudo;
-            header('Location: admin.php?action=admin');
-        } else {
+        $loginManager = new LoginManager;
+
+        $login = $loginManager->getLogin($pseudo, $pass);
+
+        $isPasswordCorrect = password_verify($pass, $login['pass']);
+
+        if (!$login)
+        {
             throw new Exception('Mauvais identifiant ou mot de passe !');
         }
+        else
+        {
+            if ($isPasswordCorrect) {
+                session_start();
+                $_SESSION['id'] = $login['id'];
+                $_SESSION['pseudo'] = $pseudo;
+                header('Location: admin.php?action=admin');
+            } else {
+                throw new Exception('Mauvais identifiant ou mot de passe !');
+            }
+        }
+
     }
 
-}
+    function interfaceAdmin()
+    {
+    
+        $postPreview = new PostManager();
+        $data_posts = $postPreview->getPostPreview();
 
-function interfaceAdmin()
-{
-    /* 
-    1 (OK 20%): Boucle qui affiche un aperçu de tout les articles ( postId, Titre du post, lien modifier et supprimer )
-    2 (OK 100%): Boucle qui affiche tout les commentaires en attente de validation (option valider)
-    3 (OK 20%%): Button créé un article
-    */
+        $commentsInvalid = new CommentManager();
+        $data_comments = $commentsInvalid->getCommentsInvalid();
 
-    $postPreview = new PostManager();
-    $posts = $postPreview->getPostPreview();
+        $this->render('backend/adminView', ["data_posts" => $data_posts, "data_comments" => $data_comments]);
 
-    $commentsInvalid = new CommentManager();
-    $comments = $commentsInvalid->getCommentsInvalid();
-
-    require('view/backend/adminView.php');
-
-}
-
-function commentsValid($commentId)
-{
-    $CommentValid = new CommentManager();
-    $affectedLines = $CommentValid->setCommentsValid($commentId);
-
-    if ($affectedLines === false) {
-        throw new Exception('Impossible de valider le commentaire !');
     }
 
-    header('Location: admin.php?action=admin');
+    function commentsValid($commentId)
+    {
+        $CommentValid = new CommentManager();
+        $affectedLines = $CommentValid->setCommentsValid($commentId);
 
-}
+        if ($affectedLines === false) {
+            throw new Exception('Impossible de valider le commentaire !');
+        }
 
-function addPostManager($title, $chapo, $content, $idUser)
-{
-    $addpost = new PostManager();
-    $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
-    if ($affectedLines === false) {
-        throw new Exception("Impossible d'ajouter cette article.");
+        header('Location: admin.php?action=admin');
+
     }
 
-    header('Location: admin.php?action=admin');
+    function addPostManager($title, $chapo, $content, $idUser)
+    {
+        $addpost = new PostManager();
+        $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
+        if ($affectedLines === false) {
+            throw new Exception("Impossible d'ajouter cette article.");
+        }
 
-}
+        header('Location: admin.php?action=admin');
 
-function post()
-{
-    $postManager = new PostManager();
-
-    $post = $postManager->getPost($_GET['id']);
-
-    require('view/backend/editPostView.php');
-}
-
-function editPostManager()
-{
-    $postManager = new PostManager();
-    $affectedLines = $postManager->setPost($postId, $title, $chapo, $content, $idUser);
-    if ($affectedLines === false) {
-        throw new Exception("Impossible de modifier cette article.");
     }
 
-    header('Location: admin.php?action=admin');
+    function post()
+    {
+        $postManager = new PostManager();
+        $data_post = $postManager->getPost($_GET['id']);
 
-}
+        $this->render('backend/editPostView', ["data_post" => $data_post]);
 
-function removePostManager()
-{
-    $postDelete = new PostManager();
-    $affectedLines = $postDelete->removePost($_POST['postId']);
-    if ($affectedLines === false) {
-        throw new Exception("Impossible de suprrimer cette article.");
     }
-    header('Location: admin.php?action=admin');
 
+    function editPostManager()
+    {
+        $postManager = new PostManager();
+        $affectedLines = $postManager->setPost($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
+        if ($affectedLines === false) {
+            throw new Exception("Impossible de modifier cette article.");
+        }
+
+        header('Location: admin.php?action=admin');
+
+    }
+
+    function removePostManager()
+    {
+        $postDelete = new PostManager();
+        $affectedLines = $postDelete->removePost($_POST['postId']);
+        if ($affectedLines === false) {
+            throw new Exception("Impossible de suprrimer cette article.");
+        }
+        header('Location: admin.php?action=admin');
+
+    }
+
+    function erroView($errorMessage)
+    {
+        $this->render('frontend/errorView', ["data_message" => $errorMessage]);
+    }
 }

@@ -1,6 +1,6 @@
-<?php $title = 'Login';?>
-
-<?php ob_start(); ?>
+{% extends 'template.twig'%}
+{% block title %}Admin interface{% endblock %}
+{% block content %}
 <header class="masthead bg-primary text-white text-center">
       <div class="container">
         <h1>Login</h1>
@@ -46,7 +46,4 @@
             </div>
         </div>
 </section>
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require('view/template.php'); ?>
+{% endblock %}

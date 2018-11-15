@@ -2,7 +2,8 @@
 require 'vendor/autoload.php';
 require 'controller/TwigRenderer.php';
 require 'controller/frontend.php';
-$_SESSION = 1;
+
+$_SESSION['init'] = 1;
 $controller = new frontendController();
 
 try { // On essaie de faire des choses
