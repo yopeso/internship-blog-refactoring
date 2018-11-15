@@ -44,7 +44,8 @@ class frontendController extends TwigRenderer {
             throw new Exception('Impossible d\'ajouter le commentaire !');
         } 
 
-        header('Location: index.php?action=post&id=' . $postId);
+        header('Location: ?action=post&id=' . $postId);
+        exit;
 
     }
 
@@ -67,7 +68,8 @@ class frontendController extends TwigRenderer {
             throw new Exception('Impossible de modifier le commentaire !');
         }
 
-        header('Location: index.php?action=post&id=' . $postId);
+        header('Location: ?action=post&id=' . $postId);
+        exit;
 
     }
 

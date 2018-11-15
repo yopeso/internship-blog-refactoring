@@ -17,7 +17,7 @@ try { // On essaie de faire des choses
     } 
     elseif ($_GET['action'] == 'login') {
         if (!empty($_POST['pseudo']) && !empty($_POST['pass'])) {
-            $controller->connect($_POST['pseudo'], $_POST['pass']);
+            $controller->connectAdmin($_POST['pseudo'], $_POST['pass']);
         } else {
             throw new Exception('Tous les champs ne sont pas remplis !');
         }

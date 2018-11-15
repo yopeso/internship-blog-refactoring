@@ -16,13 +16,13 @@ class backendController extends TwigRenderer {
         $this->render('backend/loginView');
     }
 
-    function connect($pseudo, $pass)
+    function connectAdmin($pseudo, $key)
     {
         $loginManager = new LoginManager;
 
-        $login = $loginManager->getLogin($pseudo, $pass);
+        $login = $loginManager->getLogin($pseudo, $key);
 
-        $isPasswordCorrect = password_verify($pass, $login['pass']);
+        $isPasswordCorrect = password_verify($key, $login['pass']);
 
         if (!$login)
         {
@@ -32,6 +32,7 @@ class backendController extends TwigRenderer {
         {
             if ($isPasswordCorrect) {
                 session_start();
+                $_SESSION['admin'] = 1;
                 $_SESSION['id'] = $login['id'];
                 $_SESSION['pseudo'] = $pseudo;
                 header('Location: admin.php?action=admin');
@@ -65,6 +66,7 @@ class backendController extends TwigRenderer {
         }
 
         header('Location: admin.php?action=admin');
+        exit;
 
     }
 
@@ -77,6 +79,7 @@ class backendController extends TwigRenderer {
         }
 
         header('Location: admin.php?action=admin');
+        exit;
 
     }
 
@@ -98,6 +101,7 @@ class backendController extends TwigRenderer {
         }
 
         header('Location: admin.php?action=admin');
+        exit;
 
     }
 
@@ -109,6 +113,7 @@ class backendController extends TwigRenderer {
             throw new Exception("Impossible de suprrimer cette article.");
         }
         header('Location: admin.php?action=admin');
+        exit;
 
     }
 
