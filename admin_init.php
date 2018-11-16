@@ -11,8 +11,8 @@ $pass_hache = password_hash($pass, PASSWORD_DEFAULT);
 // Insertion
 $req = $bdd->prepare('INSERT INTO users(pseudo, pass) VALUES(:pseudo, :pass)');
 $req->execute(array(
-    'pseudo' => $pseudo,
-    'pass' => $pass_hache));
+    'username' => $pseudo,
+    'password' => $pass_hache));
    
    
    

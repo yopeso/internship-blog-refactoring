@@ -1,0 +1,42 @@
+{% extends 'template.twig'%}
+{% block title %}Espace utilisateur{% endblock %}
+{% block content %}
+<header class="masthead bg-primary text-white text-center">
+      <div class="container">
+        <h1>Espace utilisateur</h1>
+        <p><a href="index.php">Accueil</a></p>
+        </div>
+</header>
+  <div class="container">
+  <table class="table">
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Auteur</td>
+          <td>Commantaire</td>
+          <td>Action</td>
+        </tr>
+      </thead>
+      <tbody>
+         {% for data_comment in data_comments %}
+          <tr>
+            <td>{{data_comment.id}}</td>
+            <td>{{data_comment.author}}</td>
+            <td>{{data_comment.comment}}</td>
+            <td>
+            <a class="btn btn-primary" href="?action=previewPost&id={{data_comment.id}}">Modifier</a>
+
+              <form action="?action=delete" method="post">
+                <input type="hidden" name="postId" value="{{data_comment.id}}">
+                <button type="submit" class="btn btn-danger" href="">Supprimer</button>
+              </form>
+
+            </td>
+          </tr> 
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</section>
+{% endblock %}

@@ -8,13 +8,13 @@ require_once('model/CommentManager.php');
 
 class frontendController extends TwigRenderer {
 
-    function homeView() {
+    public function homeView() {
         
         $this->render('frontend/homeView');
 
     }
 //
-    function listPosts($pageCourante)
+    public function listPosts($pageCourante)
     {
         $articlesParPage = 5;
         $postsTotal = new PostManager();
@@ -31,7 +31,7 @@ class frontendController extends TwigRenderer {
 
     }
 
-    function post()
+    public function post()
     {
         $postManager = new PostManager();
         $commentManager = new CommentManager();
@@ -43,7 +43,7 @@ class frontendController extends TwigRenderer {
 
     }
 
-    function addComment($postId, $author, $comment)
+    public function addComment($postId, $author, $comment)
     {
         $commentManager = new CommentManager();
 
@@ -58,7 +58,7 @@ class frontendController extends TwigRenderer {
 
     }
 
-    function comment()
+    public function comment()
     {
         $commentManager = new CommentManager();
 
@@ -67,7 +67,7 @@ class frontendController extends TwigRenderer {
         $this->render('frontend/editComment', ["data_comment" => $comment]);
     }
 
-    function editComment($commentId, $author, $comment, $postId)
+    public function editComment($commentId, $author, $comment, $postId)
     {
         $commentManager = new CommentManager();
 
@@ -82,7 +82,7 @@ class frontendController extends TwigRenderer {
 
     }
 
-    function erroView($errorMessage)
+    public function erroView($errorMessage)
     {
         $this->render('frontend/errorView', ["data_message" => $errorMessage]);
     }

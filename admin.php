@@ -9,21 +9,21 @@ $controller = new backendController();
 
 try { // On essaie de faire des choses
     if ($_GET['action'] == 'admin') {
-        if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+        if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             $controller->interfaceAdmin();
         } else {
             $controller->loginView();
         }
     } 
     elseif ($_GET['action'] == 'login') {
-        if (!empty($_POST['pseudo']) && !empty($_POST['pass'])) {
-            $controller->connectAdmin($_POST['pseudo'], $_POST['pass']);
+        if (!empty($_POST['username']) && !empty($_POST['password'])) {
+            $controller->connectAdmin($_POST['username'], $_POST['password']);
         } else {
             throw new Exception('Tous les champs ne sont pas remplis !');
         }
     }
     elseif ($_GET['action'] == 'commentValid'){
-        if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+        if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             if (!empty($_POST['id'])) {
                 $controller->commentsValid($_POST['id']);
             } else {
@@ -35,14 +35,14 @@ try { // On essaie de faire des choses
         }
     }
     elseif ($_GET['action'] == 'post'){
-        if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+        if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             require('view/backend/addPostView.php');
         } else{
             $controller->loginView();
         }
     }
     elseif ($_GET['action'] == 'addPost'){
-        if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+        if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['chapo'])) {
                 $controller->addPostManager($_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
             } else {
@@ -54,7 +54,7 @@ try { // On essaie de faire des choses
         }
     }
     elseif ($_GET['action'] == 'previewPost'){
-        if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+        if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             if (!empty($_GET['id'])) {
                 $controller->post($_GET['id']);
             } else {
@@ -65,7 +65,7 @@ try { // On essaie de faire des choses
         }
     }
     elseif ($_GET['action'] == 'editPost'){
-        if (isset($_SESSION['id']) && isset($_SESSION['pseudo'])) {
+        if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
             if (!empty($_GET['postId']) && !empty($_POST['title']) && !empty($_POST['content']) && !empty($_POST['chapo'])) {
                 $controller->editPostManager($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
             } else {
@@ -76,7 +76,7 @@ try { // On essaie de faire des choses
             $controller->loginView();
         }
     }
-    elseif (($_GET['action'] == 'delete') && isset($_SESSION['id']) && isset($_SESSION['pseudo']) && ($_POST['postId'])){
+    elseif (($_GET['action'] == 'delete') && isset($_SESSION['id']) && isset($_SESSION['username']) && ($_POST['postId'])){
         $controller->removePostManager($_POST['postId']); 
     }
     

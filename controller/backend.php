@@ -11,18 +11,18 @@ require_once('model/CommentManager.php');
 
 class backendController extends TwigRenderer {
 
-    function loginView()
+    public function loginView()
     {
         $this->render('backend/loginView');
     }
 
-    function connectAdmin($pseudo, $key)
+    public function connectAdmin($username, $key)
     {
         $loginManager = new LoginManager;
 
-        $login = $loginManager->getLogin($pseudo, $key);
+        $login = $loginManager->getLogin($username, $key);
 
-        $isPasswordCorrect = password_verify($key, $login['pass']);
+        $isPasswordCorrect = password_verify($key, $login['password']);
 
         if (!$login)
         {
@@ -34,7 +34,7 @@ class backendController extends TwigRenderer {
                 session_start();
                 $_SESSION['admin'] = 1;
                 $_SESSION['id'] = $login['id'];
-                $_SESSION['pseudo'] = $pseudo;
+                $_SESSION['username'] = $username;
                 header('Location: admin.php?action=admin');
             } else {
                 throw new Exception('Mauvais identifiant ou mot de passe !');
@@ -43,7 +43,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function interfaceAdmin()
+    public function interfaceAdmin()
     {
     
         $postPreview = new PostManager();
@@ -56,7 +56,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function commentsValid($commentId)
+    public function commentsValid($commentId)
     {
         $CommentValid = new CommentManager();
         $affectedLines = $CommentValid->setCommentsValid($commentId);
@@ -70,7 +70,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function addPostManager($title, $chapo, $content, $idUser)
+    public function addPostManager($title, $chapo, $content, $idUser)
     {
         $addpost = new PostManager();
         $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
@@ -83,7 +83,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function post()
+    public function post()
     {
         $postManager = new PostManager();
         $data_post = $postManager->getPost($_GET['id']);
@@ -92,7 +92,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function editPostManager()
+    public function editPostManager()
     {
         $postManager = new PostManager();
         $affectedLines = $postManager->setPost($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
@@ -105,7 +105,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function removePostManager()
+    public function removePostManager()
     {
         $postDelete = new PostManager();
         $affectedLines = $postDelete->removePost($_POST['postId']);
@@ -117,7 +117,7 @@ class backendController extends TwigRenderer {
 
     }
 
-    function erroView($errorMessage)
+    public function erroView($errorMessage)
     {
         $this->render('frontend/errorView', ["data_message" => $errorMessage]);
     }

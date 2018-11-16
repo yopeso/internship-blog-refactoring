@@ -6,12 +6,12 @@ require_once("model/Manager.php");
 
 class LoginManager extends ManagerFetchModeOff
 {
-    public function getLogin($pseudo, $key)
+    public function getLogin($username, $key)
     {
         $bdd= $this->dbConnect();
-        $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = :pseudo');
+        $req = $bdd->prepare('SELECT id, password FROM users WHERE username = :username');
         $req->execute(array(
-            'pseudo' => $pseudo));
+            'username' => $username));
         $login = $req->fetch();
 
         return $login;
