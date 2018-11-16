@@ -6,10 +6,18 @@ require_once("model/Manager.php");
 
 class PostManager extends Manager
 {
-    public function getPosts()
+    public function getPostsTotal()
     {
         $bdd= $this->dbConnect();
-        $listposts = $bdd->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT 0, 5');
+        $articleTotalesReq = $bdd->query('SELECT id FROM posts');
+
+        return $articleTotalesReq;
+    }
+
+    public function getPosts($depart, $articlesParPage)
+    {
+        $bdd= $this->dbConnect();
+        $listposts = $bdd->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT '.$depart.', '.$articlesParPage);
 
         return $listposts;
     }

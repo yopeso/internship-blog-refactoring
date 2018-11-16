@@ -25,5 +25,16 @@
         </div>
     </section>
 {% endfor %}
+<section class="mb-0">
+    <div class="container text-center lead">
+        {% for i in 1..pagestotales %}
+            {% if i == pagecourante %}
+                {{ i }}
+            {% else %}                       
+                <a href="?action=listPosts&page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
 
 {% endblock %}

@@ -13,13 +13,22 @@ class frontendController extends TwigRenderer {
         $this->render('frontend/homeView');
 
     }
-
-    function listPosts()
+//
+    function listPosts($pageCourante)
     {
+        $articlesParPage = 5;
+        $postsTotal = new PostManager();
+        $articlesTotalesReq = $postsTotal->getPostsTotal();
+        $articlesTotales = $articlesTotalesReq->rowcount();
+        $depart = ($pageCourante-1)*$articlesParPage;
+        $pagesTotales = ceil($articlesTotales/$articlesParPage);
+        $GLOBALS['pagesTotales'] = $pagesTotales;
+
         $postManager = new PostManager(); // Création d'un objet
-        $list_posts = $postManager->getPosts(); // Appel d'une fonction de cet objet
+        $list_posts = $postManager->getPosts($depart, $articlesParPage); // Appel d'une fonction de cet objet
         
-        $this->render('frontend/listPostView', ["listposts" => $list_posts]);
+        $this->render('frontend/listPostView', ["listposts" => $list_posts, "pagestotales"=>$pagesTotales, "pagecourante"=>$pageCourante]);
+
     }
 
     function post()

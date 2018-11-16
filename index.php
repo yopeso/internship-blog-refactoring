@@ -9,7 +9,13 @@ $controller = new frontendController();
 try { // On essaie de faire des choses
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'listPosts') {
-            $controller->listPosts();
+            if(isset($_GET['page']) AND !empty($_GET['page']) AND $_GET['page'] > 0 AND $_GET['page'] <= $GLOBALS['pagesTotales'] ) {
+                $_GET['page'] = intval($_GET['page']);
+                $pageCourante = $_GET['page'];
+            } else {
+                $pageCourante = 1;
+            }
+            $controller->listPosts($pageCourante);
         }
         elseif ($_GET['action'] == 'post') {
             if (isset($_GET['id']) && $_GET['id'] > 0) {
