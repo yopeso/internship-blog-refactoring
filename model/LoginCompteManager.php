@@ -6,11 +6,11 @@ require_once("model/Manager.php");
 
 class LoginCompteManager extends Manager
 {
-    public function getLogin($pseudo, $key)
+    public function getLogin($username, $key)
     {
         $bdd= $this->dbConnect();
-        $req = $bdd->prepare('SELECT id, pass FROM users WHERE pseudo = :pseudo');
-        $req->execute(['username' => $pseudo]);
+        $req = $bdd->prepare('SELECT id, password FROM users WHERE username = :username');
+        $req->execute(['username' => $username]);
         $login = $req->fetch();
 
         return $login;
@@ -91,11 +91,9 @@ class LoginCompteManager extends Manager
         $bdd= $this->dbConnect();
         $req = $bdd->prepare("INSERT INTO users SET username = ?, password = ?, email = ?");
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        $req->execute([$_POST['username'], $password, $_POST['email'], $token]);
+        $req->execute([$_POST['username'], $password, $_POST['email']]);
 
         $_SESSION['flash']['success'] = 'Votre compte a bien été créé, vous pouvez vous connecter.';
-
-        header('Location: loginView.php');
 
     }
 

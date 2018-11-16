@@ -14,13 +14,15 @@ class compteController extends TwigRenderer {
         $this->render('compte/loginView');
     }
 
-    public function connect($pseudo, $key)
+    public function connect()
     {
         $loginManager = new LoginCompteManager;
 
-        $user = $loginManager->getLogin($pseudo, $key);
+        $user = $loginManager->getLogin($_POST['username'], $_POST['password']);
+
+        $key=$_POST['password'];
         
-        $isPasswordCorrect = password_verify($key, $user->pass);
+        $isPasswordCorrect = password_verify($key, $user->password);
 
         if (!$user)
         {
@@ -63,7 +65,12 @@ class compteController extends TwigRenderer {
         if(!empty($resultat)){
             return $resultat;
         }
-        $registerManager->registerUser();
+        $affectedLines = $registerManager->registerUser();
+
+        if ($affectedLines === false) {
+            throw new Exception('Erreur, inscription impossible !');
+        }
+        header('Location: compte.php?action=loginView');
 
     }
 

@@ -4,7 +4,7 @@ namespace jucarre\Blog\Model;
 
 require_once("model/Manager.php");
 
-class LoginManager extends ManagerFetchModeOff
+class LoginManager extends Manager
 {
     public function getLogin($username, $key)
     {
