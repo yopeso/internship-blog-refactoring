@@ -1,11 +1,11 @@
 <?php
 
 use jucarre\Blog\Model\LoginCompteManager;
-
+use jucarre\Blog\Model\CommentManager;
 
 // Chargement des classes
 require_once('model/LoginCompteManager.php');
-
+require_once('model/CommentManager.php');
 
 class compteController extends TwigRenderer {
 
@@ -20,20 +20,18 @@ class compteController extends TwigRenderer {
 
         $user = $loginManager->getLogin($_POST['username'], $_POST['password']);
 
-        $key=$_POST['password'];
-        
-        $isPasswordCorrect = password_verify($key, $user->password);
-
         if (!$user)
         {
             throw new Exception('Mauvais identifiant ou mot de passe !');
         }
         else
         {
+            $isPasswordCorrect = password_verify($_POST['password'], $user->password);
+
             if ($isPasswordCorrect) {
                 session_start();
                 $_SESSION['auth'] = $user;
-                header('Location: ?index.php?action=compteView');
+                header('Location: compte.php?action=compteView');
                 exit;
             } 
             
@@ -44,12 +42,8 @@ class compteController extends TwigRenderer {
 
     public function interfaceCompte()
     {
-
-        /**
-         * $_SESSION['auth]
-         *  $commentsInvalid = new CommentManager();
-         *  $data_comments = $commentsInvalid->getCommentsInvalid();
-         */
+        $commentsUser = new CommentManager();
+        $data_comments = $commentsUser->getUserComment($_SESSION['auth']->id);
 
         $this->render('compte/compteView', ["data_comments" => $data_comments]);
 

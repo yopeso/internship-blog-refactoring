@@ -25,6 +25,15 @@ class CommentManager extends Manager
         return $comment;
     }
 
+    public function getUserComment($idUser)
+    {
+        $bdd= $this->dbConnect();
+        $req = $bdd->prepare('SELECT id, id_user, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE id_user = ?');
+        $req->execute([$idUser]);
+        $comment = $req->fetch();
+
+        return $comment;
+    }
 
     public function postComment($postId, $author, $comment)
     {

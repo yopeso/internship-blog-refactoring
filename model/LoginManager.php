@@ -9,12 +9,11 @@ class LoginManager extends Manager
     public function getLogin($username, $key)
     {
         $bdd= $this->dbConnect();
-        $req = $bdd->prepare('SELECT id, password FROM users WHERE username = :username');
-        $req->execute(array(
-            'username' => $username));
-        $login = $req->fetch();
+        $req = $bdd->prepare('SELECT * FROM users WHERE username = :username');
+        $req->execute(['username' => $username]);
+        $user = $req->fetch();
 
-        return $login;
+        return $user;
         
     }
 

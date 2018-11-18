@@ -9,7 +9,7 @@ class LoginCompteManager extends Manager
     public function getLogin($username, $key)
     {
         $bdd= $this->dbConnect();
-        $req = $bdd->prepare('SELECT id, password FROM users WHERE username = :username');
+        $req = $bdd->prepare('SELECT * FROM users WHERE username = :username');
         $req->execute(['username' => $username]);
         $login = $req->fetch();
 
@@ -90,7 +90,7 @@ class LoginCompteManager extends Manager
     {   
         $bdd= $this->dbConnect();
         $req = $bdd->prepare("INSERT INTO users SET username = ?, password = ?, email = ?");
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $req->execute([$_POST['username'], $password, $_POST['email']]);
 
         $_SESSION['flash']['success'] = 'Votre compte a bien été créé, vous pouvez vous connecter.';

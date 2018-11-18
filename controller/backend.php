@@ -20,11 +20,11 @@ class backendController extends TwigRenderer {
     {
         $loginManager = new LoginManager;
 
-        $login = $loginManager->getLogin($username, $key);
+        $user = $loginManager->getLogin($username, $key);
 
-        $isPasswordCorrect = password_verify($key, $login['password']);
+        $isPasswordCorrect = password_verify($key, $user->password);
 
-        if (!$login)
+        if (!$user)
         {
             throw new Exception('Mauvais identifiant ou mot de passe !');
         }
@@ -32,13 +32,12 @@ class backendController extends TwigRenderer {
         {
             if ($isPasswordCorrect) {
                 session_start();
-                $_SESSION['admin'] = 1;
-                $_SESSION['id'] = $login['id'];
-                $_SESSION['username'] = $username;
+                $_SESSION['auth'] = $user;
                 header('Location: admin.php?action=admin');
-            } else {
-                throw new Exception('Mauvais identifiant ou mot de passe !');
-            }
+                exit;
+            } 
+            
+            throw new Exception('Mauvais identifiant ou mot de passe !');
         }
 
     }
@@ -95,7 +94,7 @@ class backendController extends TwigRenderer {
     public function editPostManager()
     {
         $postManager = new PostManager();
-        $affectedLines = $postManager->setPost($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['id']);
+        $affectedLines = $postManager->setPost($_GET['postId'], $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['auth']->id);
         if ($affectedLines === false) {
             throw new Exception("Impossible de modifier cette article.");
         }

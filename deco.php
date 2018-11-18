@@ -8,4 +8,4 @@ session_destroy();
 // Suppression des cookies de connexion automatique
 setcookie('login', '');
 setcookie('pass_hache', '');
-header('Location: admin.php?action=admin');
+header('Location: index.php');
