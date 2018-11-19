@@ -114,39 +114,39 @@
           <div class="col-lg-8 mx-auto">
             <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
             <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-            <form name="sentMessage" id="contactForm" novalidate="novalidate">
+            <form action="index.php?action=contactform" method="post">
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label>Nom</label>
-                  <input class="form-control" id="name" type="text" placeholder="Nom" required="required" data-validation-required-message="Please enter your name.">
+                  <input class="form-control" type="text" placeholder="Nom" name="nom" required="required" data-validation-required-message="Veuillez entrer votre nom">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label>Prenom</label>
-                  <input class="form-control" id="name" type="text" placeholder="Prenom" required="required" data-validation-required-message="Please enter your name.">
+                  <input class="form-control" type="text" placeholder="Prenom" name="prenom" required="required" data-validation-required-message="Veuillez entrer votre prenom.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label>Email</label>
-                  <input class="form-control" id="email" type="email" placeholder="Email" required="required" data-validation-required-message="Please enter your email address.">
+                  <input class="form-control" type="email" name="email" placeholder="Email" required="required" data-validation-required-message="Veuillez entrer votre adresse email.">
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <div class="control-group">
                 <div class="form-group floating-label-form-group controls mb-0 pb-2">
                   <label>Message</label>
-                  <textarea class="form-control" id="message" rows="5" placeholder="Message" required="required" data-validation-required-message="Please enter a message."></textarea>
+                  <textarea class="form-control" name="message" rows="5" placeholder="Message" required="required" data-validation-required-message="Veuillez entrer votre message."></textarea>
                   <p class="help-block text-danger"></p>
                 </div>
               </div>
               <br>
               <div id="success"></div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-xl" id="sendMessageButton">Envoyer</button>
+                <button type="submit" class="btn btn-primary btn-xl" >Envoyer</button>
               </div>
             </form>
           </div>

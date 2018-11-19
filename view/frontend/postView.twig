@@ -24,7 +24,11 @@
 {% for data_comment in data_comments %}
 
     <div class="container mb-5">
-        <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}(<a href="index.php?action=comment&amp;commentId={{data_comment.id}}&amp;postId={{data_post.id}}">modifier</a>)</p>
+        <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}
+        {% if idUser == data_comment.id_user %}    
+        (<a href="index.php?action=comment&amp;commentId={{data_comment.id}}&amp;postId={{data_post.id}}">modifier</a>)
+        {% endif %}
+        </p>
         <p>{{data_comment.comment}}</p>
     </div>
 

@@ -2,9 +2,11 @@
 
 use jucarre\Blog\Model\PostManager;
 use jucarre\Blog\Model\CommentManager;
+use jucarre\Blog\Model\FormManager;
 // Chargement des classes
 require_once('model/PostManager.php');
 require_once('model/CommentManager.php');
+require_once('model/FormManager.php');
 
 class frontendController extends TwigRenderer {
 
@@ -38,9 +40,12 @@ class frontendController extends TwigRenderer {
 
         $post = $postManager->getPost($_GET['id']);
         $comments = $commentManager->getComments($_GET['id']);
-        
-        $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments]);
 
+        if(isset($_SESSION['auth']->id)){ $idUser = $_SESSION['auth']->id;} else { $idUser = 0;}   
+
+        $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "idUser" => $idUser]);
+
+        
     }
 
     public function addComment($postId, $author, $comment)
@@ -85,5 +90,17 @@ class frontendController extends TwigRenderer {
     public function erroView($errorMessage)
     {
         $this->render('frontend/errorView', ["data_message" => $errorMessage]);
+    }
+
+    public function contactForm($nom, $prenom, $email, $message)
+    {
+        $contact = new FormManager();
+
+        $reponse = $contact->fromTraiment($nom, $prenom, $email, $message);
+
+        var_dump($reponse);
+
+        header('Location: index.php');
+        exit;
     }
 }

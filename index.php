@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'vendor/autoload.php';
 require 'controller/TwigRenderer.php';
 require 'controller/frontend.php';
@@ -59,6 +60,15 @@ try { // On essaie de faire des choses
                     // Autre exception
                     throw new Exception('Tous les champs ne sont pas remplis !(commentaire)');
                 }
+            }
+            else {
+                // Autre exception
+                throw new Exception('Aucun identifiant de billet envoyé');
+            }
+        }
+        elseif ($_GET['action'] == 'contactform') {
+            if (!empty($_POST['nom']) && !empty($_POST['prenom']) && !empty($_POST['email']) && !empty($_POST['message'])) {
+                $controller->contactForm($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['message']);
             }
             else {
                 // Autre exception

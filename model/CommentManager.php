@@ -9,7 +9,7 @@ class CommentManager extends Manager
     public function getComments($postId)
     {
         $bdd= $this->dbConnect();
-        $comments = $bdd->prepare('SELECT id, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE post_id = ? and valid = 1 ORDER BY comment_date DESC');
+        $comments = $bdd->prepare('SELECT id, id_user, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE post_id = ? and valid = 1 ORDER BY comment_date DESC');
         $comments->execute(array($postId));
 
         return $comments;
