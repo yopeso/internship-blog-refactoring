@@ -9,7 +9,7 @@ $controller = new frontendController();
 try { // On essaie de faire des choses
     if (isset($_GET['action'])) {
         if ($_GET['action'] == 'listPosts') {
-            if(isset($_GET['page']) AND !empty($_GET['page']) AND $_GET['page'] > 0 ) {
+            if(isset($_GET['page']) AND !empty($_GET['page']) AND $_GET['page'] > 0 AND $_GET['page']) {
                 $_GET['page'] = intval($_GET['page']);
                 $pageCourante = $_GET['page'];
             } else {

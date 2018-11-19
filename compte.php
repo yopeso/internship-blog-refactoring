@@ -23,6 +23,15 @@ switch ($page) {
         $verifConnect->logged_only();
         $controller->interfaceCompte();
         break;
+
+    case 'comment':
+        $controller->comment($_GET['commentId']);
+        break;
+
+
+    case 'editComment':
+        $controller->editComment($_GET['commentId'], $_POST['author'], $_POST['comment']);
+        break;
     
     case 'connect':
         $controller->connect();

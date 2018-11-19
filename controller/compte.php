@@ -43,10 +43,8 @@ class compteController extends TwigRenderer {
     public function interfaceCompte()
     {
         $commentsUser = new CommentManager();
-        $data_comments = $commentsUser->getUserComment($_SESSION['auth']->id);
-
-        $this->render('compte/compteView', ["data_comments" => $data_comments]);
-
+        $comments = $commentsUser->getUserComment($_SESSION['auth']->id);
+        $this->render('compte/compteView', ["data_comments" => $comments]);
     }
 
     public function register()
@@ -65,6 +63,30 @@ class compteController extends TwigRenderer {
             throw new Exception('Erreur, inscription impossible !');
         }
         header('Location: compte.php?action=loginView');
+
+    }
+
+    public function comment()
+    {
+        $commentManager = new CommentManager();
+
+        $comment = $commentManager->getComment($_GET['commentId']);
+
+        $this->render('compte/editComment', ["data_comment" => $comment]);
+    }
+
+    public function editComment($commentId, $author, $comment)
+    {
+        $commentManager = new CommentManager();
+
+        $affectedLines = $commentManager->updateComment($commentId, $author, $comment);
+
+        if ($affectedLines === false) {
+            throw new Exception('Impossible de modifier le commentaire !');
+        }
+
+        header('Location: ?action=compteView');
+        exit;
 
     }
 

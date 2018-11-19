@@ -37,7 +37,7 @@ try { // On essaie de faire des choses
     }
     elseif ($_GET['action'] == 'post'){
         if (isset($_SESSION['auth']->id) && isset($_SESSION['auth']->username)) {
-            require('view/backend/addPostView.php');
+            $controller->viewAddPost();
         } else{
             $controller->loginView();
         }

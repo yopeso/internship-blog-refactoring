@@ -22,7 +22,7 @@ class frontendController extends TwigRenderer {
         $articlesTotales = $articlesTotalesReq->rowcount();
         $depart = ($pageCourante-1)*$articlesParPage;
         $pagesTotales = ceil($articlesTotales/$articlesParPage);
-        $GLOBALS['pagesTotales'] = $pagesTotales;
+        $_SESSION['pagestotales'] = $pagesTotales;
 
         $postManager = new PostManager(); // Création d'un objet
         $list_posts = $postManager->getPosts($depart, $articlesParPage); // Appel d'une fonction de cet objet
@@ -38,7 +38,7 @@ class frontendController extends TwigRenderer {
 
         $post = $postManager->getPost($_GET['id']);
         $comments = $commentManager->getComments($_GET['id']);
-
+        
         $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments]);
 
     }

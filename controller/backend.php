@@ -69,6 +69,12 @@ class backendController extends TwigRenderer {
 
     }
 
+    public function viewAddPost()
+    {
+        $this->render('backend/addPostView');
+    }
+
+
     public function addPostManager($title, $chapo, $content, $idUser)
     {
         $addpost = new PostManager();
