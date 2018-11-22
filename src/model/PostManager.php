@@ -15,9 +15,18 @@ class PostManager extends Manager
 
     public function getPosts($depart, $articlesParPage)
     {
+        /*
+        marche pas
+         $req = $bdd->prepare('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesParPage');
+            $req->execute(array(
+                ':depart'=>$depart,
+                ':articlesParPage'=>$articlesParPage
+            ));
+            $listposts = $req;
+         */
         $bdd= $this->dbConnect();
         $listposts = $bdd->query('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT '.$depart.', '.$articlesParPage);
-
+       
         return $listposts;
     }
 
