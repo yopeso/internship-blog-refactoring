@@ -22,7 +22,7 @@ $router = new App\Router\Router($_GET['url']);
         $router->post('/admin-delete', "Backend#removePostManager");
         $router->get('/admin-previewPost-:id', "Backend#post")->with('id', '[0-9]+');
         $router->get('/admin-post', "Backend#viewAddPost");
-        $router->post('/admin-commentValid', "Backend#commentsValid");
+        $router->post('/admin-commentsValid', "Backend#commentsValid");
         $router->get('/admin', "Backend#interfaceAdmin");
 
 
