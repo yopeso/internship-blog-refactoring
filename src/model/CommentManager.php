@@ -1,8 +1,7 @@
 <?php
 
-namespace jucarre\Blog\Model;
+namespace App\Model;
 
-require_once("model/Manager.php");
 
 class CommentManager extends Manager
 {

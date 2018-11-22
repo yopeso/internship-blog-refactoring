@@ -1,8 +1,6 @@
 <?php
 
-namespace jucarre\Blog\Model;
-
-require_once("model/Manager.php");
+namespace App\Model;
 
 class LoginCompteManager extends Manager
 {
@@ -17,21 +15,6 @@ class LoginCompteManager extends Manager
        
     }
 
-    public function logged_only()
-    {
-
-        if(session_status() == PHP_SESSION_NONE){
-            
-              session_start();
-              
-        }
-    
-        if(!isset($_SESSION['auth'])){
-            $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
-            header('Location: ?action=loginView');
-            exit();
-        }
-    }
 
     public function checkUsername()
     {
@@ -88,10 +71,11 @@ class LoginCompteManager extends Manager
 
     public function registerUser()
     {   
-        $bdd= $this->dbConnect();
-        $req = $bdd->prepare("INSERT INTO users SET username = ?, password = ?, email = ?");
+        $satuts = 2;
+        $bdd = $this->dbConnect();
+        $req = $bdd->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, status = ?");
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $req->execute([$_POST['username'], $password, $_POST['email']]);
+        $req->execute([$_POST['username'], $password, $_POST['email'], $satuts]);
 
         $_SESSION['flash']['success'] = 'Votre compte a bien été créé, vous pouvez vous connecter.';
 

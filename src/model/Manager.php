@@ -1,6 +1,5 @@
 <?php
-
-namespace jucarre\Blog\Model;
+namespace App\Model;
 
 class Manager
 {

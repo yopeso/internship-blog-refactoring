@@ -1,8 +1,6 @@
 <?php
 
-namespace jucarre\Blog\Model;
-
-require_once("model/Manager.php");
+namespace App\Model;
 
 class FormManager 
 {
