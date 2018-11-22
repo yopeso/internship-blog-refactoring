@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 $router = new App\Router\Router($_GET['url']);
 
 //prati FRONT ->>>>
-$router->get('/cv',"Frontend#cvjuju" );
+    $router->get('/cv',"Frontend#cvjuju" );
     $router->get('/article-:id',"Frontend#post" )->with('id', '[0-9]+');
     $router->get('/blog', "Frontend#listPosts");
     $router->get('/login', "Frontend#loginView");
