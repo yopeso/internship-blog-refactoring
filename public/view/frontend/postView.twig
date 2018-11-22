@@ -1,0 +1,75 @@
+{% extends 'template.twig'%}
+{% block title %}Article{% endblock %}
+{% block content %}
+<header class="masthead bg-primary text-white text-center">
+      <div class="container">
+        <h1>Article</h1>
+        <p ><a href="index.php?action=listPosts">Retour au Blog</a></p>
+        </div>
+</header>
+
+    <section class="portfolio" id="portfolio">
+        <div class="container mb-5">
+            <h3 class="text-center text-uppercase text-secondary mb-5">
+                {{data_post.title}}
+                <em>le {{data_post.creation_date_fr}}</em>
+            </h3>
+
+             <p class="lead">
+                {{data_post.content}}
+            </p>
+        </div>
+
+<h3 class="text-center text-uppercase text-secondary mb-5">Commentaires</h3>
+{% for data_comment in data_comments %}
+
+    <div class="container mb-5">
+        <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}
+        {% if idUser == data_comment.id_user %}    
+        (<a href="index.php?action=comment&amp;commentId={{data_comment.id}}&amp;postId={{data_post.id}}">modifier</a>)
+        {% endif %}
+        </p>
+        <p>{{data_comment.comment}}</p>
+    </div>
+
+{% endfor %}
+</section>
+
+ <section id="contact">
+      <div class="container">
+        <h5 class="text-center text-uppercase text-secondary mb-0">Ajouter un commentaire</h5>
+        <hr class="star-dark mb-5">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+
+            <form action="?action=addComment&amp;id={{data_post.id}}" method="post">
+                    
+
+                        <div class="control-group">
+                            <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                <label for="author">Auteur</label>
+                                <input class="form-control" type="text" id="author" name="author" placeholder="Auteur" required="required"/>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                             <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                <label>Commentaire</label>
+                                <textarea class="form-control" id="message" name="comment" rows="5" placeholder="Commentaire" required="required"></textarea>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+
+                        <div id="success"></div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-xl" id="sendMessageButton">Envoyer</button>
+                        </div>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}
