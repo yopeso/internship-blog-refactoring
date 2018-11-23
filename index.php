@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-
+if(empty($_GET['url'])){$_GET['url']= '/';}
 $router = new App\Router\Router($_GET['url']);
 
 //prati FRONT ->>>>
