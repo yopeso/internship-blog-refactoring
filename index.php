@@ -10,6 +10,8 @@ $router = new App\Router\Router($_GET['url']);
     $router->get('/login', "Frontend#loginView");
     $router->post('/login', "Frontend#connect");
     $router->post('/register', "Frontend#register");
+    $router->post('/contactform', "Frontend#contactForm");
+
 
     // Parti USER ->>>>
         $router->post('/user-comment-:id', "Compte#editComment")->with('id', '[0-9]+');

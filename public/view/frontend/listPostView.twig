@@ -25,16 +25,54 @@
         </div>
     </section>
 {% endfor %}
+
+
+{#
+    Parameters:
+      * pagestotales (int): number of pages
+      * pagecourante (int): current pages
+#}
+
+{% spaceless %}
+{% if pagestotales > 1 %}
+
+    {# Number of page around current page+1 #}
+    {% set nearbyPagesLimit = 4 %}
 <section class="mb-0">
-    <div class="container text-center lead">
-        {% for i in 1..pagestotales %}
-            {% if i == pagecourante %}
-                {{ i }}
-            {% else %}                       
-                <a href="?page={{ i }}">{{ i }}</a>
-            {% endif %}
-        {% endfor %}
+    <div class="container">
+        <nav class="pagination">
+            <ul class="pagination">
+                {% if pagecourante != 1 %}
+                <li>
+                    <a class="page-link" href="?page={{ 1 }}">First</a>
+                </li>
+                {% endif %}
+                {% for i in 1..pagestotales %}
+                    {% if 0 == (pagecourante - nearbyPagesLimit) - loop.index %} {# dot before #}
+                        <li class="page-item disabled"><a href="#">...</a></li>
+                    {% elseif 0 == (pagecourante + nearbyPagesLimit) - loop.index %} {# dot after #}
+                        <li class="page-item disabled"><a href="#">...</a></li>
+                    {% elseif 0 < (pagecourante - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                    {% elseif 0 > (pagecourante + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                    {% else %}
+                        <li {% if pagecourante == loop.index  %} class="page-item active"{% endif %}>
+                            <a class="page-link" href="?page={{loop.index }}">{{ loop.index }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if pagecourante != pagestotales %}
+                <li>
+                    <a class="page-link" href="?page={{pagestotales}}">Last</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        </div>
+        </div>
     </div>
 </section>
+{% endif %}
+{% endspaceless %}
+
 
 {% endblock %}

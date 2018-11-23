@@ -168,8 +168,13 @@ class FrontendController extends TwigRenderer {
         header('Location: /blog/login');
     }
 
-    public function contactForm($nom, $prenom, $email, $message)
-    {
+    public function contactForm()
+    {   
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        $email = $_POST['email'];
+        $message = $_POST['message'];
+
         $contact = new FormManager();
 
         $reponse = $contact->fromTraiment($nom, $prenom, $email, $message);
