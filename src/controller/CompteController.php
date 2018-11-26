@@ -31,7 +31,7 @@ class CompteController
 
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
-            header('Location: /blog/login');
+            header('Location: /login');
 
         }
     }
@@ -72,7 +72,7 @@ class CompteController
             throw new \Exception('Impossible d\'ajouter le commentaire !');
         }
 
-        header('Location: /blog/user');
+        header('Location: /user');
 
     }
 
@@ -88,7 +88,7 @@ class CompteController
             throw new \Exception('Impossible de modifier le commentaire !');
         }
 
-        header('Location: /blog/user');
+        header('Location: /user');
 
     }
 

@@ -37,8 +37,8 @@ class FrontendController extends TwigRenderer
             if (session_status() == PHP_SESSION_NONE) {session_start();}
 
             $_SESSION['auth'] = $user;
-            if ($_SESSION['auth']->status != 1) {header('Location: /blog/admin');};
-            header('Location: /blog/user');
+            if ($_SESSION['auth']->status != 1) {header('Location: /admin');};
+            header('Location: /user');
         }
 
     }
@@ -58,7 +58,7 @@ class FrontendController extends TwigRenderer
         if ($affectedLines === false) {
             throw new \Exception('Erreur, inscription impossible !');
         }
-        header('Location: /blog/login');
+        header('Location: /login');
 
     }
 
@@ -131,7 +131,7 @@ class FrontendController extends TwigRenderer
         // Suppression des cookies de connexion automatique
         setcookie('login', '');
         setcookie('pass_hache', '');
-        header('Location: /blog/login');
+        header('Location: /login');
     }
 
     public function contactForm()
@@ -145,7 +145,7 @@ class FrontendController extends TwigRenderer
 
         $reponse = $contact->fromTraiment($nom, $prenom, $email, $message);
 
-        header('Location: /blog/');
+        header('Location: /');
     }
     public function cvjuju()
     {

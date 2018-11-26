@@ -1,10 +1,9 @@
 RewriteEngine On
-
+RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-
 #RewriteRule !\.(js|ico|gif|jpg|JPG|png|css|map|json|svg|eot|ttf|scss)$ index.php?url=$1 [QSA,L]
-RewriteCond %{REQUEST_FILENAME} !favicon.ico$
+#RewriteCond %{REQUEST_FILENAME} !favicon.ico$
 RewriteCond %{REQUEST_FILENAME} !magnific-popup.css$
 RewriteCond %{REQUEST_FILENAME} !all.min.css$
 RewriteCond %{REQUEST_FILENAME} !.scss$

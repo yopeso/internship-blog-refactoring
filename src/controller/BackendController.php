@@ -32,12 +32,12 @@ class BackendController
 
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
-            header('Location: /blog/login');
+            header('Location: /login');
         }
 
         if ($_SESSION['auth']->status != 1) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
-            header('Location: /blog/user');
+            header('Location: /user');
         }
     }
 
@@ -69,7 +69,7 @@ class BackendController
             throw new \Exception('Impossible de valider le commentaire !');
         }
 
-        header('Location: /blog/admin');
+        header('Location: /admin');
 
     }
 
@@ -91,7 +91,7 @@ class BackendController
             throw new \Exception("Impossible d'ajouter cette article.");
         }
 
-        header('Location: /blog/admin');
+        header('Location: /admin');
 
     }
 
@@ -112,7 +112,7 @@ class BackendController
             throw new \Exception("Impossible de modifier cette article.");
         }
 
-        header('Location: /blog/admin');
+        header('Location: /admin');
 
     }
 
@@ -123,7 +123,7 @@ class BackendController
         if ($affectedLines === false) {
             throw new \Exception("Impossible de suprrimer cette article.");
         }
-        header('Location: /blog/admin');
+        header('Location: /admin');
 
     }
 

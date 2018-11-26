@@ -42,5 +42,5 @@ try {
     $errorMessage = $e->getMessage();
     $_SESSION['errorMessage'] = $errorMessage;
     header("HTTP/1.1 404 Not Found");
-    header("Location: /blog/404");
+    header("Location: /404");
 }

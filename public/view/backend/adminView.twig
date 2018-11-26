@@ -10,7 +10,7 @@
 <section class="mb-0">
   <div class="container">
     <p>
-      <a href="/blog/admin-post" class="btn btn-success">Ajouter</a>
+      <a href="/admin-post" class="btn btn-success">Ajouter</a>
     </p>
 
     <table class="table">
@@ -31,7 +31,7 @@
             <td>
               <a class="btn btn-primary" href="admin-previewPost-{{data_post.id}}">Modifier</a>
 
-              <form action="/blog/admin-delete" method="post">
+              <form action="/admin-delete" method="post">
                 <input type="hidden" name="postId" value="{{data_post.id}}">
                 <button type="submit" class="btn btn-danger" href="">Supprimer</button>
               </form>
@@ -61,7 +61,7 @@
             <td>{{data_comment.comment}}</td>
             <td>
 
-              <form action="/blog/admin-commentsValid" method="post">
+              <form action="/admin-commentsValid" method="post">
                 <input type="hidden" name="id" value="{{data_comment.id}}">
                 <button type="submit" class="btn btn-success" href="">Valider</button>
               </form>
