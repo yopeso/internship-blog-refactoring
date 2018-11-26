@@ -69,7 +69,7 @@ class CompteController
         $affectedLines = $commentManager->postComment($id, $userId, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new ControllerException('Impossible d\'ajouter le commentaire !');
+            throw new \Exception('Impossible d\'ajouter le commentaire !');
         }
 
         header('Location: /blog/user');
@@ -85,7 +85,7 @@ class CompteController
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new ControllerException('Impossible de modifier le commentaire !');
+            throw new \Exception('Impossible de modifier le commentaire !');
         }
 
         header('Location: /blog/user');

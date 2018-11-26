@@ -26,12 +26,12 @@ class FrontendController extends TwigRenderer
         $user = $loginManager->getLogin($_POST['username'], $_POST['password']);
 
         if (!$user) {
-            throw new ControllerException('Mauvais identifiant ou mot de passe !');
+            throw new \Exception('Mauvais identifiant ou mot de passe !');
         } else {
             $isPasswordCorrect = password_verify($_POST['password'], $user->password);
 
             if ($isPasswordCorrect != 1) {
-                throw new ControllerException('Mauvais identifiant ou mot de passe !');
+                throw new \Exception('Mauvais identifiant ou mot de passe !');
             }
             
             if (session_status() == PHP_SESSION_NONE) {session_start();}
@@ -56,7 +56,7 @@ class FrontendController extends TwigRenderer
         $affectedLines = $registerManager->registerUser();
 
         if ($affectedLines === false) {
-            throw new ControllerException('Erreur, inscription impossible !');
+            throw new \Exception('Erreur, inscription impossible !');
         }
         header('Location: /blog/login');
 

@@ -66,7 +66,7 @@ class BackendController
         $affectedLines = $CommentValid->setCommentsValid($id);
 
         if ($affectedLines === false) {
-            throw new ControllerException('Impossible de valider le commentaire !');
+            throw new \Exception('Impossible de valider le commentaire !');
         }
 
         header('Location: /blog/admin');
@@ -88,7 +88,7 @@ class BackendController
         $addpost = new PostManager();
         $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
-            throw new ControllerException("Impossible d'ajouter cette article.");
+            throw new \Exception("Impossible d'ajouter cette article.");
         }
 
         header('Location: /blog/admin');
@@ -109,7 +109,7 @@ class BackendController
         $postManager = new PostManager();
         $affectedLines = $postManager->setPost($id, $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['auth']->id);
         if ($affectedLines === false) {
-            throw new ControllerException("Impossible de modifier cette article.");
+            throw new \Exception("Impossible de modifier cette article.");
         }
 
         header('Location: /blog/admin');
@@ -121,7 +121,7 @@ class BackendController
         $postDelete = new PostManager();
         $affectedLines = $postDelete->removePost($_POST['postId']);
         if ($affectedLines === false) {
-            throw new ControllerException("Impossible de suprrimer cette article.");
+            throw new \Exception("Impossible de suprrimer cette article.");
         }
         header('Location: /blog/admin');
 
