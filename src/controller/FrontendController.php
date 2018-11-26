@@ -33,7 +33,9 @@ class FrontendController extends TwigRenderer
             if ($isPasswordCorrect != 1) {
                 throw new ControllerException('Mauvais identifiant ou mot de passe !');
             }
-            session_start();
+            
+            if (session_status() == PHP_SESSION_NONE) {session_start();}
+
             $_SESSION['auth'] = $user;
             if ($_SESSION['auth']->status != 1) {header('Location: /blog/admin');};
             header('Location: /blog/user');
@@ -96,7 +98,7 @@ class FrontendController extends TwigRenderer
 
         if (isset($_SESSION['auth']->id)) {
             $user = ['id' => $_SESSION['auth']->id, 'username' => $_SESSION['auth']->username];
-        } else { $user = ['id' => 0,'username' => 0];}
+        } else { $user = ['id' => 0, 'username' => 0];}
 
         $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "data_user" => $user]);
 
@@ -157,7 +159,6 @@ class FrontendController extends TwigRenderer
             header('Pragma: public');
             header('Content-Length: ' . filesize($file));
             readfile($file);
-            exit;
         }
     }
 

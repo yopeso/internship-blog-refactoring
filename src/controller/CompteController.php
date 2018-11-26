@@ -32,7 +32,7 @@ class CompteController
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
             header('Location: /blog/login');
-            exit();
+
         }
     }
 
@@ -43,9 +43,11 @@ class CompteController
 
     public function interfaceCompte()
     {
-        $commentsUser = new CommentManager();
-        $comments = $commentsUser->getUserComment($_SESSION['auth']->id);
-        $this->render('compte/compteView', ["data_comments" => $comments]);
+        if (isset($_SESSION['auth']->id)) {
+            $commentsUser = new CommentManager();
+            $comments = $commentsUser->getUserComment($_SESSION['auth']->id);
+            $this->render('compte/compteView', ["data_comments" => $comments]);
+        }
     }
 
     public function comment($id)

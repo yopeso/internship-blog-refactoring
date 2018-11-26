@@ -70,7 +70,6 @@ class BackendController
         }
 
         header('Location: /blog/admin');
-        exit;
 
     }
 
@@ -93,7 +92,6 @@ class BackendController
         }
 
         header('Location: /blog/admin');
-        exit;
 
     }
 
@@ -115,7 +113,6 @@ class BackendController
         }
 
         header('Location: /blog/admin');
-        exit;
 
     }
 
@@ -127,7 +124,6 @@ class BackendController
             throw new ControllerException("Impossible de suprrimer cette article.");
         }
         header('Location: /blog/admin');
-        exit;
 
     }
 
