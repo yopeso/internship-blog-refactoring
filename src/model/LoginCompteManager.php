@@ -6,19 +6,18 @@ class LoginCompteManager extends Manager
 {
     public function getLogin($username, $key)
     {
-        $bdd= $this->dbConnect();
+        $bdd = $this->dbConnect();
         $req = $bdd->prepare('SELECT * FROM users WHERE username = :username');
         $req->execute(['username' => $username]);
         $login = $req->fetch();
 
         return $login;
-       
-    }
 
+    }
 
     public function checkUsername()
     {
-        if(empty($_POST['username']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])){
+        if (empty($_POST['username']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
 
             return $errors['username'] = "Votre pseudo n'ai pas valide (alphanumérique)";
 
@@ -28,19 +27,19 @@ class LoginCompteManager extends Manager
             $req = $bdd->prepare('SELECT id FROM users WHERE username = ?');
             $req->execute([$_POST['username']]);
             $user = $req->fetch();
-        
-            if($user){
+
+            if ($user) {
 
                 return $errors['username'] = 'Ce pseudo est déjà pris';
 
             }
-            
+
         }
     }
 
     public function checkEmail()
     {
-        if(empty($_POST['email']) or !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+        if (empty($_POST['email']) or !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 
             return $errors['email'] = "votre email n'est pas valide";
 
@@ -50,19 +49,19 @@ class LoginCompteManager extends Manager
             $req = $bdd->prepare('SELECT id FROM users WHERE email = ?');
             $req->execute([$_POST['email']]);
             $user = $req->fetch();
-            
-            if($user){
+
+            if ($user) {
 
                 return $errors['email'] = 'Cet email est déjà utilisé pour un autre compte.';
-                
+
             }
-            
+
         }
     }
 
     public function checkPassword()
     {
-        if(empty($_POST['password']) & $_POST['password'] != $_POST['password_confirm']){
+        if (empty($_POST['password']) & $_POST['password'] != $_POST['password_confirm']) {
 
             return $errors['password'] = "vous devez rentrer un mot de passe valide";
 
@@ -70,7 +69,7 @@ class LoginCompteManager extends Manager
     }
 
     public function registerUser()
-    {   
+    {
         $satuts = 2;
         $bdd = $this->dbConnect();
         $req = $bdd->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, status = ?");

@@ -1,13 +1,13 @@
 <?php
 namespace App\Controller;
 
-use App\Model\LoginManager;
-use App\Model\PostManager;
 use App\Model\CommentManager;
+use App\Model\PostManager;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
-class BackendController {
+class BackendController
+{
 
     private $twig;
     private $loader;
@@ -19,37 +19,36 @@ class BackendController {
             'cache' => false, // __DIR__ . /tmp',
         ]);
 
-        if(empty($_SESSION)){$_SESSION['init'] = 1;}
+        if (empty($_SESSION)) {$_SESSION['init'] = 1;}
         $this->twig->addGlobal('_session', $_SESSION);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
-    
 
-        if(session_status() == PHP_SESSION_NONE){
-            
+        if (session_status() == PHP_SESSION_NONE) {
+
             session_start();
-            
-      }
-      
-        if(!isset($_SESSION['auth'])){
+
+        }
+
+        if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
             header('Location: /blog/login');
         }
-        
-        if($_SESSION['auth']->status != 1){
+
+        if ($_SESSION['auth']->status != 1) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
             header('Location: /blog/user');
         }
     }
 
-    protected function render($view, array $prams=[])
+    protected function render($view, array $prams = [])
     {
-        echo $this->twig->render($view.'.twig', $prams);
+        echo $this->twig->render($view . '.twig', $prams);
     }
 
     public function interfaceAdmin()
     {
-    
+
         $postPreview = new PostManager();
         $data_posts = $postPreview->getPostPreview();
 
@@ -79,7 +78,6 @@ class BackendController {
     {
         $this->render('backend/addPostView');
     }
-
 
     public function addPostManager()
     {

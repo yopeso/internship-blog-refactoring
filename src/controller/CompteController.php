@@ -1,13 +1,13 @@
 <?php
 namespace App\Controller;
 
-use App\Model\LoginCompteManager;
 use App\Model\CommentManager;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
-class CompteController {
- 
+class CompteController
+{
+
     private $twig;
     private $loader;
 
@@ -18,28 +18,27 @@ class CompteController {
             'cache' => false, // __DIR__ . /tmp',
         ]);
 
-        if(empty($_SESSION)){$_SESSION['init'] = 1;}
+        if (empty($_SESSION)) {$_SESSION['init'] = 1;}
         $this->twig->addGlobal('_session', $_SESSION);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
-    
 
-        if(session_status() == PHP_SESSION_NONE){
-            
+        if (session_status() == PHP_SESSION_NONE) {
+
             session_start();
-            
-      }
-  
-      if(!isset($_SESSION['auth'])){
-          $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
-          header('Location: /blog/login');
-          exit();
-      }
+
+        }
+
+        if (!isset($_SESSION['auth'])) {
+            $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
+            header('Location: /blog/login');
+            exit();
+        }
     }
-    
-    protected function render($view, array $prams=[])
+
+    protected function render($view, array $prams = [])
     {
-        echo $this->twig->render($view.'.twig', $prams);
+        echo $this->twig->render($view . '.twig', $prams);
     }
 
     public function interfaceCompte()
@@ -48,7 +47,6 @@ class CompteController {
         $comments = $commentsUser->getUserComment($_SESSION['auth']->id);
         $this->render('compte/compteView', ["data_comments" => $comments]);
     }
-
 
     public function comment($id)
     {
@@ -80,6 +78,5 @@ class CompteController {
     {
         $this->render('frontend/errorView', ["data_message" => $errorMessage]);
     }
-
 
 }

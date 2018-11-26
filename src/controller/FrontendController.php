@@ -1,15 +1,17 @@
 <?php
 namespace App\Controller;
 
-use App\Model\PostManager;
 use App\Model\CommentManager;
 use App\Model\FormManager;
 use App\Model\LoginCompteManager;
+use App\Model\PostManager;
 
-class FrontendController extends TwigRenderer {
+class FrontendController extends TwigRenderer
+{
 
-    public function homeView() {
-        
+    public function homeView()
+    {
+
         $this->render('frontend/homeView');
 
     }
@@ -19,25 +21,21 @@ class FrontendController extends TwigRenderer {
         $this->render('frontend/loginView');
     }
 
-
     public function connect()
     {
         $loginManager = new LoginCompteManager;
 
         $user = $loginManager->getLogin($_POST['username'], $_POST['password']);
 
-        if (!$user)
-        {
+        if (!$user) {
             throw new ControllerException('Mauvais identifiant ou mot de passe !');
-        }
-        else
-        {   
+        } else {
             $isPasswordCorrect = password_verify($_POST['password'], $user->password);
-            
-            if($isPasswordCorrect){
+
+            if ($isPasswordCorrect) {
                 session_start();
                 $_SESSION['auth'] = $user;
-                if($_SESSION['auth']->status != 1){header('Location: /blog/admin');};
+                if ($_SESSION['auth']->status != 1) {header('Location: /blog/admin');};
                 header('Location: /blog/user');
             } else {
                 throw new ControllerException('Mauvais identifiant ou mot de passe !');
@@ -51,9 +49,9 @@ class FrontendController extends TwigRenderer {
         $registerManager = new LoginCompteManager;
 
         $resultat = $registerManager->checkUsername();
-        if(empty($resultat)){$resultat = $registerManager->checkEmail();}
-        if(empty($resultat)){$resultat = $registerManager->checkPassword();}
-        if(!empty($resultat)){
+        if (empty($resultat)) {$resultat = $registerManager->checkEmail();}
+        if (empty($resultat)) {$resultat = $registerManager->checkPassword();}
+        if (!empty($resultat)) {
             return $resultat;
         }
         $affectedLines = $registerManager->registerUser();
@@ -66,30 +64,28 @@ class FrontendController extends TwigRenderer {
     }
 
     public function listPosts()
-    {   
+    {
         $articlesParPage = 5;
         $postsTotal = new PostManager();
         $articlesTotalesReq = $postsTotal->getPostsTotal();
         $articlesTotales = $articlesTotalesReq->rowcount();
-        $pagesTotales = ceil($articlesTotales/$articlesParPage);
+        $pagesTotales = ceil($articlesTotales / $articlesParPage);
         $_SESSION['pagestotales'] = $pagesTotales;
 
-        if(empty($_GET['page']))
-        {
-            $_GET['page']=1;
+        if (empty($_GET['page'])) {
+            $_GET['page'] = 1;
         }
-        if(!empty($_GET['page']) AND $_GET['page'] < 0 OR $_GET['page'] > $pagesTotales)
-        {
-            $_GET['page']=1;
+        if (!empty($_GET['page']) and $_GET['page'] < 0 or $_GET['page'] > $pagesTotales) {
+            $_GET['page'] = 1;
         }
-        
+
         $pageCourante = $_GET['page'];
-        $depart = ($pageCourante-1)*$articlesParPage;
+        $depart = ($pageCourante - 1) * $articlesParPage;
 
         $postManager = new PostManager(); // Création d'un objet
         $list_posts = $postManager->getPosts($depart, $articlesParPage); // Appel d'une fonction de cet objet
-        
-        $this->render('frontend/listPostView', ["listposts" => $list_posts, "pagestotales"=>$pagesTotales, "pagecourante"=>$pageCourante]);
+
+        $this->render('frontend/listPostView', ["listposts" => $list_posts, "pagestotales" => $pagesTotales, "pagecourante" => $pageCourante]);
 
     }
 
@@ -101,11 +97,10 @@ class FrontendController extends TwigRenderer {
         $post = $postManager->getPost($id);
         $comments = $commentManager->getComments($id);
 
-        if(isset($_SESSION['auth']->id)){ $idUser = $_SESSION['auth']->id;} else { $idUser = 0;}   
+        if (isset($_SESSION['auth']->id)) {$idUser = $_SESSION['auth']->id;} else { $idUser = 0;}
 
         $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "idUser" => $idUser]);
 
-        
     }
 
     public function addComment($postId, $author, $comment)
@@ -116,7 +111,7 @@ class FrontendController extends TwigRenderer {
 
         if ($affectedLines === false) {
             throw new ControllerException('Impossible d\'ajouter le commentaire !');
-        } 
+        }
 
         header('Location: ?action=post&id=' . $postId);
         exit;
@@ -148,8 +143,8 @@ class FrontendController extends TwigRenderer {
     }
 
     public function erroView()
-    {   
-        if(!isset($_SESSION['errorMessage'])){$_SESSION['errorMessage']= "Page not found.";}
+    {
+        if (!isset($_SESSION['errorMessage'])) {$_SESSION['errorMessage'] = "Page not found.";}
         $errorMessage = $_SESSION['errorMessage'];
         $this->render('frontend/errorView', ["data_message" => $errorMessage]);
     }
@@ -169,7 +164,7 @@ class FrontendController extends TwigRenderer {
     }
 
     public function contactForm()
-    {   
+    {
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
         $email = $_POST['email'];
@@ -187,7 +182,7 @@ class FrontendController extends TwigRenderer {
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
@@ -196,6 +191,5 @@ class FrontendController extends TwigRenderer {
             exit;
         }
     }
-
 
 }
