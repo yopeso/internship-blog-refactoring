@@ -11,9 +11,7 @@ class FrontendController extends TwigRenderer
 
     public function homeView()
     {
-
         $this->render('frontend/homeView');
-
     }
 
     public function loginView()
@@ -32,14 +30,13 @@ class FrontendController extends TwigRenderer
         } else {
             $isPasswordCorrect = password_verify($_POST['password'], $user->password);
 
-            if ($isPasswordCorrect) {
-                session_start();
-                $_SESSION['auth'] = $user;
-                if ($_SESSION['auth']->status != 1) {header('Location: /blog/admin');};
-                header('Location: /blog/user');
-            } else {
+            if ($isPasswordCorrect != 1) {
                 throw new ControllerException('Mauvais identifiant ou mot de passe !');
             }
+            session_start();
+            $_SESSION['auth'] = $user;
+            if ($_SESSION['auth']->status != 1) {header('Location: /blog/admin');};
+            header('Location: /blog/user');
         }
 
     }
@@ -97,24 +94,11 @@ class FrontendController extends TwigRenderer
         $post = $postManager->getPost($id);
         $comments = $commentManager->getComments($id);
 
-        if (isset($_SESSION['auth']->id)) {$idUser = $_SESSION['auth']->id;} else { $idUser = 0;}
+        if (isset($_SESSION['auth']->id)) {
+            $user = ['id' => $_SESSION['auth']->id, 'username' => $_SESSION['auth']->username];
+        } else { $user = ['id' => 0,'username' => 0];}
 
-        $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "idUser" => $idUser]);
-
-    }
-
-    public function addComment($postId, $author, $comment)
-    {
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->postComment($postId, $author, $comment);
-
-        if ($affectedLines === false) {
-            throw new ControllerException('Impossible d\'ajouter le commentaire !');
-        }
-
-        header('Location: ?action=post&id=' . $postId);
-        exit;
+        $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "data_user" => $user]);
 
     }
 
@@ -125,21 +109,6 @@ class FrontendController extends TwigRenderer
         $comment = $commentManager->getComment($_GET['commentId']);
 
         $this->render('frontend/editComment', ["data_comment" => $comment]);
-    }
-
-    public function editComment($commentId, $author, $comment, $postId)
-    {
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->updateComment($commentId, $author, $comment);
-
-        if ($affectedLines === false) {
-            throw new ControllerException('Impossible de modifier le commentaire !');
-        }
-
-        header('Location: ?action=post&id=' . $postId);
-        exit;
-
     }
 
     public function erroView()

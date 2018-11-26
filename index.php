@@ -1,5 +1,6 @@
 <?php
 require 'vendor/autoload.php';
+if (session_status() == PHP_SESSION_NONE) {session_start();}
 if (empty($_GET['url'])) {$_GET['url'] = '/';}
 $router = new App\Router\Router($_GET['url']);
 
@@ -13,6 +14,7 @@ $router->post('/register', "Frontend#register");
 $router->post('/contactform', "Frontend#contactForm");
 
 // Parti USER ->>>>
+$router->post('/user-addComment-:id', "Compte#addComment")->with('id', '[0-9]+');
 $router->post('/user-comment-:id', "Compte#editComment")->with('id', '[0-9]+');
 $router->get('/user-comment-:id', "Compte#comment")->with('id', '[0-9]+');
 $router->get('/user', "Compte#interfaceCompte");

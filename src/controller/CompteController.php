@@ -57,6 +57,23 @@ class CompteController
         $this->render('compte/editComment', ["data_comment" => $comment]);
     }
 
+    public function addComment($id)
+    {
+        $userId = $_SESSION['auth']->id;
+        $author = $_POST['author'];
+        $comment = $_POST['comment'];
+        $commentManager = new CommentManager();
+
+        $affectedLines = $commentManager->postComment($id, $userId, $author, $comment);
+
+        if ($affectedLines === false) {
+            throw new ControllerException('Impossible d\'ajouter le commentaire !');
+        }
+
+        header('Location: /blog/user');
+
+    }
+
     public function editComment($id)
     {
         $author = $_POST['author'];
@@ -70,7 +87,6 @@ class CompteController
         }
 
         header('Location: /blog/user');
-        exit;
 
     }
 

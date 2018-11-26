@@ -32,11 +32,11 @@ class CommentManager extends Manager
         return $comments;
     }
 
-    public function postComment($postId, $author, $comment)
+    public function postComment($id, $userId, $author, $comment)
     {
         $bdd = $this->dbConnect();
-        $comments = $bdd->prepare('INSERT INTO comments(post_id, author, comment, comment_date, valid) VALUES(?, ?, ?, NOW(), 0)');
-        $affectedLines = $comments->execute(array($postId, $author, $comment));
+        $comments = $bdd->prepare('INSERT INTO comments(post_id, id_user, author, comment, comment_date, valid) VALUES(?, ?, ?, ?, NOW(), 0)');
+        $affectedLines = $comments->execute(array($id, $userId, $author, $comment));
 
         return $affectedLines;
     }

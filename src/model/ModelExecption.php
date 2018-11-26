@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class ModelException extends \Exception {
-
+class ModelException extends \Exception
+{
 
 }

@@ -21,34 +21,34 @@
         </div>
 
 <h3 class="text-center text-uppercase text-secondary mb-5">Commentaires</h3>
-{% for data_comment in data_comments %}
 
-    <div class="container mb-5">
-        <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}
-        {% if idUser == data_comment.id_user %}    
-        (<a href="index.php?action=comment&amp;commentId={{data_comment.id}}&amp;postId={{data_post.id}}">modifier</a>)
-        {% endif %}
-        </p>
-        <p>{{data_comment.comment}}</p>
-    </div>
-
-{% endfor %}
+    {% for data_comment in data_comments %}
+        <div class="container mb-5">
+            <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}
+            {% if data_user.id == data_comment.id_user %}    
+            (<a href="user-comment-{{data_comment.id}}">modifier</a>)
+            {% endif %}
+            </p>
+            <p>{{data_comment.comment}}</p>
+        </div>
+    {% endfor %}
 </section>
-{#si empty user alors pas de commentaire#}
- <section id="contact">
+
+{% if data_user.id > 0 %} 
+<section id="contact">
       <div class="container">
         <h5 class="text-center text-uppercase text-secondary mb-0">Ajouter un commentaire</h5>
         <hr class="star-dark mb-5">
         <div class="row">
           <div class="col-lg-8 mx-auto">
 
-            <form action="?action=addComment&amp;id={{data_post.id}}" method="post">
+            <form action="/blog/user-addComment-{{data_post.id}}" method="post">
                     
 
                         <div class="control-group">
                             <div class="form-group floating-label-form-group controls mb-0 pb-2">
                                 <label for="author">Auteur</label>
-                                <input class="form-control" type="text" id="author" name="author" placeholder="Auteur" required="required"/>
+                                <input class="form-control" type="text" id="author" name="author" value="{{data_user.username}}" required="required"/>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -71,5 +71,12 @@
                 </div>
             </div>
         </div>
+    {% else %} 
+<section id="contact">
+      <div class="container">
+        <h5 class="text-center text-uppercase text-secondary mb-0"><a href="/blog/login">Connectez-vous</a> pour commenter</h5>
+        </div>
+{% endif %}
+
 </section>
 {% endblock %}
