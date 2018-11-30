@@ -2,10 +2,10 @@
 {% block title %}Admin interface{% endblock %}
 {% block content %}
 <header class="masthead bg-primary text-white text-center">
-      <div class="container">
-        <h1>Admin interface</h1>
-        <p><a href="index.php">Accueil</a></p>
-        </div>
+  <div class="container">
+    <h1>Admin interface</h1>
+    <p><a href="index.php">Accueil</a></p>
+  </div>
 </header>
 <section class="mb-0">
   <div class="container">
@@ -24,27 +24,27 @@
       </thead>
       <tbody>
         {% for data_post in data_posts %}
-          <tr>
-            <td>{{data_post.id}}</td>
-            <td>{{data_post.title}}</td>
-            <td>{{data_post.creation_date_fr}}</td>
-            <td>
-              <a class="btn btn-primary" href="admin-previewPost-{{data_post.id}}">Modifier</a>
+        <tr>
+          <td>{{data_post.id}}</td>
+          <td>{{data_post.title}}</td>
+          <td>{{data_post.creation_date_fr}}</td>
+          <td>
+            <a class="btn btn-primary" href="admin-previewPost-{{data_post.id}}">Modifier</a>
 
-              <form action="/admin-delete" method="post">
-                <input type="hidden" name="postId" value="{{data_post.id}}">
-                <button type="submit" class="btn btn-danger" href="">Supprimer</button>
-              </form>
+            <form action="/admin-delete" method="post">
+              <input type="hidden" name="postId" value="{{data_post.id}}">
+              <button type="submit" class="btn btn-danger" href="">Supprimer</button>
+            </form>
 
-            </td>
-          </tr> 
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 
   <div class="container">
-  <table class="table">
+    <table class="table">
       <thead>
         <tr>
           <td>ID</td>
@@ -54,20 +54,20 @@
         </tr>
       </thead>
       <tbody>
-         {% for data_comment in data_comments %}
-          <tr>
-            <td>{{data_comment.id}}</td>
-            <td>{{data_comment.author}}</td>
-            <td>{{data_comment.comment}}</td>
-            <td>
+        {% for data_comment in data_comments %}
+        <tr>
+          <td>{{data_comment.id}}</td>
+          <td>{{data_comment.author}}</td>
+          <td>{{data_comment.comment}}</td>
+          <td>
 
-              <form action="/admin-commentsValid" method="post">
-                <input type="hidden" name="id" value="{{data_comment.id}}">
-                <button type="submit" class="btn btn-success" href="">Valider</button>
-              </form>
+            <form action="/admin-commentsValid" method="post">
+              <input type="hidden" name="id" value="{{data_comment.id}}">
+              <button type="submit" class="btn btn-success" href="">Valider</button>
+            </form>
 
-            </td>
-          </tr> 
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
