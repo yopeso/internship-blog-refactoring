@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+
 class LoginCompteManager extends Manager
 {
     public function getLogin($username, $key)
@@ -19,7 +20,7 @@ class LoginCompteManager extends Manager
     {
         if (empty($_POST['username']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
 
-            return $errors['username'] = "Votre pseudo n'ai pas valide (alphanumérique)";
+            throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
 
         } else {
 
@@ -30,7 +31,7 @@ class LoginCompteManager extends Manager
 
             if ($user) {
 
-                return $errors['username'] = 'Ce pseudo est déjà pris';
+                throw new \Exception('Ce pseudo est déjà pris');
 
             }
 
@@ -41,18 +42,18 @@ class LoginCompteManager extends Manager
     {
         if (empty($_POST['email']) or !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 
-            return $errors['email'] = "votre email n'est pas valide";
+            throw new \Exception("votre email n'est pas valide");
 
         } else {
-
+            $email = $_POST['email'];
             $bdd = $this->dbConnect();
             $req = $bdd->prepare('SELECT id FROM users WHERE email = ?');
-            $req->execute([$_POST['email']]);
+            $req->execute([$email]);
             $user = $req->fetch();
 
             if ($user) {
 
-                return $errors['email'] = 'Cet email est déjà utilisé pour un autre compte.';
+                throw new \Exception('Cet email est déjà utilisé pour un autre compte.');
 
             }
 
@@ -63,7 +64,12 @@ class LoginCompteManager extends Manager
     {
         if (empty($_POST['password']) & $_POST['password'] != $_POST['password_confirm']) {
 
-            return $errors['password'] = "vous devez rentrer un mot de passe valide";
+            throw new \Exception("vous devez rentrer un mot de passe valide");
+
+        }
+        if (empty($_POST['password']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
+
+            throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
 
         }
     }
@@ -76,7 +82,16 @@ class LoginCompteManager extends Manager
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $req->execute([$_POST['username'], $password, $_POST['email'], $satuts]);
 
-        $_SESSION['flash']['success'] = 'Votre compte a bien été créé, vous pouvez vous connecter.';
+        $message = 'Votre compte a bien été créé, vous pouvez vous connecter.';
+
+        $entetemail = "From:" . $_POST['username'] . "  <" . $_POST['email'] . ">\r\n";
+        $entetemail .= "Reply-To: julienroquai@gmail.com \n";
+        $entetemail .= "X-Mailer: PHP/" . phpversion() . "\n";
+        $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
+        $objet = "Comfirmation de la création de votre compte sur le blog de juju";
+        $message_email = $message;
+
+        mail($_POST['email'], $objet, $message_email, $entetemail);
 
     }
 

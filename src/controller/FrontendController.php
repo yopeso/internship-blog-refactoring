@@ -21,14 +21,27 @@ class FrontendController extends TwigRenderer
 
     public function connect()
     {
+        if (empty($_POST['username']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
+
+            throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
+
+        }
+        if (empty($_POST['password']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
+
+            throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
+
+        }
+        $username = filter_input(INPUT_POST,'username', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST,'password', FILTER_SANITIZE_STRING);
+
         $loginManager = new LoginCompteManager;
 
-        $user = $loginManager->getLogin($_POST['username'], $_POST['password']);
+        $user = $loginManager->getLogin($username, $password);
 
         if (!$user) {
             throw new \Exception('Mauvais identifiant ou mot de passe !');
         } else {
-            $isPasswordCorrect = password_verify($_POST['password'], $user->password);
+            $isPasswordCorrect = password_verify($password, $user->password);
 
             if ($isPasswordCorrect != 1) {
                 throw new \Exception('Mauvais identifiant ou mot de passe !');
@@ -122,7 +135,7 @@ class FrontendController extends TwigRenderer
 
     public function deco()
     {
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {session_start();}
 
         // Suppression des variables de session et de la session
         $_SESSION = array();

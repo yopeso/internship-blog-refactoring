@@ -1,160 +1,167 @@
 {% extends 'template.twig'%}
 {% block title %}Mon super blog{% endblock %}
 {% block content %}
+
 <body id="page-top">
 
-    <!-- Header -->
-    <header class="masthead bg-primary text-white text-center">
-      <div class="container">
-        <img class="img-fluid mb-5 d-block mx-auto" src="public/img/profile.png" alt="">
-        <h1 class="text-uppercase mb-0">Julien Carré</h1>
-        <hr class="star-light">
-        <h2 class="font-weight-light mb-0">Développeur PHP Symfony - le super dev' qu'il vous faut!</h2>
-      </div>
-    </header>
+  <!-- Header -->
+  <header class="masthead bg-primary text-white text-center">
+    <div class="container">
+      <img class="img-fluid mb-5 d-block mx-auto" src="public/img/profile.png" alt="">
+      <h1 class="text-uppercase mb-0">Julien Carré</h1>
+      <hr class="star-light">
+      <h2 class="font-weight-light mb-0">Développeur PHP Symfony - le super dev' qu'il vous faut!</h2>
+    </div>
+  </header>
 
-    <!-- Portfolio Grid Section -->
-    <section class="portfolio" id="portfolio">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-secondary mb-0">Portfolio</h2>
-        <hr class="star-dark mb-5">
-        <div class="row">
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-1">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
+  <!-- Portfolio Grid Section -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <h2 class="text-center text-uppercase text-secondary mb-0">Portfolio</h2>
+      <hr class="star-dark mb-5">
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-1">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fas fa-search-plus fa-3x"></i>
               </div>
-              <img class="img-fluid" src="public/img/portfolio/cabin.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-2">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="public/img/portfolio/cake.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-3">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="public/img/portfolio/circus.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-4">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="public/img/portfolio/game.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-5">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="public/img/portfolio/safe.png" alt="">
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-6">
-              <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
-                <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
-                  <i class="fas fa-search-plus fa-3x"></i>
-                </div>
-              </div>
-              <img class="img-fluid" src="public/img/portfolio/submarine.png" alt="">
-            </a>
-          </div>
+            </div>
+            <img class="img-fluid" src="public/img/portfolio/cabin.png" alt="">
+          </a>
         </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="bg-primary text-white mb-0" id="about">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-white">A Propos de moi</h2>
-        <hr class="star-light mb-5">
-        <div class="row">
-          <div class="col-lg-4 ml-auto">
-            <p class="lead">Je suis depuis toujours passionné par l’outil informatique, souvent en recherche sur mon ordinateur et en veille technologique.<br>
-                    Autodidacte, je me suis formé sur Codeacademy puis sur Openclassrooms.<br>
-                    
-                </p>
-          </div>
-          <div class="col-lg-4 mr-auto">
-            <p class="lead ">Actuellement étudiant chez <a target="_blank" class="text-white" href="https://openclassrooms.com/paths/59-developpeur-dapplication-php-symfony">Openclassrooms</a>, je suis le parcours Développeur d'application PHP/ SYMFONY.</p>
-          </div>
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-2">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fas fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="public/img/portfolio/cake.png" alt="">
+          </a>
         </div>
-        <div class="text-center mt-4">
-          <a class="btn btn-xl btn-outline-light" href="/cv">
-            <i class="fas fa-download mr-2"></i>
-            Mon CV en PDF!
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-3">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fas fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="public/img/portfolio/circus.png" alt="">
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-4">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fas fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="public/img/portfolio/game.png" alt="">
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-5">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fas fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="public/img/portfolio/safe.png" alt="">
+          </a>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <a class="portfolio-item d-block mx-auto" href="#portfolio-modal-6">
+            <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
+              <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
+                <i class="fas fa-search-plus fa-3x"></i>
+              </div>
+            </div>
+            <img class="img-fluid" src="public/img/portfolio/submarine.png" alt="">
           </a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-      <div class="container">
-        <h2 class="text-center text-uppercase text-secondary mb-0">Me contater</h2>
-        <hr class="star-dark mb-5">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-            <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-            <form action="/contactform" method="post">
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label>Nom</label>
-                  <input class="form-control" type="text" placeholder="Nom" name="nom" required="required" data-validation-required-message="Veuillez entrer votre nom">
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label>Prenom</label>
-                  <input class="form-control" type="text" placeholder="Prenom" name="prenom" required="required" data-validation-required-message="Veuillez entrer votre prenom.">
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label>Email</label>
-                  <input class="form-control" type="email" name="email" placeholder="Email" required="required" data-validation-required-message="Veuillez entrer votre adresse email.">
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                  <label>Message</label>
-                  <textarea class="form-control" name="message" rows="5" placeholder="Message" required="required" data-validation-required-message="Veuillez entrer votre message."></textarea>
-                  <p class="help-block text-danger"></p>
-                </div>
-              </div>
-              <br>
-              <div id="success"></div>
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-xl" >Envoyer</button>
-              </div>
-            </form>
-          </div>
+  <!-- About Section -->
+  <section class="bg-primary text-white mb-0" id="about">
+    <div class="container">
+      <h2 class="text-center text-uppercase text-white">A Propos de moi</h2>
+      <hr class="star-light mb-5">
+      <div class="row">
+        <div class="col-lg-4 ml-auto">
+          <p class="lead">Je suis depuis toujours passionné par l’outil informatique, souvent en recherche sur mon
+            ordinateur et en veille technologique.<br>
+            Autodidacte, je me suis formé sur Codeacademy puis sur Openclassrooms.<br>
+
+          </p>
+        </div>
+        <div class="col-lg-4 mr-auto">
+          <p class="lead ">Actuellement étudiant chez <a target="_blank" class="text-white" href="https://openclassrooms.com/paths/59-developpeur-dapplication-php-symfony">Openclassrooms</a>,
+            je suis le parcours Développeur d'application PHP/ SYMFONY.</p>
         </div>
       </div>
-    </section>
+      <div class="text-center mt-4">
+        <a class="btn btn-xl btn-outline-light" href="/cv">
+          <i class="fas fa-download mr-2"></i>
+          Mon CV en PDF!
+        </a>
+      </div>
+    </div>
+  </section>
 
-{% endblock %}
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="text-center text-uppercase text-secondary mb-0">Me contater</h2>
+      <hr class="star-dark mb-5">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
+          <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
+          <form action="/contactform" method="post">
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                <label>Nom</label>
+                <input class="form-control" type="text" placeholder="Nom" name="nom" required="required"
+                  data-validation-required-message="Veuillez entrer votre nom">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                <label>Prenom</label>
+                <input class="form-control" type="text" placeholder="Prenom" name="prenom" required="required"
+                  data-validation-required-message="Veuillez entrer votre prenom.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                <label>Email</label>
+                <input class="form-control" type="email" name="email" placeholder="Email" required="required"
+                  data-validation-required-message="Veuillez entrer votre adresse email.">
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                <label>Message</label>
+                <textarea class="form-control" name="message" rows="5" placeholder="Message" required="required"
+                  data-validation-required-message="Veuillez entrer votre message."></textarea>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <br>
+            <div id="success"></div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-xl">Envoyer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% endblock %}

@@ -2,42 +2,42 @@
 {% block title %}Tout les article{% endblock %}
 {% block content %}
 <header class="masthead bg-primary text-white text-center">
-      <div class="container">
+    <div class="container">
         <h1>Mon super blog !</h1>
         <p>Derniers billets du blog :</p>
     </div>
 </header>
 
 {% for listpost in listposts %}
-    <section class="mb-0">
-        <div class="container">
-            <h3 class="text-center text-uppercase text-secondary mb-4">
-                {{listpost.title}}
-                <em>le  {{listpost.creation_date_fr}}</em>
-            </h3>
-            <div>
-                <p class="lead">
-                    {{listpost.chapo}}
-                    <br />
-                    <em><a href="article-{{listpost.id}}">Lire la suite ...</a></em>
-                </p>
-            </div>
+<section class="mb-0">
+    <div class="container">
+        <h3 class="text-center text-uppercase text-secondary mb-4">
+            {{listpost.title}}
+            <em>le {{listpost.creation_date_fr}}</em>
+        </h3>
+        <div>
+            <p class="lead">
+                {{listpost.chapo}}
+                <br />
+                <em><a href="article-{{listpost.id}}">Lire la suite ...</a></em>
+            </p>
         </div>
-    </section>
+    </div>
+</section>
 {% endfor %}
 
 
 {#
-    Parameters:
-      * pagestotales (int): number of pages
-      * pagecourante (int): current pages
+Parameters:
+* pagestotales (int): number of pages
+* pagecourante (int): current pages
 #}
 
 {% spaceless %}
 {% if pagestotales > 1 %}
 
-    {# Number of page around current page+1 #}
-    {% set nearbyPagesLimit = 3 %}
+{# Number of page around current page+1 #}
+{% set nearbyPagesLimit = 3 %}
 <section class="mb-0">
     <div class="container">
         <nav class="pagination">
@@ -48,27 +48,27 @@
                 </li>
                 {% endif %}
                 {% for i in 1..pagestotales %}
-                    {% if 0 == (pagecourante - nearbyPagesLimit) - loop.index %} {# dot before #}
-                        <li class="page-item disabled"><a href="#">...</a></li>
-                    {% elseif 0 == (pagecourante + nearbyPagesLimit) - loop.index %} {# dot after #}
-                        <li class="page-item disabled"><a href="#">...</a></li>
-                    {% elseif 0 < (pagecourante - nearbyPagesLimit) - loop.index %} {# hide all before #}
-                    {% elseif 0 > (pagecourante + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                {% if 0 == (pagecourante - nearbyPagesLimit) - loop.index %} {# dot before #}
+                <li class="page-item disabled"><a href="#">...</a></li>
+                {% elseif 0 == (pagecourante + nearbyPagesLimit) - loop.index %} {# dot after #}
+                <li class="page-item disabled"><a href="#">...</a></li>
+                {% elseif 0 < (pagecourante - nearbyPagesLimit) - loop.index %} {# hide all before #} {% elseif 0>
+                    (pagecourante + nearbyPagesLimit) - loop.index %} {# hide all after #}
                     {% else %}
-                        <li {% if pagecourante == loop.index  %} class="page-item active"{% endif %}>
-                            <a class="page-link" href="?page={{loop.index }}">{{ loop.index }}</a>
-                        </li>
+                    <li {% if pagecourante==loop.index %} class="page-item active" {% endif %}>
+                        <a class="page-link" href="?page={{loop.index }}">{{ loop.index }}</a>
+                    </li>
                     {% endif %}
-                {% endfor %}
-                {% if pagecourante != pagestotales %}
-                <li>
-                    <a class="page-link" href="?page={{pagestotales}}">Last</a>
-                </li>
-                {% endif %}
+                    {% endfor %}
+                    {% if pagecourante != pagestotales %}
+                    <li>
+                        <a class="page-link" href="?page={{pagestotales}}">Last</a>
+                    </li>
+                    {% endif %}
             </ul>
         </nav>
-        </div>
-        </div>
+    </div>
+    </div>
     </div>
 </section>
 {% endif %}
