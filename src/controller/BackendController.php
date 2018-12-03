@@ -80,10 +80,14 @@ class BackendController
 
     public function addPostManager()
     {
-        $title = $_POST['title'];
-        $chapo = $_POST['chapo'];
-        $content = $_POST['content'];
-        $idUser = $_SESSION['id'];
+
+        if (isset($_POST['title']) && ($_POST['title'] != "")) { $title = $_POST['title']; }
+
+        if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) { $chapo = $_POST['chapo']; }
+
+        if (isset($_POST['content']) && ($_POST['content'] != "")) { $content = $_POST['content']; }
+
+        if (isset($_SESSION['id']) && ($_SESSION['id'] != "")) { $idUser = $_SESSION['id']; }
 
         $addpost = new PostManager();
         $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
@@ -106,6 +110,7 @@ class BackendController
 
     public function editPostManager($id)
     {
+
         $postManager = new PostManager();
         $affectedLines = $postManager->setPost($id, $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['auth']->id);
         if ($affectedLines === false) {
