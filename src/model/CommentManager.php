@@ -77,4 +77,17 @@ class CommentManager extends Manager
         return $affectedLines;
     }
 
+    public function removeComment($id)
+    {
+        $bdd = $this->dbConnect();
+        $req = $bdd->prepare('DELETE FROM comments WHERE id = :id');
+        $req->execute(array(
+            ':id' => $id,
+        ));
+        $affectedLines = $req;
+
+        return $affectedLines;
+    }
+
+
 }

@@ -82,16 +82,15 @@ class LoginCompteManager extends Manager
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $req->execute([$_POST['username'], $password, $_POST['email'], $satuts]);
 
-        $message = 'Votre compte a bien été créé, vous pouvez vous connecter.';
-
-        $entetemail = "From:" . $_POST['username'] . "  <" . $_POST['email'] . ">\r\n";
+        $entetemail = "From: Blog juju  <julienroquai@gmail.com>\r\n";
         $entetemail .= "Reply-To: julienroquai@gmail.com \n";
         $entetemail .= "X-Mailer: PHP/" . phpversion() . "\n";
         $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
         $objet = "Comfirmation de la création de votre compte sur le blog de juju";
-        $message_email = $message;
+        $message_email = 'Votre compte a bien été créé ' . $_POST['username'] .', vous pouvez maintenant vous connecter.';
 
         mail($_POST['email'], $objet, $message_email, $entetemail);
+
 
     }
 

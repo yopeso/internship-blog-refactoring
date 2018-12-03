@@ -110,8 +110,12 @@ class FrontendController extends TwigRenderer
         $comments = $commentManager->getComments($id);
 
         if (isset($_SESSION['auth']->id)) {
-            $user = ['id' => $_SESSION['auth']->id, 'username' => $_SESSION['auth']->username];
-        } else { $user = ['id' => 0, 'username' => 0];}
+            $user = [
+                    'id' => $_SESSION['auth']->id, 
+                    'username' => $_SESSION['auth']->username, 
+                    'status' => $_SESSION['auth']->status
+                ];
+        } else { $user = ['id' => 0, 'username' => 0, 'status' => 0];}
 
         $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "data_user" => $user]);
 

@@ -16,11 +16,14 @@ try {
 
 // Parti USER ->>>>
     $router->post('/user-addComment-:id', "Compte#addComment")->with('id', '[0-9]+');
-    $router->post('/user-comment-:id', "Compte#editComment")->with('id', '[0-9]+');
+    $router->post('/user-editComment-:id', "Compte#editComment")->with('id', '[0-9]+');
     $router->get('/user-comment-:id', "Compte#comment")->with('id', '[0-9]+');
     $router->get('/user', "Compte#interfaceCompte");
 
 // Parti ADMIN ->>>>
+    $router->get('/admin-deleteComment-:id', "Backend#removeCommentManager")->with('id', '[0-9]+');
+    $router->post('/admin-editComment-:id', "Backend#editComment")->with('id', '[0-9]+');
+    $router->get('/admin-comment-:id', "Backend#comment")->with('id', '[0-9]+');
     $router->post('/admin-editPost-:id', "Backend#editPostManager")->with('id', '[0-9]+');
     $router->post('/admin-addPost', "Backend#addPostManager");
     $router->post('/admin-delete', "Backend#removePostManager");

@@ -28,6 +28,10 @@
             {% if data_user.id == data_comment.id_user %}
             (<a href="user-comment-{{data_comment.id}}">modifier</a>)
             {% endif %}
+            {% if data_user.status == 1 %}
+            (<a href="admin-comment-{{data_comment.id}}">Admin modifier</a>)
+            (<a href="admin-deleteComment-{{data_comment.id}}">Admin supprimer</a>)
+            {% endif %}
         </p>
         <p>{{data_comment.comment}}</p>
     </div>

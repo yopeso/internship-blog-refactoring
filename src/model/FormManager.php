@@ -23,7 +23,7 @@ class FormManager
         $objet = "Contact depuis votre Blog Boblebicoleur";
         $message_email = $message;
 
-        mail($email, $objet, $message_email, $entetemail);
+        mail('julienroquai@gmail.com', $objet, $message_email, $entetemail);
 
         $contact = "ok";
 

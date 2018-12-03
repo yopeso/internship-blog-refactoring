@@ -126,6 +126,41 @@ class BackendController
         header('Location: /admin');
 
     }
+    public function comment($id)
+    {
+        $commentManager = new CommentManager();
+
+        $comment = $commentManager->getComment($id);
+
+        $this->render('backend/editComment', ["data_comment" => $comment]);
+    }
+
+    public function editComment($id)
+    {
+        $author = $_POST['author'];
+        $comment = $_POST['comment'];
+        $commentManager = new CommentManager();
+
+        $affectedLines = $commentManager->updateComment($id, $author, $comment);
+
+        if ($affectedLines === false) {
+            throw new \Exception('Impossible de modifier le commentaire !');
+        }
+
+        header('Location: /admin');
+
+    }
+
+    public function removeCommentManager($id)
+    {
+        $postDelete = new CommentManager();
+        $affectedLines = $postDelete->removeComment($id);
+        if ($affectedLines === false) {
+            throw new \Exception("Impossible de suprrimer ce commentaire.");
+        }
+        header('Location: /admin');
+
+    }
 
     public function erroView($errorMessage)
     {
