@@ -44,13 +44,13 @@ class CompteController
 
     public function interfaceCompte()
     {
-        $idUser= "";
+        $userId = "";
         
         if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {
             
-        $idUser = $_SESSION['auth']->id;
+        $userId = $_SESSION['auth']->id;
         $commentsUser = new CommentManager();
-        $comments = $commentsUser->getUserComment($idUser);
+        $comments = $commentsUser->getUserComment($userId);
         $this->render('compte/compteView', ["data_comments" => $comments]);
         }
     }
@@ -66,11 +66,11 @@ class CompteController
 
     public function addComment($id)
     {
-        $idUser = "";
+        $userId = "";
         $author = "";
         $comment = "";
 
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$userId = $_SESSION['auth']->id;}
 
         if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
 
@@ -92,7 +92,7 @@ class CompteController
     {
         $author = "";
         $comment = "";
-        
+
         if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
 
         if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
