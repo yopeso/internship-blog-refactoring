@@ -81,13 +81,13 @@ class BackendController
     public function addPostManager()
     {
 
-        if (isset($_POST['title']) && ($_POST['title'] != "")) { $title = $_POST['title']; }
+        if (isset($_POST['title']) && ($_POST['title'] != "")) {$title = $_POST['title'];}
 
-        if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) { $chapo = $_POST['chapo']; }
+        if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) {$chapo = $_POST['chapo'];}
 
-        if (isset($_POST['content']) && ($_POST['content'] != "")) { $content = $_POST['content']; }
+        if (isset($_POST['content']) && ($_POST['content'] != "")) {$content = $_POST['content'];}
 
-        if (isset($_SESSION['id']) && ($_SESSION['id'] != "")) { $idUser = $_SESSION['id']; }
+        if (isset($_SESSION['id']) && ($_SESSION['id'] != "")) {$idUser = $_SESSION['id'];}
 
         $addpost = new PostManager();
         $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
@@ -110,9 +110,16 @@ class BackendController
 
     public function editPostManager($id)
     {
+        if (isset($_POST['title']) && ($_POST['title'] != "")) {$title = $_POST['title'];}
+
+        if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) {$chapo = $_POST['chapo'];}
+
+        if (isset($_POST['content']) && ($_POST['content'] != "")) {$content = $_POST['content'];}
+
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
 
         $postManager = new PostManager();
-        $affectedLines = $postManager->setPost($id, $_POST['title'], $_POST['chapo'], $_POST['content'], $_SESSION['auth']->id);
+        $affectedLines = $postManager->setPost($id, $title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
             throw new \Exception("Impossible de modifier cette article.");
         }
@@ -123,8 +130,11 @@ class BackendController
 
     public function removePostManager()
     {
+
+        if (isset($_POST['postId']) && ($_POST['postId'] != "")) {$postId = $_POST['postId'];}
+
         $postDelete = new PostManager();
-        $affectedLines = $postDelete->removePost($_POST['postId']);
+        $affectedLines = $postDelete->removePost($postId);
         if ($affectedLines === false) {
             throw new \Exception("Impossible de suprrimer cette article.");
         }

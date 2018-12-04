@@ -19,7 +19,7 @@ class CompteController
         ]);
 
         if (empty($_SESSION)) {$_SESSION['init'] = 1;}
-        
+
         $this->twig->addGlobal('_session', $_SESSION);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
@@ -45,8 +45,11 @@ class CompteController
     public function interfaceCompte()
     {
         if (isset($_SESSION['auth']->id)) {
+
+            if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
+
             $commentsUser = new CommentManager();
-            $comments = $commentsUser->getUserComment($_SESSION['auth']->id);
+            $comments = $commentsUser->getUserComment($idUser);
             $this->render('compte/compteView', ["data_comments" => $comments]);
         }
     }
@@ -62,9 +65,12 @@ class CompteController
 
     public function addComment($id)
     {
-        $userId = $_SESSION['auth']->id;
-        $author = $_POST['author'];
-        $comment = $_POST['comment'];
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
+
+        if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
+
+        if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
+
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->postComment($id, $userId, $author, $comment);
@@ -79,8 +85,10 @@ class CompteController
 
     public function editComment($id)
     {
-        $author = $_POST['author'];
-        $comment = $_POST['comment'];
+        if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
+
+        if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
+        
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->updateComment($id, $author, $comment);

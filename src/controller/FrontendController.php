@@ -31,8 +31,8 @@ class FrontendController extends TwigRenderer
             throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
 
         }
-        $username = filter_input(INPUT_POST,'username', FILTER_SANITIZE_STRING);
-        $password = filter_input(INPUT_POST,'password', FILTER_SANITIZE_STRING);
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 
         $loginManager = new LoginCompteManager;
 
@@ -46,7 +46,7 @@ class FrontendController extends TwigRenderer
             if ($isPasswordCorrect != 1) {
                 throw new \Exception('Mauvais identifiant ou mot de passe !');
             }
-            
+
             if (session_status() == PHP_SESSION_NONE) {session_start();}
 
             $_SESSION['auth'] = $user;
@@ -111,10 +111,10 @@ class FrontendController extends TwigRenderer
 
         if (isset($_SESSION['auth']->id)) {
             $user = [
-                    'id' => $_SESSION['auth']->id, 
-                    'username' => $_SESSION['auth']->username, 
-                    'status' => $_SESSION['auth']->status
-                ];
+                'id' => $_SESSION['auth']->id,
+                'username' => $_SESSION['auth']->username,
+                'status' => $_SESSION['auth']->status,
+            ];
         } else { $user = ['id' => 0, 'username' => 0, 'status' => 0];}
 
         $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "data_user" => $user]);
@@ -123,9 +123,11 @@ class FrontendController extends TwigRenderer
 
     public function comment()
     {
+        if (isset($_GET['commentId']) && ($_GET['commentId'] != "")) {$commentId = $_GET['commentId'];}
+
         $commentManager = new CommentManager();
 
-        $comment = $commentManager->getComment($_GET['commentId']);
+        $comment = $commentManager->getComment($commentId);
 
         $this->render('frontend/editComment', ["data_comment" => $comment]);
     }

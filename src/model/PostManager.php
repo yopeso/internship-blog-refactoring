@@ -45,12 +45,12 @@ class PostManager extends Manager
         return $req;
     }
 
-    public function setPost($postId, $title, $chapo, $content, $idUser)
+    public function setPost($id, $title, $chapo, $content, $idUser)
     {
         $bdd = $this->dbConnect();
         $req = $bdd->prepare('UPDATE posts SET title = :title, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id');
         $affectedLines = $req->execute(array(
-            ':id' => $postId,
+            ':id' => $id,
             ':title' => $title,
             ':chapo' => $chapo,
             ':content' => $content,
