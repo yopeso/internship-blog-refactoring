@@ -19,6 +19,7 @@ class CompteController
         ]);
 
         if (empty($_SESSION)) {$_SESSION['init'] = 1;}
+        
         $this->twig->addGlobal('_session', $_SESSION);
         $this->twig->addGlobal('_post', $_POST);
         $this->twig->addGlobal('_get', $_GET);
