@@ -4,7 +4,7 @@ namespace App\Model;
 
 class LoginCompteManager extends Manager
 {
-    public function getLogin($username, $key_user)
+    public function getLogin($username)
     {
         $bdd = $this->dbConnect();
         $req = $bdd->prepare('SELECT * FROM users WHERE username = :username');
@@ -61,7 +61,7 @@ class LoginCompteManager extends Manager
 
     public function checkPassword()
     {
-        if (empty($_POST['password']) & $_POST['password'] != $_POST['password_confirm']) {
+        if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
 
             throw new \Exception("vous devez rentrer un mot de passe valide");
 
