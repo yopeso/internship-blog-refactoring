@@ -66,7 +66,7 @@ class FrontendController extends TwigRenderer
        
         $affectedLines = $registerManager->registerUser();
 
-        if ($affectedLines === false) {
+        if ($affectedLines = NULL) {
             throw new \Exception('Erreur, inscription impossible !');
         }
         header('Location: /login');
