@@ -25,8 +25,5 @@ class FormManager
 
         mail('julienroquai@gmail.com', $objet, $message_email, $entetemail);
 
-        $contact = "ok";
-
-        return $contact;
     }
 }
