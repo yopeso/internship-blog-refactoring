@@ -23,11 +23,11 @@ class CommentManager extends Manager
         return $comment;
     }
 
-    public function getUserComment($idUser)
+    public function getUserComment($userId)
     {
         $bdd = $this->dbConnect();
         $comments = $bdd->prepare('SELECT id, post_id, author, comment, valid,DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE id_user = ? ORDER BY comment_date DESC');
-        $comments->execute(array($idUser));
+        $comments->execute(array($userId));
 
         return $comments;
     }
