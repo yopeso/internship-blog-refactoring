@@ -1,11 +1,10 @@
 <?php
 namespace App\Controller;
 
-use App\Controller\FilterManager;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
-class TwigRenderer extends FilterManager
+class TwigRenderer
 {
 
     private $twig;
