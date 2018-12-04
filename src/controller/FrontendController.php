@@ -164,7 +164,7 @@ class FrontendController extends TwigRenderer
 
         $contact = new FormManager();
 
-        $reponse = $contact->fromTraiment($nom, $prenom, $email, $message);
+        $contact->fromTraiment($nom, $prenom, $email, $message);
 
         header('Location: /');
     }
