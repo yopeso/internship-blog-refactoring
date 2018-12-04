@@ -80,6 +80,10 @@ class BackendController
 
     public function addPostManager()
     {
+        $title = "";
+        $chapo = "";
+        $content = "";
+        $idUser = "";
 
         if (isset($_POST['title']) && ($_POST['title'] != "")) {$title = $_POST['title'];}
 
