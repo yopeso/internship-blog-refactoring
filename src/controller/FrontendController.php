@@ -36,7 +36,7 @@ class FrontendController extends TwigRenderer
 
         $loginManager = new LoginCompteManager;
 
-        $user = $loginManager->getLogin($username, $password);
+        $user = $loginManager->getLogin($username);
 
         if (!$user) {
             throw new \Exception('Mauvais identifiant ou mot de passe !');
