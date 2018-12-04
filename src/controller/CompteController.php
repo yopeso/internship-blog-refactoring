@@ -46,13 +46,12 @@ class CompteController
     {
         $userId = "";
         
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {
-            
-        $userId = $_SESSION['auth']->id;
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$userId = $_SESSION['auth']->id;}
+
         $commentsUser = new CommentManager();
         $comments = $commentsUser->getUserComment($userId);
         $this->render('compte/compteView', ["data_comments" => $comments]);
-        }
+   
     }
 
     public function comment($id)
