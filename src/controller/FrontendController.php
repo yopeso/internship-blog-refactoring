@@ -118,6 +118,8 @@ class FrontendController extends TwigRenderer
 
     public function comment()
     {
+        $commentId = "";
+
         if (isset($_GET['commentId']) && ($_GET['commentId'] != "")) {$commentId = $_GET['commentId'];}
 
         $commentManager = new CommentManager();
@@ -150,10 +152,15 @@ class FrontendController extends TwigRenderer
 
     public function contactForm()
     {
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $email = $_POST['email'];
-        $message = $_POST['message'];
+        $nom = "";
+        $prenom = "";
+        $email = "";
+        $message = "";
+
+        if (isset($_POST['message']) && ($_POST['message'] != "")) {$message = $_POST['message'];}
+        if (isset($_POST['email']) && ($_POST['email'] != "")) {$email = $_POST['email'];}
+        if (isset($_POST['prenom']) && ($_POST['prenom'] != "")) {$prenom = $_POST['prenom'];}
+        if (isset($_POST['nom']) && ($_POST['nom'] != "")) {$nom = $_POST['nom'];}
 
         $contact = new FormManager();
 

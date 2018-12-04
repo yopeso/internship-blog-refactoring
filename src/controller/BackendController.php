@@ -61,7 +61,10 @@ class BackendController
 
     public function commentsValid()
     {
-        $id = $_POST['id'];
+        $id = "";
+        
+        if (isset($_POST['id']) && ($_POST['id'] != "")) {$id = $_POST['id'];}
+
         $CommentValid = new CommentManager();
         $affectedLines = $CommentValid->setCommentsValid($id);
 
@@ -114,6 +117,11 @@ class BackendController
 
     public function editPostManager($id)
     {
+        $title = "";
+        $chapo = "";
+        $content = "";
+        $idUser = "";
+
         if (isset($_POST['title']) && ($_POST['title'] != "")) {$title = $_POST['title'];}
 
         if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) {$chapo = $_POST['chapo'];}
@@ -134,6 +142,7 @@ class BackendController
 
     public function removePostManager()
     {
+        $postId = "";
 
         if (isset($_POST['postId']) && ($_POST['postId'] != "")) {$postId = $_POST['postId'];}
 

@@ -44,6 +44,7 @@ class CompteController
 
     public function interfaceCompte()
     {
+        $idUser= "";
         
         if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {
             
@@ -65,6 +66,10 @@ class CompteController
 
     public function addComment($id)
     {
+        $idUser = "";
+        $author = "";
+        $comment = "";
+
         if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
 
         if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
@@ -85,6 +90,9 @@ class CompteController
 
     public function editComment($id)
     {
+        $author = "";
+        $comment = "";
+        
         if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
 
         if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
