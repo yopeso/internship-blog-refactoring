@@ -60,12 +60,10 @@ class FrontendController extends TwigRenderer
     {
         $registerManager = new LoginCompteManager;
 
-        $resultat = $registerManager->checkUsername();
-        if (empty($resultat)) {$resultat = $registerManager->checkEmail();}
-        if (empty($resultat)) {$resultat = $registerManager->checkPassword();}
-        if (!empty($resultat)) {
-            return $resultat;
-        }
+        $registerManager->checkUsername();
+        $registerManager->checkEmail();
+        $registerManager->checkPassword();
+       
         $affectedLines = $registerManager->registerUser();
 
         if ($affectedLines === false) {
