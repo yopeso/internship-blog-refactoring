@@ -44,13 +44,13 @@ class CompteController
 
     public function interfaceCompte()
     {
-        if (isset($_SESSION['auth']->id)) {
-
-            if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
-
-            $commentsUser = new CommentManager();
-            $comments = $commentsUser->getUserComment($idUser);
-            $this->render('compte/compteView', ["data_comments" => $comments]);
+        
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {
+            
+        $idUser = $_SESSION['auth']->id;
+        $commentsUser = new CommentManager();
+        $comments = $commentsUser->getUserComment($idUser);
+        $this->render('compte/compteView', ["data_comments" => $comments]);
         }
     }
 
