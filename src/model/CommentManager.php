@@ -58,8 +58,6 @@ class CommentManager extends Manager
 
     public function getCommentsInvalid()
     {
-        $valide = null;
-
         $bdd = $this->dbConnect();
         $req = $bdd->query('SELECT id, author, comment FROM comments WHERE valid = 0 ORDER BY comment_date DESC ');
         return $req;

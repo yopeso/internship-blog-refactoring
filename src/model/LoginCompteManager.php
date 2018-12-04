@@ -2,10 +2,9 @@
 
 namespace App\Model;
 
-
 class LoginCompteManager extends Manager
 {
-    public function getLogin($username, $key)
+    public function getLogin($username, $key_user)
     {
         $bdd = $this->dbConnect();
         $req = $bdd->prepare('SELECT * FROM users WHERE username = :username');
@@ -87,10 +86,9 @@ class LoginCompteManager extends Manager
         $entetemail .= "X-Mailer: PHP/" . phpversion() . "\n";
         $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
         $objet = "Comfirmation de la création de votre compte sur le blog de juju";
-        $message_email = 'Votre compte a bien été créé ' . $_POST['username'] .', vous pouvez maintenant vous connecter.';
+        $message_email = 'Votre compte a bien été créé ' . $_POST['username'] . ', vous pouvez maintenant vous connecter.';
 
         mail($_POST['email'], $objet, $message_email, $entetemail);
-
 
     }
 
