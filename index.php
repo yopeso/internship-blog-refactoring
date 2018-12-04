@@ -36,8 +36,6 @@ try {
     $router->get('/', "Frontend#homeView");
 
     $router->get('/404', "Frontend#erroView");
-    //$router->get('/article/:slug-:id',"Frontend#listPosts" )->with('id', '[0-9]+')->with('slug', '[a-z\-0-9]+');
-    //$router->post('/posts/:id', function($id){echo'Poster pour l\'article ' . $id;});
 
     $router->run();
 

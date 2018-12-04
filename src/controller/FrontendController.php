@@ -63,7 +63,7 @@ class FrontendController extends TwigRenderer
         $registerManager->checkUsername();
         $registerManager->checkEmail();
         $registerManager->checkPassword();
-       
+
         $registerManager->registerUser();
 
         header('Location: /login');
