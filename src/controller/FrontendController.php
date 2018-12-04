@@ -21,12 +21,12 @@ class FrontendController extends TwigRenderer
 
     public function connect()
     {
-        if (empty($_POST['username']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
+        if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
 
             throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
 
         }
-        if (empty($_POST['password']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
+        if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
 
             throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
 
@@ -82,7 +82,7 @@ class FrontendController extends TwigRenderer
         if (empty($_GET['page'])) {
             $_GET['page'] = 1;
         }
-        if (!empty($_GET['page']) and $_GET['page'] < 0 or $_GET['page'] > $pagesTotales) {
+        if (!empty($_GET['page']) && $_GET['page'] < 0 || $_GET['page'] > $pagesTotales) {
             $_GET['page'] = 1;
         }
 

@@ -17,7 +17,7 @@ class LoginCompteManager extends Manager
 
     public function checkUsername()
     {
-        if (empty($_POST['username']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
+        if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
 
             throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
 
@@ -39,7 +39,7 @@ class LoginCompteManager extends Manager
 
     public function checkEmail()
     {
-        if (empty($_POST['email']) or !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 
             throw new \Exception("votre email n'est pas valide");
 
@@ -66,7 +66,7 @@ class LoginCompteManager extends Manager
             throw new \Exception("vous devez rentrer un mot de passe valide");
 
         }
-        if (empty($_POST['password']) or !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
+        if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
 
             throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
 

@@ -11,13 +11,3 @@ class Manager
         return $bdd;
     }
 }
-
-class ManagerFetchModeOff
-{
-    protected function dbConnect()
-    {
-        $bdd = new \PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');
-        $bdd->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        return $bdd;
-    }
-}
