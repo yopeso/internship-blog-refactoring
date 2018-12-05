@@ -82,7 +82,7 @@ class FrontendController extends TwigRenderer
         if (empty($_GET['page'])) {
             $_GET['page'] = 1;
         }
-        if (!empty($_GET['page']) && ($_GET['page'] < 0) || ($_GET['page'] > $pagesTotales)) {
+        if ((!empty($_GET['page'])) && ($_GET['page'] < 0) || ($_GET['page'] > $pagesTotales)) {
             $_GET['page'] = 1;
         }
 
