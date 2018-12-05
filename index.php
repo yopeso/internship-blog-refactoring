@@ -5,7 +5,7 @@ if (empty($_GET['url'])) {$_GET['url'] = '/';}
 
 $router = new App\Router\Router($_GET['url']);
 try {
-//prati FRONT ->>>>
+// Prati FRONT ->>>>
     $router->get('/cv', "Frontend#cvjuju");
     $router->get('/article-:id', "Frontend#post")->with('id', '[0-9]+');
     $router->get('/blog', "Frontend#listPosts");
@@ -32,9 +32,11 @@ try {
     $router->post('/admin-commentsValid', "Backend#commentsValid");
     $router->get('/admin', "Backend#interfaceAdmin");
 
+// Autre
     $router->get('/deco', "Frontend#deco");
     $router->get('/', "Frontend#homeView");
 
+// 404
     $router->get('/404', "Frontend#erroView");
 
     $router->run();

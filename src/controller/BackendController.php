@@ -62,7 +62,7 @@ class BackendController
     public function commentsValid()
     {
         $id = "";
-        
+
         if (isset($_POST['id']) && ($_POST['id'] != "")) {$id = $_POST['id'];}
 
         $CommentValid = new CommentManager();

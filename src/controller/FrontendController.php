@@ -182,5 +182,4 @@ class FrontendController extends TwigRenderer
             readfile($file);
         }
     }
-
 }
