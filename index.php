@@ -13,13 +13,11 @@ try {
     $router->post('/login', "Frontend#connect");
     $router->post('/register', "Frontend#register");
     $router->post('/contactform', "Frontend#contactForm");
-
 // Parti USER ->>>>
     $router->post('/user-addComment-:id', "Compte#addComment")->with('id', '[0-9]+');
     $router->post('/user-editComment-:id', "Compte#editComment")->with('id', '[0-9]+');
     $router->get('/user-comment-:id', "Compte#comment")->with('id', '[0-9]+');
     $router->get('/user', "Compte#interfaceCompte");
-
 // Parti ADMIN ->>>>
     $router->get('/admin-deleteComment-:id', "Backend#removeCommentManager")->with('id', '[0-9]+');
     $router->post('/admin-editComment-:id', "Backend#editComment")->with('id', '[0-9]+');
@@ -31,14 +29,11 @@ try {
     $router->get('/admin-post', "Backend#viewAddPost");
     $router->post('/admin-commentsValid', "Backend#commentsValid");
     $router->get('/admin', "Backend#interfaceAdmin");
-
 // Autre
     $router->get('/deco', "Frontend#deco");
     $router->get('/', "Frontend#homeView");
-
 // 404
     $router->get('/404', "Frontend#erroView");
-
     $router->run();
 
 } catch (\Exception $e) { // S'il y a eu une erreur, alors...
