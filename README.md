@@ -19,4 +19,3 @@ Techno utiliser:
 * Copier le contenu du fichier "/BDD.sql" vers votre base créé auparavant (dbname:"Blog" chez moi).
 * Configurer la connexion à la base de donnée dans le fichier "/src/Model/Manager.php".
 * Le serveur doit pointer à la racine du dossier.
-
