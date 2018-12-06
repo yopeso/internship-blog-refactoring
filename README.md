@@ -11,10 +11,10 @@ Techno utiliser:
 
 ## Instalation
 
-###Pré-requis : 
+### Pré-requis : 
 * PHP 7, MySQL.
 
-###Config BDD :
+### Config BDD :
 * 
 * Copier le contenu du fichier "/BDD.sql" vers votre base créé auparavant (dbname:"Blog" chez moi).
 * Configurer la connextion à la base de donnée dans le fichier "/src/Model/Manager.php".
