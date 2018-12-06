@@ -25,12 +25,12 @@
     {% for data_comment in data_comments %}
     <div class="container mb-5">
         <p><strong>{{data_comment.author}}</strong> le {{data_comment.comment_date_fr}}
-            {% if data_user.id == data_comment.id_user %}
-            (<a href="user-comment-{{data_comment.id}}">modifier</a>)
+            {% if data_user.id == data_comment.id_user and data_user.status != 1 %}
+            (<a href="user-comment-{{data_comment.id}}">Modifier</a>)
             {% endif %}
             {% if data_user.status == 1 %}
-            (<a href="admin-comment-{{data_comment.id}}">Admin modifier</a>)
-            (<a href="admin-deleteComment-{{data_comment.id}}">Admin supprimer</a>)
+            (<a href="admin-comment-{{data_comment.id}}">Modifier</a>)
+            (<a href="admin-deleteComment-{{data_comment.id}}">Supprimer</a>)
             {% endif %}
         </p>
         <p>{{data_comment.comment}}</p>

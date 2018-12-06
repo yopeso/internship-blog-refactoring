@@ -1,2 +1,4 @@
 /vendor
 .htaccess
+BDD.sql
+.DS_Store
