@@ -9,13 +9,14 @@ Techno utiliser:
 * Twig Moteur de templating
 * Routing Grafikart (<a href="https://youtu.be/I-DN2C7Gs7A">vidéo youtube</a>)
 
-## Instalation
+## Pré-requis : 
 
-### Pré-requis : 
 * PHP 7, MySQL.
 
-### Config BDD :
+## Instalation:
+
 * Télécharger twig avec composer.phar, exemple sur Mac à la racine du dossier: "php composer.phar install".
 * Copier le contenu du fichier "/BDD.sql" vers votre base créé auparavant (dbname:"Blog" chez moi).
 * Configurer la connexion à la base de donnée dans le fichier "/src/Model/Manager.php".
+* Le serveur doit pointer à la racine du dossier.
 
