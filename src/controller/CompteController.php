@@ -20,20 +20,11 @@ class CompteController
 
         if (empty($_SESSION)) {$_SESSION['init'] = 1;}
 
-        $this->twig->addGlobal('_session', $_SESSION);
-        $this->twig->addGlobal('_post', $_POST);
-        $this->twig->addGlobal('_get', $_GET);
-
-        if (session_status() == PHP_SESSION_NONE) {
-
-            session_start();
-
-        }
+        if (session_status() == PHP_SESSION_NONE) {session_start();}
 
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
             header('Location: /login');
-
         }
     }
 
@@ -45,13 +36,13 @@ class CompteController
     public function interfaceCompte()
     {
         $userId = "";
-        
+
         if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$userId = $_SESSION['auth']->id;}
 
         $commentsUser = new CommentManager();
         $comments = $commentsUser->getUserComment($userId);
-        $this->render('compte/compteView', ["data_comments" => $comments]);
-   
+        $this->render('compte/compteView', ['data_comments' => $comments]);
+
     }
 
     public function comment($id)
@@ -60,7 +51,7 @@ class CompteController
 
         $comment = $commentManager->getComment($id);
 
-        $this->render('compte/editComment', ["data_comment" => $comment]);
+        $this->render('compte/editComment', ['data_comment' => $comment]);
     }
 
     public function addComment($id)
@@ -80,7 +71,7 @@ class CompteController
         $affectedLines = $commentManager->postComment($id, $userId, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible d\'ajouter le commentaire !');
+            throw new \Exception("Impossible d\'ajouter le commentaire !");
         }
 
         header('Location: /user');
@@ -95,13 +86,13 @@ class CompteController
         if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
 
         if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
-        
+
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de modifier le commentaire !');
+            throw new \Exception("Impossible de modifier le commentaire !");
         }
 
         header('Location: /user');
@@ -110,7 +101,7 @@ class CompteController
 
     public function erroView($errorMessage)
     {
-        $this->render('frontend/errorView', ["data_message" => $errorMessage]);
+        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
     }
 
 }

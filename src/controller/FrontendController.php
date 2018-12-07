@@ -39,12 +39,12 @@ class FrontendController extends TwigRenderer
         $user = $loginManager->getLogin($username);
 
         if (!$user) {
-            throw new \Exception('Mauvais identifiant ou mot de passe !');
+            throw new \Exception("Mauvais identifiant ou mot de passe !");
         } else {
             $isPasswordCorrect = password_verify($password, $user->password);
 
             if ($isPasswordCorrect != 1) {
-                throw new \Exception('Mauvais identifiant ou mot de passe !');
+                throw new \Exception("Mauvais identifiant ou mot de passe !");
             }
 
             if (session_status() == PHP_SESSION_NONE) {session_start();}
@@ -89,10 +89,10 @@ class FrontendController extends TwigRenderer
         $pageCourante = $_GET['page'];
         $depart = ($pageCourante - 1) * $articlesParPage;
 
-        $postManager = new PostManager(); // Création d'un objet
-        $list_posts = $postManager->getPosts($depart, $articlesParPage); // Appel d'une fonction de cet objet
+        $postManager = new PostManager();
+        $list_posts = $postManager->getPosts($depart, $articlesParPage);
 
-        $this->render('frontend/listPostView', ["listposts" => $list_posts, "pagestotales" => $pagesTotales, "pagecourante" => $pageCourante]);
+        $this->render('frontend/listPostView', ['listposts' => $list_posts, 'pagestotales' => $pagesTotales, 'pagecourante' => $pageCourante]);
 
     }
 
@@ -112,7 +112,7 @@ class FrontendController extends TwigRenderer
             ];
         } else { $user = ['id' => 0, 'username' => 0, 'status' => 0];}
 
-        $this->render('frontend/postView', ["data_post" => $post, "data_comments" => $comments, "data_user" => $user]);
+        $this->render('frontend/postView', ['data_post' => $post, 'data_comments' => $comments, 'data_user' => $user]);
 
     }
 
@@ -126,27 +126,23 @@ class FrontendController extends TwigRenderer
 
         $comment = $commentManager->getComment($commentId);
 
-        $this->render('frontend/editComment', ["data_comment" => $comment]);
+        $this->render('frontend/editComment', ['data_comment' => $comment]);
     }
 
     public function erroView()
     {
         if (!isset($_SESSION['errorMessage'])) {$_SESSION['errorMessage'] = "Page not found.";}
         $errorMessage = $_SESSION['errorMessage'];
-        $this->render('frontend/errorView', ["data_message" => $errorMessage]);
+        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
     }
 
     public function deco()
     {
         if (session_status() == PHP_SESSION_NONE) {session_start();}
 
-        // Suppression des variables de session et de la session
         $_SESSION = array();
         session_destroy();
-
-        // Suppression des cookies de connexion automatique
-        setcookie('login', '');
-        setcookie('pass_hache', '');
+        
         header('Location: /login');
     }
 

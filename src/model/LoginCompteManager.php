@@ -30,7 +30,7 @@ class LoginCompteManager extends Manager
 
             if ($user) {
 
-                throw new \Exception('Ce pseudo est déjà pris');
+                throw new \Exception("Ce pseudo est déjà pris");
 
             }
 
@@ -52,7 +52,7 @@ class LoginCompteManager extends Manager
 
             if ($user) {
 
-                throw new \Exception('Cet email est déjà utilisé pour un autre compte.');
+                throw new \Exception("Cet email est déjà utilisé pour un autre compte.");
 
             }
 
@@ -86,7 +86,7 @@ class LoginCompteManager extends Manager
         $entetemail .= "X-Mailer: PHP/" . phpversion() . "\n";
         $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
         $objet = "Comfirmation de la création de votre compte sur le blog de juju";
-        $message_email = 'Votre compte a bien été créé ' . $_POST['username'] . ', vous pouvez maintenant vous connecter.';
+        $message_email = "Votre compte a bien été créé " . $_POST['username'] . ", vous pouvez maintenant vous connecter.";
 
         mail($_POST['email'], $objet, $message_email, $entetemail);
 

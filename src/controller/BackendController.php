@@ -20,15 +20,8 @@ class BackendController
         ]);
 
         if (empty($_SESSION)) {$_SESSION['init'] = 1;}
-        $this->twig->addGlobal('_session', $_SESSION);
-        $this->twig->addGlobal('_post', $_POST);
-        $this->twig->addGlobal('_get', $_GET);
 
-        if (session_status() == PHP_SESSION_NONE) {
-
-            session_start();
-
-        }
+        if (session_status() == PHP_SESSION_NONE) {session_start();}
 
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
@@ -55,7 +48,7 @@ class BackendController
         $commentsInvalid = new CommentManager();
         $data_comments = $commentsInvalid->getCommentsInvalid();
 
-        $this->render('backend/adminView', ["data_posts" => $data_posts, "data_comments" => $data_comments]);
+        $this->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
 
     }
 
@@ -69,7 +62,7 @@ class BackendController
         $affectedLines = $CommentValid->setCommentsValid($id);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de valider le commentaire !');
+            throw new \Exception("Impossible de valider le commentaire !");
         }
 
         header('Location: /admin');
@@ -111,7 +104,7 @@ class BackendController
         $postManager = new PostManager();
         $data_post = $postManager->getPost($id);
 
-        $this->render('backend/editPostView', ["data_post" => $data_post]);
+        $this->render('backend/editPostView', ['data_post' => $data_post]);
 
     }
 
@@ -160,7 +153,7 @@ class BackendController
 
         $comment = $commentManager->getComment($id);
 
-        $this->render('backend/editComment', ["data_comment" => $comment]);
+        $this->render('backend/editComment', ['data_comment' => $comment]);
     }
 
     public function editComment($id)
@@ -172,7 +165,7 @@ class BackendController
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de modifier le commentaire !');
+            throw new \Exception("Impossible de modifier le commentaire !");
         }
 
         header('Location: /admin');
@@ -192,6 +185,6 @@ class BackendController
 
     public function erroView($errorMessage)
     {
-        $this->render('frontend/errorView', ["data_message" => $errorMessage]);
+        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
     }
 }
