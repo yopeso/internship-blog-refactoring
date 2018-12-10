@@ -39,12 +39,7 @@
           </td>
           <td>
             <a class="btn btn-primary" href="/user-comment-{{data_comment.id}}"> Modifier </a>
-
-            <form action="?action=delete" method="post">
-              <input type="hidden" name="postId" value="{{data_comment.id}}">
-              <button type="submit" class="btn btn-danger" href="">Supprimer</button>
-            </form>
-
+            <a class="btn btn-danger" href="/user-removeComment-{{data_comment.id}}"> Supprimer </a>
           </td>
         </tr>
         {% endfor %}

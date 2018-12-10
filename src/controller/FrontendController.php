@@ -153,10 +153,14 @@ class FrontendController extends TwigRenderer
         $email = "";
         $message = "";
 
-        if (isset($_POST['message']) && ($_POST['message'] != "")) {$message = $_POST['message'];}
-        if (isset($_POST['email']) && ($_POST['email'] != "")) {$email = $_POST['email'];}
-        if (isset($_POST['prenom']) && ($_POST['prenom'] != "")) {$prenom = $_POST['prenom'];}
-        if (isset($_POST['nom']) && ($_POST['nom'] != "")) {$nom = $_POST['nom'];}
+        if(empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email']) || empty($_POST['message']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception("Tous les champs ne sont pas remplis ou corrects.");
+        }
+
+        $nom = strip_tags(htmlspecialchars($_POST['nom']));
+        $prenom = strip_tags(htmlspecialchars($_POST['prenom']));
+        $email = strip_tags(htmlspecialchars($_POST['email']));
+        $message = strip_tags(htmlspecialchars($_POST['message']));
 
         $contact = new FormManager();
 

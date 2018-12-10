@@ -50,7 +50,13 @@ class CompteController
         $commentManager = new CommentManager();
 
         $comment = $commentManager->getComment($id);
-
+        if($_SESSION['auth']->status != 1)
+        {
+            if($_SESSION['auth']->id != $comment->id_user)
+            {
+                throw new \Exception("Vous n'avez pas les droits pour modifier ce commentaire");
+            }
+        }
         $this->render('compte/editComment', ['data_comment' => $comment]);
     }
 
@@ -80,6 +86,7 @@ class CompteController
 
     public function editComment($id)
     {
+        
         $author = "";
         $comment = "";
 
@@ -95,6 +102,26 @@ class CompteController
             throw new \Exception("Impossible de modifier le commentaire !");
         }
 
+        header('Location: /user');
+
+    }
+
+    public function removeCommentManager($id)
+    {
+        $commentManager = new CommentManager();
+
+        $comment = $commentManager->getComment($id);
+        if($_SESSION['auth']->status != 1)
+        {
+            if($_SESSION['auth']->id != $comment->id_user)
+            {
+                throw new \Exception("Vous n'avez pas les droits pour supprimer ce commentaire");
+            }
+        }
+        $affectedLines = $commentManager->removeComment($id);
+        if ($affectedLines === false) {
+            throw new \Exception("Impossible de suprrimer ce commentaire.");
+        }
         header('Location: /user');
 
     }
