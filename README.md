@@ -7,11 +7,11 @@ Techno utiliser:
 * PHP 7 en MVC
 * MySQL
 * Twig Moteur de templating
-* Routing Grafikart (<a href="https://youtu.be/I-DN2C7Gs7A">vidéo youtube</a>)
+* Routing Grafikart (<a href="https://youtu.be/I-DN2C7Gs7A">youtube</a>)
 
 ## Pré-requis : 
 
-* PHP 7, MySQL.
+* PHP 7, MySQL, Apache.
 
 ## Instalation:
 
