@@ -32,11 +32,11 @@
           <td>{{data_post.title}}</td>
           <td>{{data_post.creation_date_fr}}</td>
           <td>
-            <a class="btn btn-primary" href="admin-previewPost-{{data_post.id}}">Modifier</a>
+            <a class="btn btn-primary mb-1" href="admin-previewPost-{{data_post.id}}">Modifier</a>
 
             <form action="/admin-delete" method="post">
               <input type="hidden" name="postId" value="{{data_post.id}}">
-              <button type="submit" class="btn btn-danger" href="">Supprimer</button>
+              <button type="submit" class="btn btn-danger mb-1" href="">Supprimer</button>
             </form>
 
           </td>
