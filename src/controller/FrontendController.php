@@ -148,10 +148,6 @@ class FrontendController extends TwigRenderer
 
     public function contactForm()
     {
-        $nom = "";
-        $prenom = "";
-        $email = "";
-        $message = "";
 
         if(empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email']) || empty($_POST['message']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             throw new \Exception("Tous les champs ne sont pas remplis ou corrects.");
