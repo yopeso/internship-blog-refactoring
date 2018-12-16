@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Router;
 
 class Route
 {
-
     private $path;
     private $callable;
     private $matches = [];
@@ -13,12 +13,12 @@ class Route
     {
         $this->path = trim($path, '/');
         $this->callable = $callable;
-
     }
 
     public function with($param, $regex)
     {
         $this->params[$param] = str_replace('(', '(?:', $regex);
+
         return $this; // On retourne tjrs l'objet pour enchainer les arguments
     }
 
@@ -32,14 +32,16 @@ class Route
         }
         array_shift($matches);
         $this->matches = $matches;
+
         return true;
     }
 
     private function paramMatch($match)
     {
         if (isset($this->params[$match[1]])) {
-            return '(' . $this->params[$match[1]] . ')';
+            return '('.$this->params[$match[1]].')';
         }
+
         return '([^/]+)';
     }
 
@@ -47,10 +49,12 @@ class Route
     {
         if (is_string($this->callable)) {
             $params = explode('#', $this->callable);
-            $controller = "App\\Controller\\" . $params[0] . "Controller";
+            $controller = 'App\\Controller\\'.$params[0].'Controller';
             $controller = new $controller();
+
             return call_user_func_array([$controller, $params[1]], $this->matches);
         }
+
         return call_user_func_array($this->callable, $this->matches);
     }
 
@@ -60,6 +64,7 @@ class Route
         foreach ($params as $k => $v) {
             $path = str_replace(":$k", $v, $path);
         }
+
         return $path;
     }
 }

@@ -1,40 +1,38 @@
 <?php
+
 namespace App\Model;
 
 /**
- * FromManager gère le formulaire de contact de la page d'accueil
+ * FromManager gère le formulaire de contact de la page d'accueil.
  */
 class FormManager
 {
-
     /**
-     * Traite le formualire, envoie le message à l'administrateur et un mail de comfirmation au visiteur
+     * Traite le formualire, envoie le message à l'administrateur et un mail de comfirmation au visiteur.
      *
      * @param string $nom
      * @param string $prenom
      * @param string $email
      * @param string $message
-     * @return void
      */
     public function fromTraiment($nom, $prenom, $email, $message)
     {
         $entetemail = "From: Blog Projet OpenClassroom <julienroquai@gmail.com>\r\n";
         $entetemail .= "Reply-To: julienroquai@gmail.com\n";
-        $entetemail .= "X-Mailer: PHP/" . phpversion() . "\n";
+        $entetemail .= 'X-Mailer: PHP/'.phpversion()."\n";
         $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
-        $objet = "Comfirmation de la récption de votre message";
-        $message_email = "Nous avons bien reçu votre message";
+        $objet = 'Comfirmation de la récption de votre message';
+        $message_email = 'Nous avons bien reçu votre message';
 
         mail($email, $objet, $message_email, $entetemail);
 
-        $entetemail = "From:" . $nom . " " . $prenom . " <" . $email . ">\r\n";
-        $entetemail .= "Reply-To: " . $email . "\n";
-        $entetemail .= "X-Mailer: PHP/" . phpversion() . "\n";
+        $entetemail = 'From:'.$nom.' '.$prenom.' <'.$email.">\r\n";
+        $entetemail .= 'Reply-To: '.$email."\n";
+        $entetemail .= 'X-Mailer: PHP/'.phpversion()."\n";
         $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
-        $objet = "Contact depuis votre Blog Boblebicoleur";
+        $objet = 'Contact depuis votre Blog Boblebicoleur';
         $message_email = $message;
 
         mail('julienroquai@gmail.com', $objet, $message_email, $entetemail);
-
     }
 }

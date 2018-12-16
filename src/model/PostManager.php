@@ -1,13 +1,13 @@
 <?php
+
 namespace App\Model;
 
 /**
- * PostManager regroupe tout les requêtes lié aux articles du Blog
+ * PostManager regroupe tout les requêtes lié aux articles du Blog.
  */
 class PostManager extends Manager
 {
     /**
-     *
      * @return $articleTotalesReq
      */
     public function getPostsTotal()
@@ -23,6 +23,7 @@ class PostManager extends Manager
      *
      * @param int $depart
      * @param int $articlesParPage
+     *
      * @return $listposts
      */
     public function getPosts($depart, $articlesParPage)
@@ -39,9 +40,10 @@ class PostManager extends Manager
     }
 
     /**
-     * Retourne un article
+     * Retourne un article.
      *
      * @param int $postId
+     *
      * @return $post
      */
     public function getPost($postId)
@@ -57,7 +59,7 @@ class PostManager extends Manager
     }
 
     /**
-     * Aperçu de tout les articles de l'interface admin
+     * Aperçu de tout les articles de l'interface admin.
      *
      * @return $req
      */
@@ -70,13 +72,14 @@ class PostManager extends Manager
     }
 
     /**
-     * Modifie un article
+     * Modifie un article.
      *
-     * @param int $id
+     * @param int    $id
      * @param string $title
      * @param string $chapo
      * @param string $content
-     * @param int $idUser
+     * @param int    $idUser
+     *
      * @return bool
      */
     public function setPost($id, $title, $chapo, $content, $idUser)
@@ -95,12 +98,13 @@ class PostManager extends Manager
     }
 
     /**
-     * Ajoute un nouvel article
+     * Ajoute un nouvel article.
      *
      * @param string $title
      * @param string $chapo
      * @param string $content
-     * @param int $idUser
+     * @param int    $idUser
+     *
      * @return bool
      */
     public function addPost($title, $chapo, $content, $idUser)
@@ -118,9 +122,10 @@ class PostManager extends Manager
     }
 
     /**
-     * Supprime un article
+     * Supprime un article.
      *
      * @param int $postId
+     *
      * @return bool
      */
     public function removePost($postId)

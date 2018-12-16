@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Router;
 
 class Router
 {
-
     private $url;
     private $routes = [];
     private $namedRoutes = [];
@@ -33,6 +33,7 @@ class Router
         if ($name) {
             $this->namedRoutes[$name] = $route;
         }
+
         return $route;
     }
 
@@ -47,7 +48,6 @@ class Router
             }
         }
         throw new \Exception('No matching routes');
-
     }
 
     public function url($name, $params = [])
@@ -55,7 +55,7 @@ class Router
         if (!isset($this->namedRoutes[$name])) {
             throw new \Exception('No route matches this name');
         }
+
         return $this->namedRoutes[$name]->getUrl($params);
     }
-
 }

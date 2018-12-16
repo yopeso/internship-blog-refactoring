@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model;
 
 /**
@@ -7,9 +8,10 @@ namespace App\Model;
 class CommentManager extends Manager
 {
     /**
-     * retourne tout les commentaires d'un article
+     * retourne tout les commentaires d'un article.
      *
-     * @param int $postId id de l'article.
+     * @param int $postId id de l'article
+     *
      * @return $comments
      */
     public function getComments($postId)
@@ -22,9 +24,10 @@ class CommentManager extends Manager
     }
 
     /**
-     * retourne le commentaire demander
+     * retourne le commentaire demander.
      *
      * @param int $commentId id du commentaire
+     *
      * @return $comment
      */
     public function getComment($commentId)
@@ -38,9 +41,10 @@ class CommentManager extends Manager
     }
 
     /**
-     * retourne tout les commentaire d'un utilisateur
+     * retourne tout les commentaire d'un utilisateur.
      *
      * @param int $userId id utilisateur
+     *
      * @return $comments
      */
     public function getUserComment($userId)
@@ -53,12 +57,13 @@ class CommentManager extends Manager
     }
 
     /**
-     * ajoute le commentaire d'un utilisateur
+     * ajoute le commentaire d'un utilisateur.
      *
-     * @param int $id
-     * @param int $userId
+     * @param int    $id
+     * @param int    $userId
      * @param string $author
      * @param string $comment
+     *
      * @return bool
      */
     public function postComment($id, $userId, $author, $comment)
@@ -71,16 +76,17 @@ class CommentManager extends Manager
     }
 
     /**
-     * modifie un commentaire existant et le passe non-valide
+     * modifie un commentaire existant et le passe non-valide.
      *
-     * @param int $commentId
+     * @param int    $commentId
      * @param string $author
      * @param string $comment
+     *
      * @return bool
      */
     public function updateComment($commentId, $author, $comment)
     {
-        $date = date("Y-m-d");
+        $date = date('Y-m-d');
         $bdd = $this->dbConnect();
         $req = $bdd->prepare('UPDATE comments SET author = :author, comment = :comment ,comment_date = :comment_date ,valid = 0 WHERE id = :id');
         $affectedLines = $req->execute(array(
@@ -94,7 +100,7 @@ class CommentManager extends Manager
     }
 
     /**
-     * Retourne tout les commentaires non-valide
+     * Retourne tout les commentaires non-valide.
      *
      * @return $req
      */
@@ -102,13 +108,15 @@ class CommentManager extends Manager
     {
         $bdd = $this->dbConnect();
         $req = $bdd->query('SELECT id, author, comment FROM comments WHERE valid = 0 ORDER BY comment_date DESC ');
+
         return $req;
     }
 
     /**
-     * passe le commentaire non-valdie en valide
+     * passe le commentaire non-valdie en valide.
      *
      * @param int $commentId
+     *
      * @return bool
      */
     public function setCommentValid($commentId)
@@ -124,9 +132,10 @@ class CommentManager extends Manager
     }
 
     /**
-     * supprime un commentaire
+     * supprime un commentaire.
      *
      * @param int $id
+     *
      * @return bool
      */
     public function removeComment($id)
@@ -140,6 +149,4 @@ class CommentManager extends Manager
 
         return $affectedLines;
     }
-
-
 }
