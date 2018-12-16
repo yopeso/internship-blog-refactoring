@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Model\CommentManager;
@@ -6,11 +7,10 @@ use Twig_Environment;
 use Twig_Loader_Filesystem;
 
 /**
- * CompteController est le controller de l'espace utilisateur
+ * CompteController est le controller de l'espace utilisateur.
  */
 class CompteController
 {
-
     private $twig;
     private $loader;
 
@@ -21,9 +21,13 @@ class CompteController
             'cache' => false, // __DIR__ . /tmp',
         ]);
 
-        if (empty($_SESSION)) {$_SESSION['init'] = 1;}
+        if (empty($_SESSION)) {
+            $_SESSION['init'] = 1;
+        }
 
-        if (session_status() == PHP_SESSION_NONE) {session_start();}
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
@@ -33,19 +37,20 @@ class CompteController
 
     protected function render($view, array $prams = [])
     {
-        echo $this->twig->render($view . '.twig', $prams);
+        echo $this->twig->render($view.'.twig', $prams);
     }
 
     public function interfaceCompte()
     {
-        $userId = "";
+        $userId = '';
 
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$userId = $_SESSION['auth']->id;}
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != '')) {
+            $userId = $_SESSION['auth']->id;
+        }
 
         $commentsUser = new CommentManager();
         $comments = $commentsUser->getUserComment($userId);
         $this->render('compte/compteView', ['data_comments' => $comments]);
-
     }
 
     public function comment($id)
@@ -53,10 +58,8 @@ class CompteController
         $commentManager = new CommentManager();
 
         $comment = $commentManager->getComment($id);
-        if($_SESSION['auth']->status != 1)
-        {
-            if($_SESSION['auth']->id != $comment->id_user)
-            {
+        if ($_SESSION['auth']->status != 1) {
+            if ($_SESSION['auth']->id != $comment->id_user) {
                 throw new \Exception("Vous n'avez pas les droits pour modifier ce commentaire");
             }
         }
@@ -65,15 +68,21 @@ class CompteController
 
     public function addComment($id)
     {
-        $userId = "";
-        $author = "";
-        $comment = "";
+        $userId = '';
+        $author = '';
+        $comment = '';
 
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$userId = $_SESSION['auth']->id;}
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != '')) {
+            $userId = $_SESSION['auth']->id;
+        }
 
-        if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
+        if (isset($_POST['author']) && ($_POST['author'] != '')) {
+            $author = $_POST['author'];
+        }
 
-        if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
+        if (isset($_POST['comment']) && ($_POST['comment'] != '')) {
+            $comment = $_POST['comment'];
+        }
 
         $commentManager = new CommentManager();
 
@@ -84,29 +93,30 @@ class CompteController
         }
 
         header('Location: /user');
-
     }
 
     public function editComment($id)
     {
-        
-        $author = "";
-        $comment = "";
+        $author = '';
+        $comment = '';
 
-        if (isset($_POST['author']) && ($_POST['author'] != "")) {$author = $_POST['author'];}
+        if (isset($_POST['author']) && ($_POST['author'] != '')) {
+            $author = $_POST['author'];
+        }
 
-        if (isset($_POST['comment']) && ($_POST['comment'] != "")) {$comment = $_POST['comment'];}
+        if (isset($_POST['comment']) && ($_POST['comment'] != '')) {
+            $comment = $_POST['comment'];
+        }
 
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de modifier le commentaire !");
+            throw new \Exception('Impossible de modifier le commentaire !');
         }
 
         header('Location: /user');
-
     }
 
     public function removeCommentManager($id)
@@ -114,24 +124,20 @@ class CompteController
         $commentManager = new CommentManager();
 
         $comment = $commentManager->getComment($id);
-        if($_SESSION['auth']->status != 1)
-        {
-            if($_SESSION['auth']->id != $comment->id_user)
-            {
+        if ($_SESSION['auth']->status != 1) {
+            if ($_SESSION['auth']->id != $comment->id_user) {
                 throw new \Exception("Vous n'avez pas les droits pour supprimer ce commentaire");
             }
         }
         $affectedLines = $commentManager->removeComment($id);
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de suprrimer ce commentaire.");
+            throw new \Exception('Impossible de suprrimer ce commentaire.');
         }
         header('Location: /user');
-
     }
 
     public function erroView($errorMessage)
     {
         $this->render('frontend/errorView', ['data_message' => $errorMessage]);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Model\CommentManager;
@@ -8,7 +9,6 @@ use Twig_Loader_Filesystem;
 
 class BackendController
 {
-
     private $twig;
     private $loader;
 
@@ -19,9 +19,13 @@ class BackendController
             'cache' => false, // __DIR__ . /tmp',
         ]);
 
-        if (empty($_SESSION)) {$_SESSION['init'] = 1;}
+        if (empty($_SESSION)) {
+            $_SESSION['init'] = 1;
+        }
 
-        if (session_status() == PHP_SESSION_NONE) {session_start();}
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (!isset($_SESSION['auth'])) {
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
@@ -36,12 +40,11 @@ class BackendController
 
     protected function render($view, array $prams = [])
     {
-        echo $this->twig->render($view . '.twig', $prams);
+        echo $this->twig->render($view.'.twig', $prams);
     }
 
     public function interfaceAdmin()
     {
-
         $postPreview = new PostManager();
         $data_posts = $postPreview->getPostPreview();
 
@@ -49,24 +52,24 @@ class BackendController
         $data_comments = $commentsInvalid->getCommentsInvalid();
 
         $this->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
-
     }
 
     public function commentValid()
     {
-        $id = "";
+        $id = '';
 
-        if (isset($_POST['id']) && ($_POST['id'] != "")) {$id = $_POST['id'];}
+        if (isset($_POST['id']) && ($_POST['id'] != '')) {
+            $id = $_POST['id'];
+        }
 
         $CommentValid = new CommentManager();
         $affectedLines = $CommentValid->setCommentValid($id);
 
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de valider le commentaire !");
+            throw new \Exception('Impossible de valider le commentaire !');
         }
 
         header('Location: /admin');
-
     }
 
     public function viewAddPost()
@@ -76,18 +79,26 @@ class BackendController
 
     public function addPostManager()
     {
-        $title = "";
-        $chapo = "";
-        $content = "";
-        $idUser = "";
+        $title = '';
+        $chapo = '';
+        $content = '';
+        $idUser = '';
 
-        if (isset($_POST['title']) && ($_POST['title'] != "")) {$title = $_POST['title'];}
+        if (isset($_POST['title']) && ($_POST['title'] != '')) {
+            $title = $_POST['title'];
+        }
 
-        if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) {$chapo = $_POST['chapo'];}
+        if (isset($_POST['chapo']) && ($_POST['chapo'] != '')) {
+            $chapo = $_POST['chapo'];
+        }
 
-        if (isset($_POST['content']) && ($_POST['content'] != "")) {$content = $_POST['content'];}
+        if (isset($_POST['content']) && ($_POST['content'] != '')) {
+            $content = $_POST['content'];
+        }
 
-        if (isset($_SESSION['id']) && ($_SESSION['id'] != "")) {$idUser = $_SESSION['id'];}
+        if (isset($_SESSION['id']) && ($_SESSION['id'] != '')) {
+            $idUser = $_SESSION['id'];
+        }
 
         $addpost = new PostManager();
         $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
@@ -96,7 +107,6 @@ class BackendController
         }
 
         header('Location: /admin');
-
     }
 
     public function post($id)
@@ -105,48 +115,56 @@ class BackendController
         $data_post = $postManager->getPost($id);
 
         $this->render('backend/editPostView', ['data_post' => $data_post]);
-
     }
 
     public function editPostManager($id)
     {
-        $title = "";
-        $chapo = "";
-        $content = "";
-        $idUser = "";
+        $title = '';
+        $chapo = '';
+        $content = '';
+        $idUser = '';
 
-        if (isset($_POST['title']) && ($_POST['title'] != "")) {$title = $_POST['title'];}
+        if (isset($_POST['title']) && ($_POST['title'] != '')) {
+            $title = $_POST['title'];
+        }
 
-        if (isset($_POST['chapo']) && ($_POST['chapo'] != "")) {$chapo = $_POST['chapo'];}
+        if (isset($_POST['chapo']) && ($_POST['chapo'] != '')) {
+            $chapo = $_POST['chapo'];
+        }
 
-        if (isset($_POST['content']) && ($_POST['content'] != "")) {$content = $_POST['content'];}
+        if (isset($_POST['content']) && ($_POST['content'] != '')) {
+            $content = $_POST['content'];
+        }
 
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != "")) {$idUser = $_SESSION['auth']->id;}
+        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != '')) {
+            $idUser = $_SESSION['auth']->id;
+        }
 
         $postManager = new PostManager();
         $affectedLines = $postManager->setPost($id, $title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de modifier cette article.");
+            throw new \Exception('Impossible de modifier cette article.');
         }
 
         header('Location: /admin');
-
     }
 
     public function removePostManager()
     {
-        $postId = "";
+        $postId = '';
 
-        if (isset($_POST['postId']) && ($_POST['postId'] != "")) {$postId = $_POST['postId'];}
+        if (isset($_POST['postId']) && ($_POST['postId'] != '')) {
+            $postId = $_POST['postId'];
+        }
 
         $postDelete = new PostManager();
         $affectedLines = $postDelete->removePost($postId);
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de suprrimer cette article.");
+            throw new \Exception('Impossible de suprrimer cette article.');
         }
         header('Location: /admin');
-
     }
+
     public function comment($id)
     {
         $commentManager = new CommentManager();
@@ -165,11 +183,10 @@ class BackendController
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de modifier le commentaire !");
+            throw new \Exception('Impossible de modifier le commentaire !');
         }
 
         header('Location: /admin');
-
     }
 
     public function removeCommentManager($id)
@@ -177,10 +194,9 @@ class BackendController
         $postDelete = new CommentManager();
         $affectedLines = $postDelete->removeComment($id);
         if ($affectedLines === false) {
-            throw new \Exception("Impossible de suprrimer ce commentaire.");
+            throw new \Exception('Impossible de suprrimer ce commentaire.');
         }
         header('Location: /admin');
-
     }
 
     public function erroView($errorMessage)
