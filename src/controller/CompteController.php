@@ -5,6 +5,9 @@ use App\Model\CommentManager;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
+/**
+ * CompteController est le controller de l'espace utilisateur
+ */
 class CompteController
 {
 

@@ -1,8 +1,17 @@
 <?php
 namespace App\Model;
 
+/**
+ * CommentManager regroupe toutes les requêtes lie au commetaires.
+ */
 class CommentManager extends Manager
 {
+    /**
+     * retourne tout les commentaires d'un article
+     *
+     * @param int $postId id de l'article.
+     * @return $comments
+     */
     public function getComments($postId)
     {
         $bdd = $this->dbConnect();
@@ -12,6 +21,12 @@ class CommentManager extends Manager
         return $comments;
     }
 
+    /**
+     * retourne le commentaire demander
+     *
+     * @param int $commentId id du commentaire
+     * @return $comment
+     */
     public function getComment($commentId)
     {
         $bdd = $this->dbConnect();
@@ -22,6 +37,12 @@ class CommentManager extends Manager
         return $comment;
     }
 
+    /**
+     * retourne tout les commentaire d'un utilisateur
+     *
+     * @param int $userId id utilisateur
+     * @return $comments
+     */
     public function getUserComment($userId)
     {
         $bdd = $this->dbConnect();
@@ -31,6 +52,15 @@ class CommentManager extends Manager
         return $comments;
     }
 
+    /**
+     * ajoute le commentaire d'un utilisateur
+     *
+     * @param int $id
+     * @param int $userId
+     * @param string $author
+     * @param string $comment
+     * @return bool
+     */
     public function postComment($id, $userId, $author, $comment)
     {
         $bdd = $this->dbConnect();
@@ -40,6 +70,14 @@ class CommentManager extends Manager
         return $affectedLines;
     }
 
+    /**
+     * modifie un commentaire existant et le passe non-valide
+     *
+     * @param int $commentId
+     * @param string $author
+     * @param string $comment
+     * @return bool
+     */
     public function updateComment($commentId, $author, $comment)
     {
         $date = date("Y-m-d");
@@ -55,6 +93,11 @@ class CommentManager extends Manager
         return $affectedLines;
     }
 
+    /**
+     * Retourne tout les commentaires non-valide
+     *
+     * @return $req
+     */
     public function getCommentsInvalid()
     {
         $bdd = $this->dbConnect();
@@ -62,7 +105,13 @@ class CommentManager extends Manager
         return $req;
     }
 
-    public function setCommentsValid($commentId)
+    /**
+     * passe le commentaire non-valdie en valide
+     *
+     * @param int $commentId
+     * @return bool
+     */
+    public function setCommentValid($commentId)
     {
         $bdd = $this->dbConnect();
         $req = $bdd->prepare('UPDATE comments SET valid = :valid WHERE id = :id');
@@ -74,6 +123,12 @@ class CommentManager extends Manager
         return $affectedLines;
     }
 
+    /**
+     * supprime un commentaire
+     *
+     * @param int $id
+     * @return bool
+     */
     public function removeComment($id)
     {
         $bdd = $this->dbConnect();

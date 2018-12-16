@@ -1,8 +1,15 @@
 <?php
 namespace App\Model;
 
+/**
+ * PostManager regroupe tout les requêtes lié aux articles du Blog
+ */
 class PostManager extends Manager
 {
+    /**
+     *
+     * @return $articleTotalesReq
+     */
     public function getPostsTotal()
     {
         $bdd = $this->dbConnect();
@@ -11,6 +18,13 @@ class PostManager extends Manager
         return $articleTotalesReq;
     }
 
+    /**
+     * Retourne les articles avec un point de départ et d'arriver.
+     *
+     * @param int $depart
+     * @param int $articlesParPage
+     * @return $listposts
+     */
     public function getPosts($depart, $articlesParPage)
     {
         $bdd = $this->dbConnect();
@@ -24,6 +38,12 @@ class PostManager extends Manager
         return $listposts;
     }
 
+    /**
+     * Retourne un article
+     *
+     * @param int $postId
+     * @return $post
+     */
     public function getPost($postId)
     {
         $bdd = $this->dbConnect();
@@ -36,6 +56,11 @@ class PostManager extends Manager
         return $post;
     }
 
+    /**
+     * Aperçu de tout les articles de l'interface admin
+     *
+     * @return $req
+     */
     public function getPostPreview()
     {
         $bdd = $this->dbConnect();
@@ -44,6 +69,16 @@ class PostManager extends Manager
         return $req;
     }
 
+    /**
+     * Modifie un article
+     *
+     * @param int $id
+     * @param string $title
+     * @param string $chapo
+     * @param string $content
+     * @param int $idUser
+     * @return bool
+     */
     public function setPost($id, $title, $chapo, $content, $idUser)
     {
         $bdd = $this->dbConnect();
@@ -59,6 +94,15 @@ class PostManager extends Manager
         return $affectedLines;
     }
 
+    /**
+     * Ajoute un nouvel article
+     *
+     * @param string $title
+     * @param string $chapo
+     * @param string $content
+     * @param int $idUser
+     * @return bool
+     */
     public function addPost($title, $chapo, $content, $idUser)
     {
         $bdd = $this->dbConnect();
@@ -73,6 +117,12 @@ class PostManager extends Manager
         return $affectedLines;
     }
 
+    /**
+     * Supprime un article
+     *
+     * @param int $postId
+     * @return bool
+     */
     public function removePost($postId)
     {
         $bdd = $this->dbConnect();
@@ -84,5 +134,4 @@ class PostManager extends Manager
 
         return $affectedLines;
     }
-
 }

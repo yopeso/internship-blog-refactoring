@@ -28,7 +28,7 @@ try {
     $router->post('/admin-delete', 'Backend#removePostManager');
     $router->get('/admin-previewPost-:id', 'Backend#post')->with('id', '[0-9]+');
     $router->get('/admin-post', 'Backend#viewAddPost');
-    $router->post('/admin-commentsValid', 'Backend#commentsValid');
+    $router->post('/admin-commentValid', 'Backend#commentValid');
     $router->get('/admin', 'Backend#interfaceAdmin');
 // Homme and Deco
     $router->get('/deco', 'Frontend#deco');

@@ -3,10 +3,11 @@ namespace App\Controller;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
-
+/**
+ * TwigRenderer >> Twig symfony moteur de template
+ */
 class TwigRenderer
 {
-
     private $twig;
     private $loader;
 
@@ -20,6 +21,13 @@ class TwigRenderer
         if (empty($_SESSION)) {$_SESSION['init'] = 1;}
     }
 
+    /**
+     * Affiche le vue demander
+     *
+     * @param string $view lien de la vue
+     * @param array $prams données envoyer dans la vue
+     * @return void
+     */
     protected function render($view, array $prams = [])
     {
         echo $this->twig->render($view . '.twig', $prams);

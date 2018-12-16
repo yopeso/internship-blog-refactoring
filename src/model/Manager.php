@@ -1,8 +1,16 @@
 <?php
 namespace App\Model;
 
+/**
+ * Manager regroupe la connexion pdo
+ */
 class Manager
 {
+    /**
+     * Connexion à la base
+     *
+     * @return $bdd
+     */
     protected function dbConnect()
     {
         $bdd = new \PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'root', 'root');

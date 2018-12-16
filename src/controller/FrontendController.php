@@ -6,19 +6,36 @@ use App\Model\FormManager;
 use App\Model\LoginCompteManager;
 use App\Model\PostManager;
 
+/**
+ * FrontendController est le controller de la parti public du Blog.
+ */
 class FrontendController extends TwigRenderer
 {
-
+    /**
+     * Affiche la page d'accueil du site
+     *
+     * @return void
+     */
     public function homeView()
     {
         $this->render('frontend/homeView');
     }
 
+    /**
+     * Affiche la page de connexion et d'inscription.
+     *
+     * @return void
+     */
     public function loginView()
     {
         $this->render('frontend/loginView');
     }
 
+    /**
+     * Traitre la connexion , puis redirige vers l'interface utilisateur ou administrateur.
+     *
+     * @return void
+     */
     public function connect()
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
@@ -56,6 +73,11 @@ class FrontendController extends TwigRenderer
 
     }
 
+    /**
+     * Traite l'inscription Utilisateur
+     *
+     * @return void
+     */
     public function register()
     {
         $registerManager = new LoginCompteManager;
@@ -70,6 +92,11 @@ class FrontendController extends TwigRenderer
 
     }
 
+    /**
+     * Affiche la liste des articles.
+     *
+     * @return void
+     */
     public function listPosts()
     {
         $articlesParPage = 5;
@@ -96,6 +123,12 @@ class FrontendController extends TwigRenderer
 
     }
 
+    /**
+     * Affiche un article et ses commentaires.
+     *
+     * @param int $id id du l'article.
+     * @return void
+     */
     public function post($id)
     {
         $postManager = new PostManager();
@@ -116,19 +149,11 @@ class FrontendController extends TwigRenderer
 
     }
 
-    public function comment()
-    {
-        $commentId = "";
-
-        if (isset($_GET['commentId']) && ($_GET['commentId'] != "")) {$commentId = $_GET['commentId'];}
-
-        $commentManager = new CommentManager();
-
-        $comment = $commentManager->getComment($commentId);
-
-        $this->render('frontend/editComment', ['data_comment' => $comment]);
-    }
-
+    /**
+     * Affiche l'excpetion 404
+     *
+     * @return void
+     */
     public function erroView()
     {
         if (!isset($_SESSION['errorMessage'])) {$_SESSION['errorMessage'] = "Page not found.";}
@@ -136,6 +161,11 @@ class FrontendController extends TwigRenderer
         $this->render('frontend/errorView', ['data_message' => $errorMessage]);
     }
 
+    /**
+     * function de déconnexion
+     *
+     * @return void
+     */
     public function deco()
     {
         if (session_status() == PHP_SESSION_NONE) {session_start();}
@@ -146,6 +176,11 @@ class FrontendController extends TwigRenderer
         header('Location: /login');
     }
 
+    /**
+     * Traite le formulaire de contact de la page d'accueil
+     *
+     * @return void
+     */
     public function contactForm()
     {
 
@@ -164,6 +199,12 @@ class FrontendController extends TwigRenderer
 
         header('Location: /');
     }
+
+    /**
+     * Transmait le CV pdf
+     *
+     * @return void
+     */
     public function cvjuju()
     {
         $file = 'public/pdf/CV_julien_carre.pdf';

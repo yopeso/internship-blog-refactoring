@@ -1,8 +1,17 @@
 <?php
 namespace App\Model;
 
+/**
+ * LoginCompteManagaer regroupe tout les requêtes lié a l'identification, inscription de l'utilisateur et l'admin.
+ */
 class LoginCompteManager extends Manager
 {
+    /**
+     * retourne les informations de l'utilisateur ou l'admin
+     *
+     * @param string $username
+     * @return $login
+     */
     public function getLogin($username)
     {
         $bdd = $this->dbConnect();
@@ -14,6 +23,12 @@ class LoginCompteManager extends Manager
 
     }
 
+    /**
+     * Vérifi si le nom est déjà dans la base
+     * 
+     * @throws Exception 
+     * @return void
+     */
     public function checkUsername()
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
@@ -36,6 +51,12 @@ class LoginCompteManager extends Manager
         }
     }
 
+    /**
+     * Vérifi si l'email est valide et si il est déjà dans la base
+     *
+     * @throws Exception
+     * @return void
+     */
     public function checkEmail()
     {
         if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
@@ -58,6 +79,12 @@ class LoginCompteManager extends Manager
         }
     }
 
+    /**
+     * Vérifi le mot de passe
+     *
+     * @throws Exception
+     * @return void
+     */
     public function checkPassword()
     {
         if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
@@ -72,6 +99,11 @@ class LoginCompteManager extends Manager
         }
     }
 
+    /**
+     * inscrit l'utilisateur dans la base et lui envoie un mail de comfirmation.
+     *
+     * @return void
+     */
     public function registerUser()
     {
         $satuts = 2;
@@ -90,5 +122,4 @@ class LoginCompteManager extends Manager
         mail($_POST['email'], $objet, $message_email, $entetemail);
 
     }
-
 }

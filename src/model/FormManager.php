@@ -1,9 +1,21 @@
 <?php
 namespace App\Model;
 
+/**
+ * FromManager gère le formulaire de contact de la page d'accueil
+ */
 class FormManager
 {
 
+    /**
+     * Traite le formualire, envoie le message à l'administrateur et un mail de comfirmation au visiteur
+     *
+     * @param string $nom
+     * @param string $prenom
+     * @param string $email
+     * @param string $message
+     * @return void
+     */
     public function fromTraiment($nom, $prenom, $email, $message)
     {
         $entetemail = "From: Blog Projet OpenClassroom <julienroquai@gmail.com>\r\n";

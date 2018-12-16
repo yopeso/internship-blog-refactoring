@@ -52,14 +52,14 @@ class BackendController
 
     }
 
-    public function commentsValid()
+    public function commentValid()
     {
         $id = "";
 
         if (isset($_POST['id']) && ($_POST['id'] != "")) {$id = $_POST['id'];}
 
         $CommentValid = new CommentManager();
-        $affectedLines = $CommentValid->setCommentsValid($id);
+        $affectedLines = $CommentValid->setCommentValid($id);
 
         if ($affectedLines === false) {
             throw new \Exception("Impossible de valider le commentaire !");
