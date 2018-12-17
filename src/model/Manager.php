@@ -10,7 +10,7 @@ class Manager
     /**
      * Connexion à la base.
      *
-     * @return $bdd
+     * @return object $bdd
      */
     protected function dbConnect()
     {

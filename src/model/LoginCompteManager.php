@@ -12,7 +12,7 @@ class LoginCompteManager extends Manager
      *
      * @param string $username
      *
-     * @return $login
+     * @return mixed $login
      */
     public function getLogin($username)
     {

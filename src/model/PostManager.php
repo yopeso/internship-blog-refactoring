@@ -8,7 +8,7 @@ namespace App\Model;
 class PostManager extends Manager
 {
     /**
-     * @return $articleTotalesReq
+     * @return mixed $articleTotalesReq
      */
     public function getPostsTotal()
     {
@@ -24,7 +24,7 @@ class PostManager extends Manager
      * @param int $depart
      * @param int $articlesParPage
      *
-     * @return $listposts
+     * @return mixed $listposts
      */
     public function getPosts($depart, $articlesParPage)
     {
@@ -44,7 +44,7 @@ class PostManager extends Manager
      *
      * @param int $postId
      *
-     * @return $post
+     * @return mixed $post
      */
     public function getPost($postId)
     {
@@ -61,7 +61,7 @@ class PostManager extends Manager
     /**
      * Aperçu de tout les articles de l'interface admin.
      *
-     * @return $req
+     * @return mixed $req
      */
     public function getPostPreview()
     {
@@ -80,7 +80,7 @@ class PostManager extends Manager
      * @param string $content
      * @param int    $idUser
      *
-     * @return bool
+     * @return mixed mixed
      */
     public function setPost($id, $title, $chapo, $content, $idUser)
     {
@@ -105,7 +105,7 @@ class PostManager extends Manager
      * @param string $content
      * @param int    $idUser
      *
-     * @return bool
+     * @return mixed
      */
     public function addPost($title, $chapo, $content, $idUser)
     {
@@ -126,7 +126,7 @@ class PostManager extends Manager
      *
      * @param int $postId
      *
-     * @return bool
+     * @return mixed
      */
     public function removePost($postId)
     {

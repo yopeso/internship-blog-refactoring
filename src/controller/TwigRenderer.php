@@ -11,7 +11,6 @@ use Twig_Loader_Filesystem;
 class TwigRenderer
 {
     private $twig;
-    private $loader;
 
     /**
      * Affiche le vue demander.
@@ -21,8 +20,8 @@ class TwigRenderer
      */
     protected function render($view, array $prams = [])
     {
-        $this->loader = new Twig_Loader_Filesystem('public/view');
-        $this->twig = new Twig_Environment($this->loader, [
+        $loader = new Twig_Loader_Filesystem('public/view');
+        $this->twig = new Twig_Environment($loader, [
             'cache' => false, // __DIR__ . /tmp',
         ]);
 

@@ -12,7 +12,7 @@ class CommentManager extends Manager
      *
      * @param int $postId id de l'article
      *
-     * @return $comments
+     * @return mixed $comments
      */
     public function getComments($postId)
     {
@@ -28,7 +28,7 @@ class CommentManager extends Manager
      *
      * @param int $commentId id du commentaire
      *
-     * @return $comment
+     * @return mixed $comment
      */
     public function getComment($commentId)
     {
@@ -45,7 +45,7 @@ class CommentManager extends Manager
      *
      * @param int $userId id utilisateur
      *
-     * @return $comments
+     * @return mixed $comments
      */
     public function getUserComment($userId)
     {
@@ -64,7 +64,7 @@ class CommentManager extends Manager
      * @param string $author
      * @param string $comment
      *
-     * @return bool
+     * @return mixed
      */
     public function postComment($id, $userId, $author, $comment)
     {
@@ -82,7 +82,7 @@ class CommentManager extends Manager
      * @param string $author
      * @param string $comment
      *
-     * @return bool
+     * @return mixed
      */
     public function updateComment($commentId, $author, $comment)
     {
@@ -102,7 +102,7 @@ class CommentManager extends Manager
     /**
      * Retourne tout les commentaires non-valide.
      *
-     * @return $req
+     * @return mixed $req
      */
     public function getCommentsInvalid()
     {
@@ -117,7 +117,7 @@ class CommentManager extends Manager
      *
      * @param int $commentId
      *
-     * @return bool
+     * @return mixed
      */
     public function setCommentValid($commentId)
     {
@@ -136,7 +136,7 @@ class CommentManager extends Manager
      *
      * @param int $id
      *
-     * @return bool
+     * @return mixed
      */
     public function removeComment($id)
     {
