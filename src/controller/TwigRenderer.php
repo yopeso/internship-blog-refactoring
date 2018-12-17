@@ -13,18 +13,6 @@ class TwigRenderer
     private $twig;
     private $loader;
 
-    public function __construct()
-    {
-        $this->loader = new Twig_Loader_Filesystem('public/view');
-        $this->twig = new Twig_Environment($this->loader, [
-            'cache' => false, // __DIR__ . /tmp',
-        ]);
-
-        if (empty($_SESSION)) {
-            $_SESSION['init'] = 1;
-        }
-    }
-
     /**
      * Affiche le vue demander.
      *
@@ -33,6 +21,11 @@ class TwigRenderer
      */
     protected function render($view, array $prams = [])
     {
+        $this->loader = new Twig_Loader_Filesystem('public/view');
+        $this->twig = new Twig_Environment($this->loader, [
+            'cache' => false, // __DIR__ . /tmp',
+        ]);
+
         echo $this->twig->render($view.'.twig', $prams);
     }
 }

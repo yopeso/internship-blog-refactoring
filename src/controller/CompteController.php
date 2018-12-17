@@ -3,24 +3,14 @@
 namespace App\Controller;
 
 use App\Model\CommentManager;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
 
 /**
  * CompteController est le controller de l'espace utilisateur.
  */
-class CompteController
+class CompteController extends TwigRenderer
 {
-    private $twig;
-    private $loader;
-
     public function __construct()
     {
-        $this->loader = new Twig_Loader_Filesystem('public/view');
-        $this->twig = new Twig_Environment($this->loader, [
-            'cache' => false, // __DIR__ . /tmp',
-        ]);
-
         if (empty($_SESSION)) {
             $_SESSION['init'] = 1;
         }
@@ -33,11 +23,6 @@ class CompteController
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
             header('Location: /login');
         }
-    }
-
-    protected function render($view, array $prams = [])
-    {
-        echo $this->twig->render($view.'.twig', $prams);
     }
 
     public function interfaceCompte()

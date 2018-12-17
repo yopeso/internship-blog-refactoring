@@ -4,25 +4,11 @@ namespace App\Controller;
 
 use App\Model\CommentManager;
 use App\Model\PostManager;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
 
-class BackendController
+class BackendController extends TwigRenderer
 {
-    private $twig;
-    private $loader;
-
     public function __construct()
     {
-        $this->loader = new Twig_Loader_Filesystem('public/view');
-        $this->twig = new Twig_Environment($this->loader, [
-            'cache' => false, // __DIR__ . /tmp',
-        ]);
-
-        if (empty($_SESSION)) {
-            $_SESSION['init'] = 1;
-        }
-
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -36,11 +22,6 @@ class BackendController
             $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
             header('Location: /user');
         }
-    }
-
-    protected function render($view, array $prams = [])
-    {
-        echo $this->twig->render($view.'.twig', $prams);
     }
 
     public function interfaceAdmin()
