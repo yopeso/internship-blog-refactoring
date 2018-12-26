@@ -26,34 +26,35 @@ class LoginCompteManager extends Manager
 
     /**
      * Vérifi si le nom est déjà dans la base.
-     *
-     * @throws Exception
      */
     public function checkUsername()
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
-            throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
+            $_SESSION['flash']['danger'] = 'Votre pseudo n\'est pas valide (alphanumérique)';
+            header('Location: /login');
         } else {
+            $username = htmlspecialchars($_POST['username']);
+
             $bdd = $this->dbConnect();
             $req = $bdd->prepare('SELECT id FROM users WHERE username = ?');
-            $req->execute([$_POST['username']]);
+            $req->execute([$username]);
             $user = $req->fetch();
 
             if ($user) {
-                throw new \Exception('Ce pseudo est déjà pris');
+                $_SESSION['flash']['danger'] = 'Ce pseudo est déjà pris.';
+                header('Location: /login');
             }
         }
     }
 
     /**
      * Vérifi si l'email est valide et si il est déjà dans la base.
-     *
-     * @throws Exception
      */
     public function checkEmail()
     {
         if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception("votre email n'est pas valide");
+            $_SESSION['flash']['danger'] = 'Votre email n\'est pas valide.';
+            header('Location: /login');
         } else {
             $email = $_POST['email'];
             $bdd = $this->dbConnect();
@@ -62,23 +63,24 @@ class LoginCompteManager extends Manager
             $user = $req->fetch();
 
             if ($user) {
-                throw new \Exception('Cet email est déjà utilisé pour un autre compte.');
+                $_SESSION['flash']['danger'] = 'Cet email est déjà utilisé pour un autre compte.';
+                header('Location: /login');
             }
         }
     }
 
     /**
      * Vérifi le mot de passe.
-     *
-     * @throws Exception
      */
     public function checkPassword()
     {
         if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
-            throw new \Exception('vous devez rentrer un mot de passe valide');
+            $_SESSION['flash']['danger'] = 'vous devez rentrer les mêmes mot de passe';
+            header('Location: /login');
         }
         if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
-            throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
+            $_SESSION['flash']['danger'] = 'Votre password n\'est pas valide (alphanumérique)';
+            header('Location: /login');
         }
     }
 
@@ -101,5 +103,6 @@ class LoginCompteManager extends Manager
         $message_email = 'Votre compte a bien été créé '.$_POST['username'].', vous pouvez maintenant vous connecter.';
 
         mail($_POST['email'], $objet, $message_email, $entetemail);
+        $_SESSION['flash']['success'] = 'Votre compte à bien été créé.';
     }
 }

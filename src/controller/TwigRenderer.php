@@ -8,7 +8,7 @@ use Twig_Loader_Filesystem;
 /**
  * TwigRenderer >> Twig symfony moteur de template.
  */
-class TwigRenderer
+class TwigRenderer extends interfaceController
 {
     private $twig;
 
@@ -24,7 +24,9 @@ class TwigRenderer
         $this->twig = new Twig_Environment($loader, [
             'cache' => false, // __DIR__ . /tmp',
         ]);
-
+        if (isset($_SESSION['flash'])) {
+            $this->twig->addGlobal('session', $_SESSION);
+        }
         echo $this->twig->render($view.'.twig', $prams);
     }
 }

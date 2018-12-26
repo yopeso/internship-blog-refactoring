@@ -14,13 +14,14 @@ class BackendController extends TwigRenderer
         }
 
         if (!isset($_SESSION['auth'])) {
-            $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
+            $_SESSION['flash']['danger'] = 'Vous n\'avez pas le droit d\'accéder à cette page';
             header('Location: /login');
         }
-
-        if ($_SESSION['auth']->status != 1) {
-            $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
-            header('Location: /user');
+        if (isset($_SESSION['auth'])) {
+            if ($_SESSION['auth']->status != 1) {
+                $_SESSION['flash']['danger'] = 'Vous n\'avez pas le droit d\'accéder à cette page';
+                header('Location: /user');
+            }
         }
     }
 
@@ -33,23 +34,21 @@ class BackendController extends TwigRenderer
         $data_comments = $commentsInvalid->getCommentsInvalid();
 
         $this->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
+        $_SESSION['flash'] = array();
     }
 
     public function commentValid()
     {
-        $id = '';
-
-        if (isset($_POST['id']) && ($_POST['id'] != '')) {
-            $id = $_POST['id'];
-        }
+        $id = InterfaceController::tchek($_POST['id']);
 
         $CommentValid = new CommentManager();
         $affectedLines = $CommentValid->setCommentValid($id);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de valider le commentaire !');
+            $_SESSION['flash']['danger'] = 'Impossible de valider le commentaire !';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre commentaire a bien été valider.';
         }
-
         header('Location: /admin');
     }
 
@@ -60,33 +59,21 @@ class BackendController extends TwigRenderer
 
     public function addPostManager()
     {
-        $title = '';
-        $chapo = '';
-        $content = '';
-        $idUser = '';
+        $title = InterfaceController::tchek($_POST['title']);
 
-        if (isset($_POST['title']) && ($_POST['title'] != '')) {
-            $title = $_POST['title'];
-        }
+        $chapo = InterfaceController::tchek($_POST['chapo']);
 
-        if (isset($_POST['chapo']) && ($_POST['chapo'] != '')) {
-            $chapo = $_POST['chapo'];
-        }
+        $content = InterfaceController::tchek($_POST['content']);
 
-        if (isset($_POST['content']) && ($_POST['content'] != '')) {
-            $content = $_POST['content'];
-        }
-
-        if (isset($_SESSION['id']) && ($_SESSION['id'] != '')) {
-            $idUser = $_SESSION['id'];
-        }
+        $idUser = InterfaceController::tchek($_SESSION['auth']->id);
 
         $addpost = new PostManager();
         $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
-            throw new \Exception("Impossible d'ajouter cette article.");
+            $_SESSION['flash']['danger'] = 'Impossible d\'ajouter cette article.';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre article a bien été ajouter.';
         }
-
         header('Location: /admin');
     }
 
@@ -96,52 +83,39 @@ class BackendController extends TwigRenderer
         $data_post = $postManager->getPost($id);
 
         $this->render('backend/editPostView', ['data_post' => $data_post]);
+        $_SESSION['flash'] = array();
     }
 
     public function editPostManager($id)
     {
-        $title = '';
-        $chapo = '';
-        $content = '';
-        $idUser = '';
+        $title = InterfaceController::tchek($_POST['title']);
 
-        if (isset($_POST['title']) && ($_POST['title'] != '')) {
-            $title = $_POST['title'];
-        }
+        $chapo = InterfaceController::tchek($_POST['chapo']);
 
-        if (isset($_POST['chapo']) && ($_POST['chapo'] != '')) {
-            $chapo = $_POST['chapo'];
-        }
+        $content = InterfaceController::tchek($_POST['content']);
 
-        if (isset($_POST['content']) && ($_POST['content'] != '')) {
-            $content = $_POST['content'];
-        }
-
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != '')) {
-            $idUser = $_SESSION['auth']->id;
-        }
+        $idUser = InterfaceController::tchek($_SESSION['auth']->id);
 
         $postManager = new PostManager();
         $affectedLines = $postManager->setPost($id, $title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de modifier cette article.');
+            $_SESSION['flash']['danger'] = 'Impossible de modifier cette article.';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre article à bien été modifier.';
         }
-
         header('Location: /admin');
     }
 
     public function removePostManager()
     {
-        $postId = '';
-
-        if (isset($_POST['postId']) && ($_POST['postId'] != '')) {
-            $postId = $_POST['postId'];
-        }
+        $postId = InterfaceController::tchek($_POST['postId']);
 
         $postDelete = new PostManager();
         $affectedLines = $postDelete->removePost($postId);
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de suprrimer cette article.');
+            $_SESSION['flash']['danger'] = 'Impossible de suprrimer cette article.';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre article à bien été supprimer.';
         }
         header('Location: /admin');
     }
@@ -153,18 +127,23 @@ class BackendController extends TwigRenderer
         $comment = $commentManager->getComment($id);
 
         $this->render('backend/editComment', ['data_comment' => $comment]);
+        $_SESSION['flash'] = array();
     }
 
     public function editComment($id)
     {
-        $author = $_POST['author'];
-        $comment = $_POST['comment'];
+        $author = InterfaceController::tchek($_POST['author']);
+
+        $comment = InterfaceController::tchek($_POST['comment']);
+
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de modifier le commentaire !');
+            $_SESSION['flash']['danger'] = 'Impossible de modifier le commentaire !';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre commentaire à bien été modifier.';
         }
 
         header('Location: /admin');
@@ -175,7 +154,9 @@ class BackendController extends TwigRenderer
         $postDelete = new CommentManager();
         $affectedLines = $postDelete->removeComment($id);
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de suprrimer ce commentaire.');
+            $_SESSION['flash']['danger'] = 'Impossible de suprrimer ce commentaire.';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre commentaire a bien été supprimer.';
         }
         header('Location: /admin');
     }
@@ -183,5 +164,6 @@ class BackendController extends TwigRenderer
     public function erroView($errorMessage)
     {
         $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $_SESSION['flash'] = array();
     }
 }

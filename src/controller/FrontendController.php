@@ -12,12 +12,20 @@ use App\Model\PostManager;
  */
 class FrontendController extends TwigRenderer
 {
+    public function __construct()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
     /**
      * Affiche la page d'accueil du site.
      */
     public function homeView()
     {
         $this->render('frontend/homeView');
+        $_SESSION['flash'] = array();
     }
 
     /**
@@ -26,6 +34,7 @@ class FrontendController extends TwigRenderer
     public function loginView()
     {
         $this->render('frontend/loginView');
+        $_SESSION['flash'] = array();
     }
 
     /**
@@ -34,36 +43,34 @@ class FrontendController extends TwigRenderer
     public function connect()
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
-            throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
+            throw new \Exception('Votre pseudo '.$_POST['username']." n'est pas valide (alphanumérique)");
         }
         if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
-            throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
+            throw new \Exception("Votre password n'est pas valide (alphanumérique)");
         }
-        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $username = strip_tags(htmlspecialchars($_POST['username']));
+        $password = strip_tags(htmlspecialchars($_POST['password']));
 
         $loginManager = new LoginCompteManager();
 
         $user = $loginManager->getLogin($username);
 
         if (!$user) {
-            throw new \Exception('Mauvais identifiant ou mot de passe !');
+            $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
+            header('Location: /login');
         } else {
             $isPasswordCorrect = password_verify($password, $user->password);
 
             if ($isPasswordCorrect != 1) {
-                throw new \Exception('Mauvais identifiant ou mot de passe !');
+                $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
+                header('Location: /login');
+            } else {
+                $_SESSION['auth'] = $user;
+                if ($_SESSION['auth']->status != 1) {
+                    header('Location: /admin');
+                }
+                header('Location: /user');
             }
-
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-
-            $_SESSION['auth'] = $user;
-            if ($_SESSION['auth']->status != 1) {
-                header('Location: /admin');
-            }
-            header('Location: /user');
         }
     }
 
@@ -79,7 +86,6 @@ class FrontendController extends TwigRenderer
         $registerManager->checkPassword();
 
         $registerManager->registerUser();
-
         header('Location: /login');
     }
 
@@ -109,6 +115,7 @@ class FrontendController extends TwigRenderer
         $list_posts = $postManager->getPosts($depart, $articlesParPage);
 
         $this->render('frontend/listPostView', ['listposts' => $list_posts, 'pagestotales' => $pagesTotales, 'pagecourante' => $pageCourante]);
+        $_SESSION['flash'] = array();
     }
 
     /**
@@ -135,6 +142,7 @@ class FrontendController extends TwigRenderer
         }
 
         $this->render('frontend/postView', ['data_post' => $post, 'data_comments' => $comments, 'data_user' => $user]);
+        $_SESSION['flash'] = array();
     }
 
     /**
@@ -147,6 +155,7 @@ class FrontendController extends TwigRenderer
         }
         $errorMessage = $_SESSION['errorMessage'];
         $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $_SESSION['flash'] = array();
     }
 
     /**
@@ -170,18 +179,18 @@ class FrontendController extends TwigRenderer
     public function contactForm()
     {
         if (empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email']) || empty($_POST['message']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception('Tous les champs ne sont pas remplis ou corrects.');
+            $_SESSION['flash']['danger'] = 'Tous les champs ne sont pas remplis ou corrects.';
+        } else {
+            $nom = strip_tags(htmlspecialchars($_POST['nom']));
+            $prenom = strip_tags(htmlspecialchars($_POST['prenom']));
+            $email = strip_tags(htmlspecialchars($_POST['email']));
+            $message = strip_tags(htmlspecialchars($_POST['message']));
+
+            $contact = new FormManager();
+
+            $contact->fromTraiment($nom, $prenom, $email, $message);
+            $_SESSION['flash']['success'] = 'Votre formulaire a bien été envoyer.';
         }
-
-        $nom = strip_tags(htmlspecialchars($_POST['nom']));
-        $prenom = strip_tags(htmlspecialchars($_POST['prenom']));
-        $email = strip_tags(htmlspecialchars($_POST['email']));
-        $message = strip_tags(htmlspecialchars($_POST['message']));
-
-        $contact = new FormManager();
-
-        $contact->fromTraiment($nom, $prenom, $email, $message);
-
         header('Location: /');
     }
 

@@ -20,22 +20,19 @@ class CompteController extends TwigRenderer
         }
 
         if (!isset($_SESSION['auth'])) {
-            $_SESSION['flash']['danger'] = "Vous n'avez pas le droit d'accéder à cette page";
+            $_SESSION['flash']['danger'] = 'Vous n\'avez pas le droit d\'accéder à cette page';
             header('Location: /login');
         }
     }
 
     public function interfaceCompte()
     {
-        $userId = '';
-
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != '')) {
-            $userId = $_SESSION['auth']->id;
-        }
+        $userId = InterfaceController::tchek($_SESSION['auth']->id);
 
         $commentsUser = new CommentManager();
         $comments = $commentsUser->getUserComment($userId);
         $this->render('compte/compteView', ['data_comments' => $comments]);
+        $_SESSION['flash'] = array();
     }
 
     public function comment($id)
@@ -43,64 +40,51 @@ class CompteController extends TwigRenderer
         $commentManager = new CommentManager();
 
         $comment = $commentManager->getComment($id);
-        if ($_SESSION['auth']->status != 1) {
-            if ($_SESSION['auth']->id != $comment->id_user) {
-                throw new \Exception("Vous n'avez pas les droits pour modifier ce commentaire");
-            }
+
+        if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
+            $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
+            header('Location: /user');
+        } else {
+            $this->render('compte/editComment', ['data_comment' => $comment]);
+            $_SESSION['flash'] = array();
         }
-        $this->render('compte/editComment', ['data_comment' => $comment]);
     }
 
     public function addComment($id)
     {
-        $userId = '';
-        $author = '';
-        $comment = '';
+        $author = InterfaceController::tchek($_POST['author']);
 
-        if (isset($_SESSION['auth']->id) && ($_SESSION['auth']->id != '')) {
-            $userId = $_SESSION['auth']->id;
-        }
+        $comment = InterfaceController::tchek($_POST['comment']);
 
-        if (isset($_POST['author']) && ($_POST['author'] != '')) {
-            $author = $_POST['author'];
-        }
-
-        if (isset($_POST['comment']) && ($_POST['comment'] != '')) {
-            $comment = $_POST['comment'];
-        }
+        $idUser = InterfaceController::tchek($_SESSION['auth']->id);
 
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->postComment($id, $userId, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception("Impossible d\'ajouter le commentaire !");
+            $_SESSION['flash']['danger'] = 'Impossible d\'ajouter le commentaire !';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre commentaire a bien été ajouter.';
         }
-
         header('Location: /user');
     }
 
     public function editComment($id)
     {
-        $author = '';
-        $comment = '';
+        $author = InterfaceController::tchek($_POST['author']);
 
-        if (isset($_POST['author']) && ($_POST['author'] != '')) {
-            $author = $_POST['author'];
-        }
-
-        if (isset($_POST['comment']) && ($_POST['comment'] != '')) {
-            $comment = $_POST['comment'];
-        }
+        $comment = InterfaceController::tchek($_POST['comment']);
 
         $commentManager = new CommentManager();
 
         $affectedLines = $commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
-            throw new \Exception('Impossible de modifier le commentaire !');
+            $_SESSION['flash']['danger'] = 'Impossible de modifier le commentaire !';
+        } else {
+            $_SESSION['flash']['success'] = 'Votre commentaire a bien été modifier.';
         }
-
         header('Location: /user');
     }
 
@@ -109,14 +93,17 @@ class CompteController extends TwigRenderer
         $commentManager = new CommentManager();
 
         $comment = $commentManager->getComment($id);
-        if ($_SESSION['auth']->status != 1) {
-            if ($_SESSION['auth']->id != $comment->id_user) {
-                throw new \Exception("Vous n'avez pas les droits pour supprimer ce commentaire");
+
+        if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
+            $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour supprimer ce commentaire';
+        } else {
+            $affectedLines = $commentManager->removeComment($id);
+
+            if ($affectedLines === false) {
+                $_SESSION['flash']['danger'] = 'Impossible de suprrimer ce commentaire.';
+            } else {
+                $_SESSION['flash']['success'] = 'Votre commentaire a bien été supprimer.';
             }
-        }
-        $affectedLines = $commentManager->removeComment($id);
-        if ($affectedLines === false) {
-            throw new \Exception('Impossible de suprrimer ce commentaire.');
         }
         header('Location: /user');
     }
@@ -124,5 +111,6 @@ class CompteController extends TwigRenderer
     public function erroView($errorMessage)
     {
         $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $_SESSION['flash'] = array();
     }
 }
