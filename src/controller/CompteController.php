@@ -91,7 +91,7 @@ class CompteController
 
     public function removeCommentManager($id)
     {
-        $comment = $this->CommentManager > getComment($id);
+        $comment = $this->CommentManager->getComment($id);
 
         if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour supprimer ce commentaire';
