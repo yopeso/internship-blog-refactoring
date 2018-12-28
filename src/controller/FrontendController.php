@@ -10,10 +10,24 @@ use App\Model\PostManager;
 /**
  * FrontendController est le controller de la parti public du Blog.
  */
-class FrontendController extends TwigRenderer
+class FrontendController
 {
+    private $renderer;
+    private $verif;
+    private $loginManager;
+    private $postManager;
+    private $commentManager;
+    private $FormManager;
+
     public function __construct()
     {
+        $this->verif = new FunctionComponent();
+        $this->renderer = new TwigRenderer();
+        $this->loginManager = new LoginCompteManager();
+        $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
+        $this->FormManager = new FormManager();
+
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -24,7 +38,7 @@ class FrontendController extends TwigRenderer
      */
     public function homeView()
     {
-        $this->render('frontend/homeView');
+        $this->renderer->render('frontend/homeView');
         $_SESSION['flash'] = array();
     }
 
@@ -33,7 +47,7 @@ class FrontendController extends TwigRenderer
      */
     public function loginView()
     {
-        $this->render('frontend/loginView');
+        $this->renderer->render('frontend/loginView');
         $_SESSION['flash'] = array();
     }
 
@@ -51,9 +65,7 @@ class FrontendController extends TwigRenderer
         $username = strip_tags(htmlspecialchars($_POST['username']));
         $password = strip_tags(htmlspecialchars($_POST['password']));
 
-        $loginManager = new LoginCompteManager();
-
-        $user = $loginManager->getLogin($username);
+        $user = $this->loginManager->getLogin($username);
 
         if (!$user) {
             $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
@@ -79,13 +91,11 @@ class FrontendController extends TwigRenderer
      */
     public function register()
     {
-        $registerManager = new LoginCompteManager();
+        $this->loginManager->checkUsername();
+        $this->loginManager->checkEmail();
+        $this->loginManager->checkPassword();
 
-        $registerManager->checkUsername();
-        $registerManager->checkEmail();
-        $registerManager->checkPassword();
-
-        $registerManager->registerUser();
+        $this->loginManager->registerUser();
         header('Location: /login');
     }
 
@@ -95,8 +105,7 @@ class FrontendController extends TwigRenderer
     public function listPosts()
     {
         $articlesParPage = 5;
-        $postsTotal = new PostManager();
-        $articlesTotalesReq = $postsTotal->getPostsTotal();
+        $articlesTotalesReq = $this->postManager->getPostsTotal();
         $articlesTotales = $articlesTotalesReq->rowcount();
         $pagesTotales = ceil($articlesTotales / $articlesParPage);
         $_SESSION['pagestotales'] = $pagesTotales;
@@ -111,10 +120,9 @@ class FrontendController extends TwigRenderer
         $pageCourante = $_GET['page'];
         $depart = ($pageCourante - 1) * $articlesParPage;
 
-        $postManager = new PostManager();
-        $list_posts = $postManager->getPosts($depart, $articlesParPage);
+        $list_posts = $this->postManager->getPosts($depart, $articlesParPage);
 
-        $this->render('frontend/listPostView', ['listposts' => $list_posts, 'pagestotales' => $pagesTotales, 'pagecourante' => $pageCourante]);
+        $this->renderer->render('frontend/listPostView', ['listposts' => $list_posts, 'pagestotales' => $pagesTotales, 'pagecourante' => $pageCourante]);
         $_SESSION['flash'] = array();
     }
 
@@ -125,11 +133,8 @@ class FrontendController extends TwigRenderer
      */
     public function post($id)
     {
-        $postManager = new PostManager();
-        $commentManager = new CommentManager();
-
-        $post = $postManager->getPost($id);
-        $comments = $commentManager->getComments($id);
+        $post = $this->postManager->getPost($id);
+        $comments = $this->commentManager->getComments($id);
 
         if (isset($_SESSION['auth']->id)) {
             $user = [
@@ -141,7 +146,7 @@ class FrontendController extends TwigRenderer
             $user = ['id' => 0, 'username' => 0, 'status' => 0];
         }
 
-        $this->render('frontend/postView', ['data_post' => $post, 'data_comments' => $comments, 'data_user' => $user]);
+        $this->renderer->render('frontend/postView', ['data_post' => $post, 'data_comments' => $comments, 'data_user' => $user]);
         $_SESSION['flash'] = array();
     }
 
@@ -154,7 +159,7 @@ class FrontendController extends TwigRenderer
             $_SESSION['errorMessage'] = 'Page not found.';
         }
         $errorMessage = $_SESSION['errorMessage'];
-        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $this->renderer->render('frontend/errorView', ['data_message' => $errorMessage]);
         $_SESSION['flash'] = array();
     }
 
@@ -186,9 +191,7 @@ class FrontendController extends TwigRenderer
             $email = strip_tags(htmlspecialchars($_POST['email']));
             $message = strip_tags(htmlspecialchars($_POST['message']));
 
-            $contact = new FormManager();
-
-            $contact->fromTraiment($nom, $prenom, $email, $message);
+            $this->FormManager->fromTraiment($nom, $prenom, $email, $message);
             $_SESSION['flash']['success'] = 'Votre formulaire a bien été envoyer.';
         }
         header('Location: /');

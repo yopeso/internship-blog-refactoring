@@ -8,17 +8,17 @@ use Twig_Loader_Filesystem;
 /**
  * TwigRenderer >> Twig symfony moteur de template.
  */
-class TwigRenderer extends interfaceController
+class TwigRenderer
 {
     private $twig;
 
     /**
      * Affiche le vue demander.
      *
-     * @param string $view  lien de la vue
-     * @param array  $prams données envoyer dans la vue
+     * @param string     $view  lien de la vue
+     * @param array\void $prams données envoyer dans la vue
      */
-    protected function render($view, array $prams = [])
+    public function render($view, array $prams = [])
     {
         $loader = new Twig_Loader_Filesystem('public/view');
         $this->twig = new Twig_Environment($loader, [
@@ -27,6 +27,7 @@ class TwigRenderer extends interfaceController
         if (isset($_SESSION['flash'])) {
             $this->twig->addGlobal('session', $_SESSION);
         }
+
         echo $this->twig->render($view.'.twig', $prams);
     }
 }

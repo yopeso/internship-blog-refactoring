@@ -5,10 +5,20 @@ namespace App\Controller;
 use App\Model\CommentManager;
 use App\Model\PostManager;
 
-class BackendController extends TwigRenderer
+class BackendController
 {
+    private $renderer;
+    private $verif;
+    private $postManager;
+    private $commentManager;
+
     public function __construct()
     {
+        $this->verif = new FunctionComponent();
+        $this->renderer = new TwigRenderer();
+        $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
+
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
@@ -27,22 +37,19 @@ class BackendController extends TwigRenderer
 
     public function interfaceAdmin()
     {
-        $postPreview = new PostManager();
-        $data_posts = $postPreview->getPostPreview();
+        $data_posts = $this->postManager->getPostPreview();
 
-        $commentsInvalid = new CommentManager();
-        $data_comments = $commentsInvalid->getCommentsInvalid();
+        $data_comments = $this->commentManager->getCommentsInvalid();
 
-        $this->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
+        $this->renderer->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
         $_SESSION['flash'] = array();
     }
 
     public function commentValid()
     {
-        $id = InterfaceController::tchek($_POST['id']);
+        $id = $this->verif->check($_POST['id']);
 
-        $CommentValid = new CommentManager();
-        $affectedLines = $CommentValid->setCommentValid($id);
+        $affectedLines = $this->commentManager->setCommentValid($id);
 
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de valider le commentaire !';
@@ -54,21 +61,20 @@ class BackendController extends TwigRenderer
 
     public function viewAddPost()
     {
-        $this->render('backend/addPostView');
+        $this->renderer->render('backend/addPostView');
     }
 
     public function addPostManager()
     {
-        $title = InterfaceController::tchek($_POST['title']);
+        $title = $this->verif->check($_POST['title']);
 
-        $chapo = InterfaceController::tchek($_POST['chapo']);
+        $chapo = $this->verif->check($_POST['chapo']);
 
-        $content = InterfaceController::tchek($_POST['content']);
+        $content = $this->verif->check($_POST['content']);
 
-        $idUser = InterfaceController::tchek($_SESSION['auth']->id);
+        $idUser = $this->verif->check($_SESSION['auth']->id);
 
-        $addpost = new PostManager();
-        $affectedLines = $addpost->addpost($title, $chapo, $content, $idUser);
+        $affectedLines = $this->postManager->addpost($title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible d\'ajouter cette article.';
         } else {
@@ -79,25 +85,23 @@ class BackendController extends TwigRenderer
 
     public function post($id)
     {
-        $postManager = new PostManager();
-        $data_post = $postManager->getPost($id);
+        $data_post = $this->postManager->getPost($id);
 
-        $this->render('backend/editPostView', ['data_post' => $data_post]);
+        $this->renderer->render('backend/editPostView', ['data_post' => $data_post]);
         $_SESSION['flash'] = array();
     }
 
     public function editPostManager($id)
     {
-        $title = InterfaceController::tchek($_POST['title']);
+        $title = $this->verif->check($_POST['title']);
 
-        $chapo = InterfaceController::tchek($_POST['chapo']);
+        $chapo = $this->verif->check($_POST['chapo']);
 
-        $content = InterfaceController::tchek($_POST['content']);
+        $content = $this->verif->check($_POST['content']);
 
-        $idUser = InterfaceController::tchek($_SESSION['auth']->id);
+        $idUser = $this->verif->check($_SESSION['auth']->id);
 
-        $postManager = new PostManager();
-        $affectedLines = $postManager->setPost($id, $title, $chapo, $content, $idUser);
+        $affectedLines = $this->postManager->setPost($id, $title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier cette article.';
         } else {
@@ -108,10 +112,9 @@ class BackendController extends TwigRenderer
 
     public function removePostManager()
     {
-        $postId = InterfaceController::tchek($_POST['postId']);
+        $postId = $this->verif->check($_POST['postId']);
 
-        $postDelete = new PostManager();
-        $affectedLines = $postDelete->removePost($postId);
+        $affectedLines = $this->postManager->removePost($postId);
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de suprrimer cette article.';
         } else {
@@ -122,23 +125,19 @@ class BackendController extends TwigRenderer
 
     public function comment($id)
     {
-        $commentManager = new CommentManager();
+        $comment = $this->commentManager->getComment($id);
 
-        $comment = $commentManager->getComment($id);
-
-        $this->render('backend/editComment', ['data_comment' => $comment]);
+        $this->renderer->render('backend/editComment', ['data_comment' => $comment]);
         $_SESSION['flash'] = array();
     }
 
     public function editComment($id)
     {
-        $author = InterfaceController::tchek($_POST['author']);
+        $author = $this->verif->check($_POST['author']);
 
-        $comment = InterfaceController::tchek($_POST['comment']);
+        $comment = $this->verif->check($_POST['comment']);
 
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->updateComment($id, $author, $comment);
+        $affectedLines = $this->commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier le commentaire !';
@@ -151,8 +150,7 @@ class BackendController extends TwigRenderer
 
     public function removeCommentManager($id)
     {
-        $postDelete = new CommentManager();
-        $affectedLines = $postDelete->removeComment($id);
+        $affectedLines = $this->commentManager->removeComment($id);
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de suprrimer ce commentaire.';
         } else {
@@ -163,7 +161,7 @@ class BackendController extends TwigRenderer
 
     public function erroView($errorMessage)
     {
-        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $this->renderer->render('frontend/errorView', ['data_message' => $errorMessage]);
         $_SESSION['flash'] = array();
     }
 }

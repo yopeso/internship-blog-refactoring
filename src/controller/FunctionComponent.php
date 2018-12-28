@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-class InterfaceController
+class FunctionComponent
 {
-    public function tchek($param)
+    public function check($param)
     {
         if (isset($param) && ($param != '')) {
             return $param;

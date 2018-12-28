@@ -7,10 +7,18 @@ use App\Model\CommentManager;
 /**
  * CompteController est le controller de l'espace utilisateur.
  */
-class CompteController extends TwigRenderer
+class CompteController
 {
+    private $renderer;
+    private $verif;
+    private $CommentManager;
+
     public function __construct()
     {
+        $this->verif = new FunctionComponent();
+        $this->renderer = new TwigRenderer();
+        $this->CommentManager = new CommentManager();
+
         if (empty($_SESSION)) {
             $_SESSION['init'] = 1;
         }
@@ -27,40 +35,35 @@ class CompteController extends TwigRenderer
 
     public function interfaceCompte()
     {
-        $userId = InterfaceController::tchek($_SESSION['auth']->id);
+        $userId = $this->verif->check($_SESSION['auth']->id);
 
-        $commentsUser = new CommentManager();
-        $comments = $commentsUser->getUserComment($userId);
-        $this->render('compte/compteView', ['data_comments' => $comments]);
+        $comments = $this->CommentManager->getUserComment($userId);
+        $this->renderer->render('compte/compteView', ['data_comments' => $comments]);
         $_SESSION['flash'] = array();
     }
 
     public function comment($id)
     {
-        $commentManager = new CommentManager();
-
-        $comment = $commentManager->getComment($id);
+        $comment = $this->CommentManager->getComment($id);
 
         if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
             header('Location: /user');
         } else {
-            $this->render('compte/editComment', ['data_comment' => $comment]);
+            $this->renderer->render('compte/editComment', ['data_comment' => $comment]);
             $_SESSION['flash'] = array();
         }
     }
 
     public function addComment($id)
     {
-        $author = InterfaceController::tchek($_POST['author']);
+        $author = $this->verif->check($_POST['author']);
 
-        $comment = InterfaceController::tchek($_POST['comment']);
+        $comment = $this->verif->check($_POST['comment']);
 
-        $idUser = InterfaceController::tchek($_SESSION['auth']->id);
+        $idUser = $this->verif->check($_SESSION['auth']->id);
 
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->postComment($id, $userId, $author, $comment);
+        $affectedLines = $this->CommentManager->postComment($id, $idUser, $author, $comment);
 
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible d\'ajouter le commentaire !';
@@ -72,13 +75,11 @@ class CompteController extends TwigRenderer
 
     public function editComment($id)
     {
-        $author = InterfaceController::tchek($_POST['author']);
+        $author = $this->verif->check($_POST['author']);
 
-        $comment = InterfaceController::tchek($_POST['comment']);
+        $comment = $this->verif->check($_POST['comment']);
 
-        $commentManager = new CommentManager();
-
-        $affectedLines = $commentManager->updateComment($id, $author, $comment);
+        $affectedLines = $this->CommentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier le commentaire !';
@@ -90,14 +91,12 @@ class CompteController extends TwigRenderer
 
     public function removeCommentManager($id)
     {
-        $commentManager = new CommentManager();
-
-        $comment = $commentManager->getComment($id);
+        $comment = $this->CommentManager > getComment($id);
 
         if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour supprimer ce commentaire';
         } else {
-            $affectedLines = $commentManager->removeComment($id);
+            $affectedLines = $this->CommentManager->removeComment($id);
 
             if ($affectedLines === false) {
                 $_SESSION['flash']['danger'] = 'Impossible de suprrimer ce commentaire.';
@@ -110,7 +109,7 @@ class CompteController extends TwigRenderer
 
     public function erroView($errorMessage)
     {
-        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $this->renderer->render('frontend/errorView', ['data_message' => $errorMessage]);
         $_SESSION['flash'] = array();
     }
 }
