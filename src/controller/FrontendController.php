@@ -17,7 +17,7 @@ class FrontendController
     private $loginManager;
     private $postManager;
     private $commentManager;
-    private $FormManager;
+    private $formManager;
 
     public function __construct()
     {
@@ -26,7 +26,7 @@ class FrontendController
         $this->loginManager = new LoginCompteManager();
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
-        $this->FormManager = new FormManager();
+        $this->formManager = new FormManager();
 
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -191,7 +191,7 @@ class FrontendController
             $email = strip_tags(htmlspecialchars($_POST['email']));
             $message = strip_tags(htmlspecialchars($_POST['message']));
 
-            $this->FormManager->fromTraiment($nom, $prenom, $email, $message);
+            $this->formManager->fromTraiment($nom, $prenom, $email, $message);
             $_SESSION['flash']['success'] = 'Votre formulaire a bien été envoyer.';
         }
         header('Location: /');

@@ -11,13 +11,13 @@ class CompteController
 {
     private $renderer;
     private $verif;
-    private $CommentManager;
+    private $commentManager;
 
     public function __construct()
     {
         $this->verif = new FunctionComponent();
         $this->renderer = new TwigRenderer();
-        $this->CommentManager = new CommentManager();
+        $this->commentManager = new CommentManager();
 
         if (empty($_SESSION)) {
             $_SESSION['init'] = 1;
@@ -37,14 +37,14 @@ class CompteController
     {
         $userId = $this->verif->check($_SESSION['auth']->id);
 
-        $comments = $this->CommentManager->getUserComment($userId);
+        $comments = $this->commentManager->getUserComment($userId);
         $this->renderer->render('compte/compteView', ['data_comments' => $comments]);
         $_SESSION['flash'] = array();
     }
 
     public function comment($id)
     {
-        $comment = $this->CommentManager->getComment($id);
+        $comment = $this->commentManager->getComment($id);
 
         if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
@@ -63,7 +63,7 @@ class CompteController
 
         $idUser = $this->verif->check($_SESSION['auth']->id);
 
-        $affectedLines = $this->CommentManager->postComment($id, $idUser, $author, $comment);
+        $affectedLines = $this->commentManager->postComment($id, $idUser, $author, $comment);
 
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible d\'ajouter le commentaire !';
@@ -79,7 +79,7 @@ class CompteController
 
         $comment = $this->verif->check($_POST['comment']);
 
-        $affectedLines = $this->CommentManager->updateComment($id, $author, $comment);
+        $affectedLines = $this->commentManager->updateComment($id, $author, $comment);
 
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier le commentaire !';
@@ -91,12 +91,12 @@ class CompteController
 
     public function removeCommentManager($id)
     {
-        $comment = $this->CommentManager->getComment($id);
+        $comment = $this->commentManager->getComment($id);
 
         if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour supprimer ce commentaire';
         } else {
-            $affectedLines = $this->CommentManager->removeComment($id);
+            $affectedLines = $this->commentManager->removeComment($id);
 
             if ($affectedLines === false) {
                 $_SESSION['flash']['danger'] = 'Impossible de suprrimer ce commentaire.';
