@@ -15,8 +15,8 @@ class TwigRenderer
     /**
      * Affiche le vue demander.
      *
-     * @param string     $view  lien de la vue
-     * @param array\void $prams données envoyer dans la vue
+     * @param string $view  lien de la vue
+     * @param array  $prams données envoyer dans la vue
      */
     public function render($view, array $prams = [])
     {
