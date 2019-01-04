@@ -36,7 +36,7 @@ class PostManager extends Database
         // return $listposts;
 
         $sql = 'SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesparpage';
-        $parameters = ["':depart', $depart, \PDO::PARAM_INT", "':articlesparpage', $articlesParPage, \PDO::PARAM_INT"];
+        $parameters = [[':depart', $depart, \PDO::PARAM_INT], [':articlesparpage', $articlesParPage, \PDO::PARAM_INT]];
         $result = $this->sql($sql, $parameters);
 
         return $result;
