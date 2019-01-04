@@ -37,10 +37,7 @@ abstract class Database
             $result = $this->getConnection()->prepare($sql);
             $n = count($parameters);
             foreach ($parameters as $n) {
-                $tab = array('[' => '', ']' => '');
-                $param = str_replace_assoce($tab, $parameters);
-                $result->bindParam($param
-            );
+                $result->bindParam($parameters);
                 ++$n;
             }
             $result->execute();
