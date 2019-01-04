@@ -35,8 +35,10 @@ abstract class Database
     {
         if ($parameters) {
             $result = $this->getConnection()->prepare($sql);
-            while ($parameters) {
+            $n = count($parameters);
+            foreach ($parameters as $n) {
                 $result->bindParam($parameters);
+                ++$n;
             }
             $result->execute();
 
