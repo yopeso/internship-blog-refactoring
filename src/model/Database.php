@@ -39,7 +39,8 @@ abstract class Database
             foreach ($parameters as $n) {
                 $tab = array('[' => '', ']' => '');
                 $param = str_replace_assoce($tab, $parameters);
-                $result->bindParam($param);
+                $result->bindParam($param
+            );
                 ++$n;
             }
             $result->execute();
