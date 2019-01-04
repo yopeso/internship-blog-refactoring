@@ -12,13 +12,17 @@ class PostManager extends Database
      */
     public function getPostsTotal()
     {
-        $bdd = $this->dbConnect();
-        $articleTotalesReq = $bdd->query('SELECT id FROM posts');
+        // $bdd = $this->dbConnect();
+        // $articleTotalesReq = $bdd->query('SELECT id FROM posts');
 
-        return $articleTotalesReq;
+        // return $articleTotalesReq;
+
+        $sql = 'SELECT id FROM posts';
+        $result = $this->sql($sql);
+
+        return $result;
     }
 
-   
     public function getPosts($depart, $articlesParPage)
     {
         // $bdd = $this->dbConnect();
@@ -32,10 +36,10 @@ class PostManager extends Database
         // return $listposts;
 
         $sql = 'SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesparpage';
-        $parameters = ["':depart', $depart, \PDO::PARAM_INT","':articlesparpage', $articlesParPage, \PDO::PARAM_INT"]
+        $parameters = ["':depart', $depart, \PDO::PARAM_INT", "':articlesparpage', $articlesParPage, \PDO::PARAM_INT"];
         $result = $this->sql($sql, $parameters);
-        return $result;
 
+        return $result;
     }
 
     /**
@@ -47,14 +51,20 @@ class PostManager extends Database
      */
     public function getPost($postId)
     {
-        $bdd = $this->dbConnect();
-        $req = $bdd->prepare('SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = :postId');
-        $req->execute(array(
-            ':postId' => $postId,
-        ));
-        $post = $req->fetch();
+        // $bdd = $this->dbConnect();
+        // $req = $bdd->prepare('SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = :postId');
+        // $req->execute(array(
+        //     ':postId' => $postId,
+        // ));
+        // $post = $req->fetch();
 
-        return $post;
+        // return $post;
+
+        $sql = 'SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = :postId';
+        $parameters = ["':postId', $postId, \PDO::PARAM_INT"];
+        $result = $this->sql($sql);
+
+        return $result;
     }
 
     /**
