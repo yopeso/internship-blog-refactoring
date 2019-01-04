@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Model;
+
 abstract class Database
 {
     const DB_HOST = 'mysql:host=localhost;dbname=blog;charset=utf8';
