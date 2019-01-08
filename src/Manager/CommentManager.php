@@ -191,8 +191,8 @@ class CommentManager extends Database
         if (!empty($row['comment'])) {
             $article->setComment($row['comment']);
         }
-        if (!empty($row['comment_date'])) {
-            $article->setCommentDate($row['comment_date']);
+        if (!empty($row['comment_date_fr'])) {
+            $article->setCommentDate($row['comment_date_fr']);
         }
         if (!empty($row['valid'])) {
             $article->setCommentValid($row['valid']);

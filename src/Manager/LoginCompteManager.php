@@ -47,8 +47,6 @@ class LoginCompteManager extends Database
             $parameters = ['username' => $username];
             $result = $this->sql($sql, $parameters);
 
-            return $result->fetch();
-
             if ($user) {
                 $_SESSION['flash']['danger'] = 'Ce pseudo est déjà pris.';
                 header('Location: /login');
@@ -104,7 +102,7 @@ class LoginCompteManager extends Database
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $sql = 'INSERT INTO users SET username = ?, password = ?, email = ?, status = ?';
         $parameters = [$_POST['username'], $password, $_POST['email'], $satuts];
-        $result = $this->sql($sql, $parameters);
+        $this->sql($sql, $parameters);
 
         $entetemail = "From: Blog juju  <julienroquai@gmail.com>\r\n";
         $entetemail .= "Reply-To: julienroquai@gmail.com \n";
