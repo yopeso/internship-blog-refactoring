@@ -45,8 +45,8 @@ class LoginCompteManager extends Database
 
             $sql = 'SELECT id FROM users WHERE username = :username';
             $parameters = ['username' => $username];
-            $result = $this->sql($sql, $parameters);
-
+            $req = $this->sql($sql, $parameters);
+            $user = $req->fetch();
             if ($user) {
                 $_SESSION['flash']['danger'] = 'Ce pseudo est déjà pris.';
                 header('Location: /login');
