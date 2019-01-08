@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Service;
 
 abstract class Database
 {
@@ -19,6 +19,20 @@ abstract class Database
         return $this->connection;
     }
 
+    /**
+     * Connexion à la base, ancienne méthode.
+     *
+     * @return object $bdd
+     */
+    protected function dbConnect()
+    {
+        $bdd = new \PDO(self::DB_HOST, self::DB_USER, self::DB_PASS);
+        $bdd->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        //$bdd->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+
+        return $bdd;
+    }
+
     private function getConnection()
     {
         try {
@@ -31,16 +45,21 @@ abstract class Database
         }
     }
 
-    protected function sql($sql, $parameters = null)
+    protected function sql($sql, $parameters = null, $bind = null)
     {
-        if ($parameters) {
+        if ($parameters || $bind) {
             $result = $this->getConnection()->prepare($sql);
-            $n = count($parameters);
-            foreach ($parameters as $n) {
-                $result->bindParam($parameters);
-                ++$n;
+            if ($bind) {
+                $n = count($bind);
+                foreach ($bind as $n) {
+                    $bind_end = str_replace('"', '', $bind);
+                    $result->bindParam($bind_end);
+                    ++$n;
+                }
+                $result->execute();
+            } else {
+                $result->execute($parameters);
             }
-            $result->execute();
 
             return $result;
         } else {

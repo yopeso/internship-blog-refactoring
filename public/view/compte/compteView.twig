@@ -23,11 +23,11 @@
       <tbody>
         {% for data_comment in data_comments %}
         <tr>
-          <td><a class="btn btn-primary" href="/article-{{data_comment.post_id}}">Lien</a></td>
+          <td><a class="btn btn-primary" href="/article-{{data_comment.postId}}">Lien</a></td>
           <td>{{data_comment.author}}</td>
           <td>{{data_comment.comment}}</td>
           <td>
-            {% if data_comment.valid == 0 %}
+            {% if data_comment.commentValid == 0 %}
             <div class="alert alert-warning" role="alert">
               En attente de validation
             </div>

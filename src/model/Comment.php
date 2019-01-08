@@ -7,9 +7,10 @@ class Comment
     private $id;
     private $postId;
     private $idUser;
+    private $author;
     private $comment;
     private $commentDate;
-    private $valid;
+    private $commentValid;
 
     /**
      * Get the value of id.
@@ -72,6 +73,26 @@ class Comment
     }
 
     /**
+     * Get the value of author.
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set the value of author.
+     *
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
      * Get the value of comment.
      */
     public function getComment()
@@ -112,21 +133,21 @@ class Comment
     }
 
     /**
-     * Get the value of valid.
+     * Get the value of commentValid.
      */
-    public function getValid()
+    public function getCommentValid()
     {
-        return $this->valid;
+        return $this->commentValid;
     }
 
     /**
-     * Set the value of valid.
+     * Set the value of commentValid.
      *
      * @return self
      */
-    public function setValid($valid)
+    public function setCommentValid($commentValid)
     {
-        $this->valid = $valid;
+        $this->commentValid = $commentValid;
 
         return $this;
     }

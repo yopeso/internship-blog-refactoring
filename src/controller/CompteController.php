@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
-use App\Model\CommentManager;
+use App\Service\TwigRenderer;
+use App\Manager\CommentManager;
+use App\Validator\FunctionValidator;
 
 /**
  * CompteController est le controller de l'espace utilisateur.
@@ -15,7 +17,7 @@ class CompteController
 
     public function __construct()
     {
-        $this->verif = new FunctionComponent();
+        $this->verif = new FunctionValidator();
         $this->renderer = new TwigRenderer();
         $this->commentManager = new CommentManager();
 
@@ -35,18 +37,20 @@ class CompteController
 
     public function interfaceCompte()
     {
-        $userId = $this->verif->check($_SESSION['auth']->id);
+        if (isset($_SESSION['auth'])) {
+            $userId = $this->verif->check($_SESSION['auth']->getId());
 
-        $comments = $this->commentManager->getUserComment($userId);
-        $this->renderer->render('compte/compteView', ['data_comments' => $comments]);
-        $_SESSION['flash'] = array();
+            $comments = $this->commentManager->getUserComment($userId);
+            $this->renderer->render('compte/compteView', ['data_comments' => $comments]);
+            $_SESSION['flash'] = array();
+        }
     }
 
     public function comment($id)
     {
         $comment = $this->commentManager->getComment($id);
 
-        if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
+        if ($_SESSION['auth']->getStatus() != 1 && $_SESSION['auth']->getId() != $comment->getIdUser()) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
             header('Location: /user');
         } else {
@@ -61,7 +65,7 @@ class CompteController
 
         $comment = $this->verif->check($_POST['comment']);
 
-        $idUser = $this->verif->check($_SESSION['auth']->id);
+        $idUser = $this->verif->check($_SESSION['auth']->getId());
 
         $affectedLines = $this->commentManager->postComment($id, $idUser, $author, $comment);
 
@@ -93,7 +97,7 @@ class CompteController
     {
         $comment = $this->commentManager->getComment($id);
 
-        if ($_SESSION['auth']->status != 1 && $_SESSION['auth']->id != $comment->id_user) {
+        if ($_SESSION['auth']->getStatus() != 1 && $_SESSION['auth']->getId() != $comment->getIdUser()) {
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour supprimer ce commentaire';
         } else {
             $affectedLines = $this->commentManager->removeComment($id);

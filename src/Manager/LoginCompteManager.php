@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Model;
+namespace App\Manager;
+
+use App\Model\User;
+use App\Service\Database;
 
 /**
  * LoginCompteManagaer regroupe tout les requêtes lié a l'identification, inscription de l'utilisateur et l'admin.
  */
-class LoginCompteManager extends Manager
+class LoginCompteManager extends Database
 {
     /**
      * retourne les informations de l'utilisateur ou l'admin.
@@ -16,12 +19,17 @@ class LoginCompteManager extends Manager
      */
     public function getLogin($username)
     {
-        $bdd = $this->dbConnect();
-        $req = $bdd->prepare('SELECT * FROM users WHERE username = :username');
-        $req->execute(['username' => $username]);
-        $login = $req->fetch();
+        $sql = 'SELECT * FROM users WHERE username = :username';
+        $parameters = ['username' => $username];
+        $result = $this->sql($sql, $parameters);
 
-        return $login;
+        $row = $result->fetch();
+
+        if ($row) {
+            return $this->buildObject($row);
+        } else {
+            echo 'Aucun Utilisateur existant avec cet identifiant';
+        }
     }
 
     /**
@@ -35,10 +43,11 @@ class LoginCompteManager extends Manager
         } else {
             $username = htmlspecialchars($_POST['username']);
 
-            $bdd = $this->dbConnect();
-            $req = $bdd->prepare('SELECT id FROM users WHERE username = ?');
-            $req->execute([$username]);
-            $user = $req->fetch();
+            $sql = 'SELECT id FROM users WHERE username = :username';
+            $parameters = ['username' => $username];
+            $result = $this->sql($sql, $parameters);
+
+            return $result->fetch();
 
             if ($user) {
                 $_SESSION['flash']['danger'] = 'Ce pseudo est déjà pris.';
@@ -57,10 +66,12 @@ class LoginCompteManager extends Manager
             header('Location: /login');
         } else {
             $email = $_POST['email'];
-            $bdd = $this->dbConnect();
-            $req = $bdd->prepare('SELECT id FROM users WHERE email = ?');
-            $req->execute([$email]);
-            $user = $req->fetch();
+
+            $sql = 'SELECT id FROM users WHERE email = ?';
+            $parameters = [$email];
+            $result = $this->sql($sql, $parameters);
+
+            $user = $result->fetch();
 
             if ($user) {
                 $_SESSION['flash']['danger'] = 'Cet email est déjà utilisé pour un autre compte.';
@@ -90,10 +101,10 @@ class LoginCompteManager extends Manager
     public function registerUser()
     {
         $satuts = 2;
-        $bdd = $this->dbConnect();
-        $req = $bdd->prepare('INSERT INTO users SET username = ?, password = ?, email = ?, status = ?');
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $req->execute([$_POST['username'], $password, $_POST['email'], $satuts]);
+        $sql = 'INSERT INTO users SET username = ?, password = ?, email = ?, status = ?';
+        $parameters = [$_POST['username'], $password, $_POST['email'], $satuts];
+        $result = $this->sql($sql, $parameters);
 
         $entetemail = "From: Blog juju  <julienroquai@gmail.com>\r\n";
         $entetemail .= "Reply-To: julienroquai@gmail.com \n";
@@ -104,5 +115,17 @@ class LoginCompteManager extends Manager
 
         mail($_POST['email'], $objet, $message_email, $entetemail);
         $_SESSION['flash']['success'] = 'Votre compte à bien été créé.';
+    }
+
+    private function buildObject(array $row)
+    {
+        $user = new User();
+        $user->setId($row['id']);
+        $user->setUsername($row['username']);
+        $user->setPassword($row['password']);
+        $user->setEmail($row['email']);
+        $user->setStatus($row['status']);
+
+        return $user;
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Validator;
 
-class FunctionComponent
+class FunctionValidator
 {
     public function check($param)
     {

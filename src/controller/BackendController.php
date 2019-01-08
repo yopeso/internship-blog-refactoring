@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Model\CommentManager;
-use App\Model\PostManager;
+use App\Service\TwigRenderer;
+use App\Manager\CommentManager;
+use App\Manager\PostManager;
+use App\Validator\FunctionValidator;
 
 class BackendController
 {
@@ -14,7 +16,7 @@ class BackendController
 
     public function __construct()
     {
-        $this->verif = new FunctionComponent();
+        $this->verif = new FunctionValidator();
         $this->renderer = new TwigRenderer();
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
@@ -28,7 +30,7 @@ class BackendController
             header('Location: /login');
         }
         if (isset($_SESSION['auth'])) {
-            if ($_SESSION['auth']->status != 1) {
+            if ($_SESSION['auth']->getStatus() != 1) {
                 $_SESSION['flash']['danger'] = 'Vous n\'avez pas le droit d\'accéder à cette page';
                 header('Location: /user');
             }
@@ -72,7 +74,7 @@ class BackendController
 
         $content = $this->verif->check($_POST['content']);
 
-        $idUser = $this->verif->check($_SESSION['auth']->id);
+        $idUser = $this->verif->check($_SESSION['auth']->getId());
 
         $affectedLines = $this->postManager->addpost($title, $chapo, $content, $idUser);
         if ($affectedLines === false) {
@@ -99,7 +101,7 @@ class BackendController
 
         $content = $this->verif->check($_POST['content']);
 
-        $idUser = $this->verif->check($_SESSION['auth']->id);
+        $idUser = $this->verif->check($_SESSION['auth']->getId());
 
         $affectedLines = $this->postManager->setPost($id, $title, $chapo, $content, $idUser);
         if ($affectedLines === false) {

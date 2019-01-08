@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Model\CommentManager;
-use App\Model\FormManager;
-use App\Model\LoginCompteManager;
-use App\Model\PostManager;
+use App\Service\TwigRenderer;
+use App\Manager\CommentManager;
+use App\Manager\FormManager;
+use App\Manager\LoginCompteManager;
+use App\Manager\PostManager;
+use App\Validator\FunctionValidator;
 
 /**
  * FrontendController est le controller de la parti public du Blog.
@@ -21,7 +23,7 @@ class FrontendController
 
     public function __construct()
     {
-        $this->verif = new FunctionComponent();
+        $this->verif = new FunctionValidator();
         $this->renderer = new TwigRenderer();
         $this->loginManager = new LoginCompteManager();
         $this->postManager = new PostManager();
@@ -71,17 +73,18 @@ class FrontendController
             $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
             header('Location: /login');
         } else {
-            $isPasswordCorrect = password_verify($password, $user->password);
+            $isPasswordCorrect = password_verify($password, $user->getPassword());
 
             if ($isPasswordCorrect != 1) {
                 $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
                 header('Location: /login');
             } else {
                 $_SESSION['auth'] = $user;
-                if ($_SESSION['auth']->status != 1) {
+                if ($_SESSION['auth']->getStatus() == 1) {
                     header('Location: /admin');
+                } else {
+                    header('Location: /user');
                 }
-                header('Location: /user');
             }
         }
     }
@@ -136,11 +139,11 @@ class FrontendController
         $post = $this->postManager->getPost($id);
         $comments = $this->commentManager->getComments($id);
 
-        if (isset($_SESSION['auth']->id)) {
+        if (isset($_SESSION['auth'])) {
             $user = [
-                'id' => $_SESSION['auth']->id,
-                'username' => $_SESSION['auth']->username,
-                'status' => $_SESSION['auth']->status,
+                'id' => $_SESSION['auth']->getId(),
+                'username' => $_SESSION['auth']->getUsername(),
+                'status' => $_SESSION['auth']->getStatus(),
             ];
         } else {
             $user = ['id' => 0, 'username' => 0, 'status' => 0];

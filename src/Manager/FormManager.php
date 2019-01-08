@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Manager;
 
 /**
  * FromManager gère le formulaire de contact de la page d'accueil.
