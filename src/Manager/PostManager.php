@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Model\Post;
+use App\Model\Author;
 use App\Service\Database;
 
 /**
@@ -31,12 +32,9 @@ class PostManager extends Database
      */
     public function getPosts($depart, $articlesParPage)
     {
-        $bdd = $this->dbConnect();
-        $result = $bdd->prepare('SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesparpage');
-
-        $result->bindParam(':depart', $depart, \PDO::PARAM_INT);
-        $result->bindParam(':articlesparpage', $articlesParPage, \PDO::PARAM_INT);
-        $result->execute();
+        $sql = 'SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesparpage';
+        $bind = [[':depart', $depart, \PDO::PARAM_INT], [':articlesparpage', $articlesParPage, \PDO::PARAM_INT]];
+        $result = $this->sql($sql, null, $bind);
 
         $articles = [];
 
@@ -57,7 +55,17 @@ class PostManager extends Database
      */
     public function getPost($postId)
     {
-        $sql = 'SELECT id, title, chapo, content, id_user, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts WHERE id = :postId';
+        $sql = 'SELECT posts.id, 
+                    posts.title, 
+                    posts.chapo, 
+                    posts.content, 
+                    posts.id_user, 
+                    authors.author, 
+                    DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr 
+                    FROM posts 
+                    LEFT JOIN authors on posts.id_author = authors.id
+                    WHERE posts.id = :postId';
+
         $parameters = [':postId' => $postId];
         $result = $this->sql($sql, $parameters);
 
@@ -101,10 +109,11 @@ class PostManager extends Database
      *
      * @return mixed mixed
      */
-    public function setPost($id, $title, $chapo, $content, $idUser)
+    public function setPost($id, $title, $idAuthor, $chapo, $content, $idUser)
     {
-        $sql = 'UPDATE posts SET title = :title, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id';
+        $sql = 'UPDATE posts SET title = :title, id_author = :id_author, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id';
         $parameters = [':id' => $id,
+        ':id_author' => $idAuthor,
         ':title' => $title,
         ':chapo' => $chapo,
         ':content' => $content,
@@ -152,11 +161,21 @@ class PostManager extends Database
         return $result;
     }
 
+    /**
+     * Construit l'objet Article.
+     *
+     * @param array $row envoi le résultat de la requête sql
+     *
+     * @return object $article retourne l'objet construit
+     */
     private function buildObject(array $row)
     {
         $article = new Post();
         if (!empty($row['id'])) {
             $article->setId($row['id']);
+        }
+        if (!empty($row['author'])) {
+            $article->setAuthor($row['author']);
         }
         if (!empty($row['id_user'])) {
             $article->setIdUser($row['id_user']);
@@ -175,5 +194,29 @@ class PostManager extends Database
         }
 
         return $article;
+    }
+
+    public function getAllAuthors()
+    {
+        $sql = 'SELECT * FROM authors';
+        $result = $this->sql($sql);
+
+        $author = [];
+
+        foreach ($result as $row) {
+            $authorId = $row['id'];
+            $authors[$authorId] = $this->buildObjectAuthor($row);
+        }
+
+        return $authors;
+    }
+
+    private function buildObjectAuthor(array $row)
+    {
+        $author = new Author();
+        $author->setId($row['id']);
+        $author->setAuthor($row['author']);
+
+        return $author;
     }
 }

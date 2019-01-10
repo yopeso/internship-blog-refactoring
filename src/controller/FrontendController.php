@@ -107,7 +107,7 @@ class FrontendController
      */
     public function listPosts()
     {
-        $articlesParPage = 5;
+        $articlesParPage = 4;
         $articlesTotalesReq = $this->postManager->getPostsTotal();
         $articlesTotales = $articlesTotalesReq->rowcount();
         $pagesTotales = ceil($articlesTotales / $articlesParPage);

@@ -15,7 +15,7 @@ class LoginCompteManager extends Database
      *
      * @param string $username
      *
-     * @return mixed $login
+     * @return object $user
      */
     public function getLogin($username)
     {
@@ -115,6 +115,13 @@ class LoginCompteManager extends Database
         $_SESSION['flash']['success'] = 'Votre compte à bien été créé.';
     }
 
+    /**
+     * Construit l'objet Utilisateur.
+     *
+     * @param array $row envoi le résultat de la requête sql
+     *
+     * @return object $article retourne l'objet construit
+     */
     private function buildObject(array $row)
     {
         $user = new User();

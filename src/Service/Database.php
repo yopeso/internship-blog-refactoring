@@ -19,20 +19,6 @@ abstract class Database
         return $this->connection;
     }
 
-    /**
-     * Connexion à la base, ancienne méthode.
-     *
-     * @return object $bdd
-     */
-    protected function dbConnect()
-    {
-        $bdd = new \PDO(self::DB_HOST, self::DB_USER, self::DB_PASS);
-        $bdd->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        //$bdd->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
-
-        return $bdd;
-    }
-
     private function getConnection()
     {
         try {
@@ -49,12 +35,10 @@ abstract class Database
     {
         if ($parameters || $bind) {
             $result = $this->getConnection()->prepare($sql);
+
             if ($bind) {
-                $n = count($bind);
-                foreach ($bind as $n) {
-                    $bind_end = str_replace('"', '', $bind);
-                    $result->bindParam($bind_end);
-                    ++$n;
+                foreach ($bind as $bindnew) {
+                    $result->bindParam($bindnew[0], $bindnew[1], $bindnew[2]);
                 }
                 $result->execute();
             } else {

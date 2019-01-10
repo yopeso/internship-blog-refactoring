@@ -7,6 +7,9 @@ use App\Manager\CommentManager;
 use App\Manager\PostManager;
 use App\Validator\FunctionValidator;
 
+/**
+ * class BackendController le controller de la parti Admin.
+ */
 class BackendController
 {
     private $renderer;
@@ -39,12 +42,14 @@ class BackendController
 
     public function interfaceAdmin()
     {
-        $data_posts = $this->postManager->getPostPreview();
+        if (isset($_SESSION['auth'])) {
+            $data_posts = $this->postManager->getPostPreview();
 
-        $data_comments = $this->commentManager->getCommentsInvalid();
+            $data_comments = $this->commentManager->getCommentsInvalid();
 
-        $this->renderer->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
-        $_SESSION['flash'] = array();
+            $this->renderer->render('backend/adminView', ['data_posts' => $data_posts, 'data_comments' => $data_comments]);
+            $_SESSION['flash'] = array();
+        }
     }
 
     public function commentValid()
@@ -88,8 +93,9 @@ class BackendController
     public function post($id)
     {
         $data_post = $this->postManager->getPost($id);
+        $data_authors = $this->postManager->getAllAuthors();
 
-        $this->renderer->render('backend/editPostView', ['data_post' => $data_post]);
+        $this->renderer->render('backend/editPostView', ['data_post' => $data_post, 'data_authors' => $data_authors]);
         $_SESSION['flash'] = array();
     }
 
@@ -99,11 +105,13 @@ class BackendController
 
         $chapo = $this->verif->check($_POST['chapo']);
 
+        $idAuthor = $this->verif->check($_POST['id_author']);
+
         $content = $this->verif->check($_POST['content']);
 
         $idUser = $this->verif->check($_SESSION['auth']->getId());
 
-        $affectedLines = $this->postManager->setPost($id, $title, $chapo, $content, $idUser);
+        $affectedLines = $this->postManager->setPost($id, $title, $idAuthor, $chapo, $content, $idUser);
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier cette article.';
         } else {

@@ -6,6 +6,7 @@ class Post
 {
     private $id;
     private $title;
+    private $author;
     private $chapo;
     private $content;
     private $idUser;
@@ -127,6 +128,26 @@ class Post
     public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of author.
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set the value of author.
+     *
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
 
         return $this;
     }

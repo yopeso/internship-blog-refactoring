@@ -15,7 +15,7 @@ class CommentManager extends Database
      *
      * @param int $postId id de l'article
      *
-     * @return mixed $comments
+     * @return object $comments
      */
     public function getComments($postId)
     {
@@ -38,7 +38,7 @@ class CommentManager extends Database
      *
      * @param int $commentId id du commentaire
      *
-     * @return mixed $comment
+     * @return object $comment
      */
     public function getComment($commentId)
     {
@@ -60,7 +60,7 @@ class CommentManager extends Database
      *
      * @param int $userId id utilisateur
      *
-     * @return mixed $comments
+     * @return object $comments
      */
     public function getUserComment($userId)
     {
@@ -123,7 +123,7 @@ class CommentManager extends Database
     /**
      * Retourne tout les commentaires non-valide.
      *
-     * @return mixed $req
+     * @return object $comments
      */
     public function getCommentsInvalid()
     {
@@ -173,31 +173,38 @@ class CommentManager extends Database
         return $result;
     }
 
+    /**
+     * Construit l'objet Commentaire.
+     *
+     * @param array $row envoi le résultat de la requête sql
+     *
+     * @return object $comment retourne l'objet construit
+     */
     private function buildObject(array $row)
     {
-        $article = new Comment();
+        $comment = new Comment();
         if (!empty($row['id'])) {
-            $article->setId($row['id']);
+            $comment->setId($row['id']);
         }
         if (!empty($row['post_id'])) {
-            $article->setPostId($row['post_id']);
+            $comment->setPostId($row['post_id']);
         }
         if (!empty($row['id_user'])) {
-            $article->setIdUser($row['id_user']);
+            $comment->setIdUser($row['id_user']);
         }
         if (!empty($row['author'])) {
-            $article->setAuthor($row['author']);
+            $comment->setAuthor($row['author']);
         }
         if (!empty($row['comment'])) {
-            $article->setComment($row['comment']);
+            $comment->setComment($row['comment']);
         }
         if (!empty($row['comment_date_fr'])) {
-            $article->setCommentDate($row['comment_date_fr']);
+            $comment->setCommentDate($row['comment_date_fr']);
         }
         if (!empty($row['valid'])) {
-            $article->setCommentValid($row['valid']);
+            $comment->setCommentValid($row['valid']);
         }
 
-        return $article;
+        return $comment;
     }
 }

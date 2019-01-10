@@ -9,7 +9,7 @@ if (empty($_GET['url'])) {
 }
 
 $router = new App\Router\Router($_GET['url']);
-try {
+// try {
     // Prati FRONT
     $router->get('/cv', 'Frontend#cvjuju');
     $router->get('/article-:id', 'Frontend#post')->with('id', '[0-9]+');
@@ -42,9 +42,9 @@ try {
     $router->get('/404', 'Frontend#erroView');
     // Run Route
     $router->run();
-} catch (\Exception $e) {
-    $errorMessage = $e->getMessage();
-    $_SESSION['errorMessage'] = $errorMessage;
-    header('HTTP/1.1 404 Not Found');
-    header('Location: /404');
-}
+// } catch (\Exception $e) {
+//     $errorMessage = $e->getMessage();
+//     $_SESSION['errorMessage'] = $errorMessage;
+//     header('HTTP/1.1 404 Not Found');
+//     header('Location: /404');
+// }
