@@ -134,7 +134,7 @@ class FrontendController
      *
      * @param int $id id du l'article
      */
-    public function post($id)
+    public function post(int $id)
     {
         $post = $this->postManager->getPost($id);
         $comments = $this->commentManager->getComments($id);

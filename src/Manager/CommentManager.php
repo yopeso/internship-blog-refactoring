@@ -15,9 +15,9 @@ class CommentManager extends Database
      *
      * @param int $postId id de l'article
      *
-     * @return object $comments
+     * @return array $comments
      */
-    public function getComments($postId)
+    public function getComments(int $postId): array
     {
         $sql = 'SELECT id, id_user, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE post_id = :postId and valid = 1 ORDER BY comment_date DESC';
         $parameters = [':postId' => $postId];
@@ -40,7 +40,7 @@ class CommentManager extends Database
      *
      * @return object $comment
      */
-    public function getComment($commentId)
+    public function getComment(int $commentId): object
     {
         $sql = 'SELECT id, id_user, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE id = :commentId';
         $parameters = [':commentId' => $commentId];
@@ -60,9 +60,9 @@ class CommentManager extends Database
      *
      * @param int $userId id utilisateur
      *
-     * @return object $comments
+     * @return array $comments
      */
-    public function getUserComment($userId)
+    public function getUserComment(int $userId): array
     {
         $sql = 'SELECT id, post_id, author, comment, valid,DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE id_user = :userId ORDER BY comment_date DESC';
         $parameters = [':userId' => $userId];
@@ -86,9 +86,9 @@ class CommentManager extends Database
      * @param string $author
      * @param string $comment
      *
-     * @return mixed
+     * @return object
      */
-    public function postComment($id, $userId, $author, $comment)
+    public function postComment(int $id, int $userId, string $author, string $comment): object
     {
         $sql = 'INSERT INTO comments(post_id, id_user, author, comment, comment_date, valid) VALUES(?, ?, ?, ?, NOW(), 0)';
         $parameters = [$id, $userId, $author, $comment];
@@ -104,9 +104,9 @@ class CommentManager extends Database
      * @param string $author
      * @param string $comment
      *
-     * @return mixed
+     * @return object
      */
-    public function updateComment($commentId, $author, $comment)
+    public function updateComment(int $commentId, string $author, string $comment): object
     {
         $date = date('Y-m-d');
 
@@ -123,9 +123,9 @@ class CommentManager extends Database
     /**
      * Retourne tout les commentaires non-valide.
      *
-     * @return object $comments
+     * @return array $comments
      */
-    public function getCommentsInvalid()
+    public function getCommentsInvalid(): array
     {
         $sql = 'SELECT id, author, comment FROM comments WHERE valid = 0 ORDER BY comment_date DESC ';
         $result = $this->sql($sql);
@@ -145,9 +145,9 @@ class CommentManager extends Database
      *
      * @param int $commentId
      *
-     * @return mixed
+     * @return object
      */
-    public function setCommentValid($commentId)
+    public function setCommentValid(int $commentId): object
     {
         $sql = 'UPDATE comments SET valid = :valid WHERE id = :id';
         $parameters = [':id' => $commentId,
@@ -162,9 +162,9 @@ class CommentManager extends Database
      *
      * @param int $id
      *
-     * @return mixed
+     * @return object
      */
-    public function removeComment($id)
+    public function removeComment(int $id): object
     {
         $sql = 'DELETE FROM comments WHERE id = :id';
         $parameters = [':id' => $id];
@@ -180,7 +180,7 @@ class CommentManager extends Database
      *
      * @return object $comment retourne l'objet construit
      */
-    private function buildObject(array $row)
+    private function buildObject(array $row): object
     {
         $comment = new Comment();
         if (!empty($row['id'])) {

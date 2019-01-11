@@ -17,7 +17,7 @@ class LoginCompteManager extends Database
      *
      * @return object $user
      */
-    public function getLogin($username)
+    public function getLogin(string $username): object
     {
         $sql = 'SELECT * FROM users WHERE username = :username';
         $parameters = ['username' => $username];
@@ -35,7 +35,7 @@ class LoginCompteManager extends Database
     /**
      * Vérifi si le nom est déjà dans la base.
      */
-    public function checkUsername()
+    public function checkUsername(): void
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
             $_SESSION['flash']['danger'] = 'Votre pseudo n\'est pas valide (alphanumérique)';
@@ -57,7 +57,7 @@ class LoginCompteManager extends Database
     /**
      * Vérifi si l'email est valide et si il est déjà dans la base.
      */
-    public function checkEmail()
+    public function checkEmail(): void
     {
         if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $_SESSION['flash']['danger'] = 'Votre email n\'est pas valide.';
@@ -81,7 +81,7 @@ class LoginCompteManager extends Database
     /**
      * Vérifi le mot de passe.
      */
-    public function checkPassword()
+    public function checkPassword(): void
     {
         if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
             $_SESSION['flash']['danger'] = 'vous devez rentrer les mêmes mot de passe';
@@ -96,7 +96,7 @@ class LoginCompteManager extends Database
     /**
      * inscrit l'utilisateur dans la base et lui envoie un mail de comfirmation.
      */
-    public function registerUser()
+    public function registerUser(): void
     {
         $satuts = 2;
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -122,7 +122,7 @@ class LoginCompteManager extends Database
      *
      * @return object $article retourne l'objet construit
      */
-    private function buildObject(array $row)
+    private function buildObject(array $row): object
     {
         $user = new User();
         $user->setId($row['id']);

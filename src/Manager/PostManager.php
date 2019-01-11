@@ -12,9 +12,9 @@ use App\Service\Database;
 class PostManager extends Database
 {
     /**
-     * @return mixed $articleTotalesReq
+     * @return object $articleTotalesReq
      */
-    public function getPostsTotal()
+    public function getPostsTotal(): object
     {
         $sql = 'SELECT id FROM posts';
         $result = $this->sql($sql);
@@ -28,9 +28,9 @@ class PostManager extends Database
      * @param int $depart
      * @param int $articlesParPage
      *
-     * @return mixed $listposts
+     * @return array $listposts
      */
-    public function getPosts($depart, $articlesParPage)
+    public function getPosts(int $depart, int $articlesParPage): array
     {
         $sql = 'SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesparpage';
         $bind = [[':depart', $depart, \PDO::PARAM_INT], [':articlesparpage', $articlesParPage, \PDO::PARAM_INT]];
@@ -51,11 +51,12 @@ class PostManager extends Database
      *
      * @param int $postId
      *
-     * @return mixed $post
+     * @return object $post
      */
-    public function getPost($postId)
+    public function getPost(int $postId): object
     {
         $sql = 'SELECT posts.id, 
+                    posts.id_author, 
                     posts.title, 
                     posts.chapo, 
                     posts.content, 
@@ -74,16 +75,16 @@ class PostManager extends Database
         if ($row) {
             return $this->buildObject($row);
         } else {
-            echo 'Aucun article existant avec cet identifiant';
+            header('Location: /blog');
         }
     }
 
     /**
      * Aperçu de tout les articles de l'interface admin.
      *
-     * @return mixed $req
+     * @return array $req
      */
-    public function getPostPreview()
+    public function getPostPreview(): array
     {
         $sql = 'SELECT id, title, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC';
         $result = $this->sql($sql);
@@ -107,9 +108,9 @@ class PostManager extends Database
      * @param string $content
      * @param int    $idUser
      *
-     * @return mixed mixed
+     * @return object mixed
      */
-    public function setPost($id, $title, $idAuthor, $chapo, $content, $idUser)
+    public function setPost(int $id, string $title, int $idAuthor, string $chapo, string $content, int $idUser): object
     {
         $sql = 'UPDATE posts SET title = :title, id_author = :id_author, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id';
         $parameters = [':id' => $id,
@@ -131,12 +132,13 @@ class PostManager extends Database
      * @param string $content
      * @param int    $idUser
      *
-     * @return mixed
+     * @return object
      */
-    public function addPost($title, $chapo, $content, $idUser)
+    public function addPost(string $title, int $idAuthor, string $chapo, string $content, int $idUser): object
     {
-        $sql = 'INSERT INTO posts (title, chapo, content, id_user, creation_date) VALUES (:title, :chapo, :content, :iduser, NOW())';
+        $sql = 'INSERT INTO posts (title, id_author, chapo, content, id_user, creation_date) VALUES (:title, :id_author, :chapo, :content, :iduser, NOW())';
         $parameters = [':title' => $title,
+        ':id_author' => $idAuthor,
             ':chapo' => $chapo,
             ':content' => $content,
             ':iduser' => $idUser, ];
@@ -150,9 +152,9 @@ class PostManager extends Database
      *
      * @param int $postId
      *
-     * @return mixed
+     * @return object
      */
-    public function removePost($postId)
+    public function removePost(int $postId): object
     {
         $sql = 'DELETE FROM posts WHERE id = :postId';
         $parameters = [':postId' => $postId];
@@ -168,11 +170,14 @@ class PostManager extends Database
      *
      * @return object $article retourne l'objet construit
      */
-    private function buildObject(array $row)
+    private function buildObject(array $row): object
     {
         $article = new Post();
         if (!empty($row['id'])) {
             $article->setId($row['id']);
+        }
+        if (!empty($row['id_author'])) {
+            $article->setidAuthor($row['id_author']);
         }
         if (!empty($row['author'])) {
             $article->setAuthor($row['author']);
@@ -196,7 +201,12 @@ class PostManager extends Database
         return $article;
     }
 
-    public function getAllAuthors()
+    /**
+     * Retourne tout les auteurs de la Bdd.
+     *
+     * @return array
+     */
+    public function getAllAuthors(): array
     {
         $sql = 'SELECT * FROM authors';
         $result = $this->sql($sql);
@@ -211,7 +221,14 @@ class PostManager extends Database
         return $authors;
     }
 
-    private function buildObjectAuthor(array $row)
+    /**
+     * Construit l'objet Author.
+     *
+     * @param array $row
+     *
+     * @return object
+     */
+    private function buildObjectAuthor(array $row): object
     {
         $author = new Author();
         $author->setId($row['id']);

@@ -6,6 +6,7 @@ class Post
 {
     private $id;
     private $title;
+    private $idAuthor;
     private $author;
     private $chapo;
     private $content;
@@ -25,7 +26,7 @@ class Post
      *
      * @return self
      */
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -45,7 +46,7 @@ class Post
      *
      * @return self
      */
-    public function setTitle($title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -65,7 +66,7 @@ class Post
      *
      * @return self
      */
-    public function setChapo($chapo)
+    public function setChapo(string $chapo): self
     {
         $this->chapo = $chapo;
 
@@ -85,7 +86,7 @@ class Post
      *
      * @return self
      */
-    public function setContent($content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
@@ -105,7 +106,7 @@ class Post
      *
      * @return self
      */
-    public function setIdUser($idUser)
+    public function setIdUser(int $idUser): self
     {
         $this->idUser = $idUser;
 
@@ -125,7 +126,7 @@ class Post
      *
      * @return self
      */
-    public function setCreationDate($creationDate)
+    public function setCreationDate(string $creationDate): self
     {
         $this->creationDate = $creationDate;
 
@@ -145,9 +146,29 @@ class Post
      *
      * @return self
      */
-    public function setAuthor($author)
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idAuthor.
+     */
+    public function getIdAuthor()
+    {
+        return $this->idAuthor;
+    }
+
+    /**
+     * Set the value of idAuthor.
+     *
+     * @return self
+     */
+    public function setIdAuthor(int $idAuthor): self
+    {
+        $this->idAuthor = $idAuthor;
 
         return $this;
     }

@@ -68,7 +68,9 @@ class BackendController
 
     public function viewAddPost()
     {
-        $this->renderer->render('backend/addPostView');
+        $data_authors = $this->postManager->getAllAuthors();
+
+        $this->renderer->render('backend/addPostView', ['data_authors' => $data_authors]);
     }
 
     public function addPostManager()
@@ -77,11 +79,13 @@ class BackendController
 
         $chapo = $this->verif->check($_POST['chapo']);
 
+        $idAuthor = $this->verif->check($_POST['id_author']);
+
         $content = $this->verif->check($_POST['content']);
 
         $idUser = $this->verif->check($_SESSION['auth']->getId());
 
-        $affectedLines = $this->postManager->addpost($title, $chapo, $content, $idUser);
+        $affectedLines = $this->postManager->addpost($title, $idAuthor, $chapo, $content, $idUser);
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible d\'ajouter cette article.';
         } else {
@@ -90,7 +94,7 @@ class BackendController
         header('Location: /admin');
     }
 
-    public function post($id)
+    public function post(int $id)
     {
         $data_post = $this->postManager->getPost($id);
         $data_authors = $this->postManager->getAllAuthors();
@@ -99,7 +103,7 @@ class BackendController
         $_SESSION['flash'] = array();
     }
 
-    public function editPostManager($id)
+    public function editPostManager(int $id)
     {
         $title = $this->verif->check($_POST['title']);
 
@@ -133,7 +137,7 @@ class BackendController
         header('Location: /admin');
     }
 
-    public function comment($id)
+    public function comment(int $id)
     {
         $comment = $this->commentManager->getComment($id);
 
@@ -141,7 +145,7 @@ class BackendController
         $_SESSION['flash'] = array();
     }
 
-    public function editComment($id)
+    public function editComment(int $id)
     {
         $author = $this->verif->check($_POST['author']);
 
@@ -158,7 +162,7 @@ class BackendController
         header('Location: /admin');
     }
 
-    public function removeCommentManager($id)
+    public function removeCommentManager(int $id)
     {
         $affectedLines = $this->commentManager->removeComment($id);
         if ($affectedLines === false) {
