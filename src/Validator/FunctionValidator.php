@@ -11,14 +11,18 @@ class FunctionValidator
      *
      * @return mixed $param
      */
-    public function check($param)
+    public function check($data)
     {
-        if (isset($param) && ($param != '')) {
-            return $param;
+        if (isset($data) && ($data != '')) {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+
+            return $data;
         } else {
+            return $data = flase;
             $_SESSION['flash']['danger'] = 'Les champs ne sont pas remplis';
             header('Location: /admin');
-            die;
         }
     }
 }
