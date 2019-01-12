@@ -16,7 +16,7 @@ class FunctionValidator
         if (isset($param) && ($param != '')) {
             return $param;
         } else {
-            $_SESSION['flash']['danger'] = 'Le champ '.print_r($param).' est vide.';
+            $_SESSION['flash']['danger'] = 'Les champs ne sont pas remplis';
             header('Location: /admin');
             die;
         }
