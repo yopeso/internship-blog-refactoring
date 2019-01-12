@@ -1,80 +1,114 @@
 <?php
+
 namespace App\Controller;
 
-use App\Model\CommentManager;
-use App\Model\FormManager;
-use App\Model\LoginCompteManager;
-use App\Model\PostManager;
+use App\Service\TwigRenderer;
+use App\Manager\CommentManager;
+use App\Manager\FormManager;
+use App\Manager\LoginCompteManager;
+use App\Manager\PostManager;
+use App\Validator\FunctionValidator;
 
-class FrontendController extends TwigRenderer
+/**
+ * FrontendController est le controller de la parti public du Blog.
+ */
+class FrontendController
 {
+    private $renderer;
+    private $verif;
+    private $loginManager;
+    private $postManager;
+    private $commentManager;
+    private $formManager;
 
+    public function __construct()
+    {
+        $this->verif = new FunctionValidator();
+        $this->renderer = new TwigRenderer();
+        $this->loginManager = new LoginCompteManager();
+        $this->postManager = new PostManager();
+        $this->commentManager = new CommentManager();
+        $this->formManager = new FormManager();
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    /**
+     * Affiche la page d'accueil du site.
+     */
     public function homeView()
     {
-        $this->render('frontend/homeView');
+        $this->renderer->render('frontend/homeView');
+        $_SESSION['flash'] = array();
     }
 
+    /**
+     * Affiche la page de connexion et d'inscription.
+     */
     public function loginView()
     {
-        $this->render('frontend/loginView');
+        $this->renderer->render('frontend/loginView');
+        $_SESSION['flash'] = array();
     }
 
+    /**
+     * Traitre la connexion , puis redirige vers l'interface utilisateur ou administrateur.
+     */
     public function connect()
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
-
-            throw new \Exception("Votre pseudo n'ai pas valide (alphanumérique)");
-
+            throw new \Exception('Votre pseudo '.$_POST['username']." n'est pas valide (alphanumérique)");
         }
         if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
-
-            throw new \Exception("Votre password n'ai pas valide (alphanumérique)");
-
+            throw new \Exception("Votre password n'est pas valide (alphanumérique)");
         }
-        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+        $username = strip_tags(htmlspecialchars($_POST['username']));
+        $password = strip_tags(htmlspecialchars($_POST['password']));
 
-        $loginManager = new LoginCompteManager;
-
-        $user = $loginManager->getLogin($username);
+        $user = $this->loginManager->getLogin($username);
 
         if (!$user) {
-            throw new \Exception("Mauvais identifiant ou mot de passe !");
+            $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
+            header('Location: /login');
         } else {
-            $isPasswordCorrect = password_verify($password, $user->password);
+            $isPasswordCorrect = password_verify($password, $user->getPassword());
 
             if ($isPasswordCorrect != 1) {
-                throw new \Exception("Mauvais identifiant ou mot de passe !");
+                $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
+                header('Location: /login');
+            } else {
+                $_SESSION['auth'] = $user;
+                if ($_SESSION['auth']->getStatus() == 1) {
+                    header('Location: /admin');
+                } else {
+                    header('Location: /user');
+                }
             }
-
-            if (session_status() == PHP_SESSION_NONE) {session_start();}
-
-            $_SESSION['auth'] = $user;
-            if ($_SESSION['auth']->status != 1) {header('Location: /admin');};
-            header('Location: /user');
         }
-
     }
 
+    /**
+     * Traite l'inscription Utilisateur.
+     */
     public function register()
     {
-        $registerManager = new LoginCompteManager;
+        $this->loginManager->checkUsername();
+        $this->loginManager->checkEmail();
+        $this->loginManager->checkPassword();
 
-        $registerManager->checkUsername();
-        $registerManager->checkEmail();
-        $registerManager->checkPassword();
-
-        $registerManager->registerUser();
-
+        $this->loginManager->registerUser();
         header('Location: /login');
-
     }
 
+    /**
+     * Affiche la liste des articles.
+     */
     public function listPosts()
     {
-        $articlesParPage = 5;
-        $postsTotal = new PostManager();
-        $articlesTotalesReq = $postsTotal->getPostsTotal();
+        $articlesParPage = 4;
+        $articlesTotalesReq = $this->postManager->getPostsTotal();
         $articlesTotales = $articlesTotalesReq->rowcount();
         $pagesTotales = ceil($articlesTotales / $articlesParPage);
         $_SESSION['pagestotales'] = $pagesTotales;
@@ -89,92 +123,97 @@ class FrontendController extends TwigRenderer
         $pageCourante = $_GET['page'];
         $depart = ($pageCourante - 1) * $articlesParPage;
 
-        $postManager = new PostManager();
-        $list_posts = $postManager->getPosts($depart, $articlesParPage);
+        $list_posts = $this->postManager->getPosts($depart, $articlesParPage);
 
-        $this->render('frontend/listPostView', ['listposts' => $list_posts, 'pagestotales' => $pagesTotales, 'pagecourante' => $pageCourante]);
-
+        $this->renderer->render('frontend/listPostView', ['listposts' => $list_posts, 'pagestotales' => $pagesTotales, 'pagecourante' => $pageCourante]);
+        $_SESSION['flash'] = array();
     }
 
-    public function post($id)
+    /**
+     * Affiche un article et ses commentaires.
+     *
+     * @param int $id id du l'article
+     */
+    public function post(int $id)
     {
-        $postManager = new PostManager();
-        $commentManager = new CommentManager();
+        $post = $this->postManager->getPost($id);
+        $comments = $this->commentManager->getComments($id);
 
-        $post = $postManager->getPost($id);
-        $comments = $commentManager->getComments($id);
-
-        if (isset($_SESSION['auth']->id)) {
+        if (isset($_SESSION['auth'])) {
             $user = [
-                'id' => $_SESSION['auth']->id,
-                'username' => $_SESSION['auth']->username,
-                'status' => $_SESSION['auth']->status,
+                'id' => $_SESSION['auth']->getId(),
+                'username' => $_SESSION['auth']->getUsername(),
+                'status' => $_SESSION['auth']->getStatus(),
             ];
-        } else { $user = ['id' => 0, 'username' => 0, 'status' => 0];}
+        } else {
+            $user = ['id' => 0, 'username' => 0, 'status' => 0];
+        }
 
-        $this->render('frontend/postView', ['data_post' => $post, 'data_comments' => $comments, 'data_user' => $user]);
-
+        $this->renderer->render('frontend/postView', ['data_post' => $post, 'data_comments' => $comments, 'data_user' => $user]);
+        $_SESSION['flash'] = array();
     }
 
-    public function comment()
-    {
-        $commentId = "";
-
-        if (isset($_GET['commentId']) && ($_GET['commentId'] != "")) {$commentId = $_GET['commentId'];}
-
-        $commentManager = new CommentManager();
-
-        $comment = $commentManager->getComment($commentId);
-
-        $this->render('frontend/editComment', ['data_comment' => $comment]);
-    }
-
+    /**
+     * Affiche l'excpetion 404.
+     */
     public function erroView()
     {
-        if (!isset($_SESSION['errorMessage'])) {$_SESSION['errorMessage'] = "Page not found.";}
+        if (!isset($_SESSION['errorMessage'])) {
+            $_SESSION['errorMessage'] = 'Page not found.';
+        }
         $errorMessage = $_SESSION['errorMessage'];
-        $this->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $this->renderer->render('frontend/errorView', ['data_message' => $errorMessage]);
+        $_SESSION['flash'] = array();
     }
 
+    /**
+     * function de déconnexion.
+     */
     public function deco()
     {
-        if (session_status() == PHP_SESSION_NONE) {session_start();}
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $_SESSION = array();
         session_destroy();
-        
+
         header('Location: /login');
     }
 
+    /**
+     * Traite le formulaire de contact de la page d'accueil.
+     */
     public function contactForm()
     {
+        if (empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email']) || empty($_POST['message']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['flash']['danger'] = 'Tous les champs ne sont pas remplis ou corrects.';
+        } else {
+            $nom = strip_tags(htmlspecialchars($_POST['nom']));
+            $prenom = strip_tags(htmlspecialchars($_POST['prenom']));
+            $email = strip_tags(htmlspecialchars($_POST['email']));
+            $message = strip_tags(htmlspecialchars($_POST['message']));
 
-        if(empty($_POST['nom']) || empty($_POST['prenom']) || empty($_POST['email']) || empty($_POST['message']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception("Tous les champs ne sont pas remplis ou corrects.");
+            $this->formManager->fromTraiment($nom, $prenom, $email, $message);
+            $_SESSION['flash']['success'] = 'Votre formulaire a bien été envoyer.';
         }
-
-        $nom = strip_tags(htmlspecialchars($_POST['nom']));
-        $prenom = strip_tags(htmlspecialchars($_POST['prenom']));
-        $email = strip_tags(htmlspecialchars($_POST['email']));
-        $message = strip_tags(htmlspecialchars($_POST['message']));
-
-        $contact = new FormManager();
-
-        $contact->fromTraiment($nom, $prenom, $email, $message);
-
         header('Location: /');
     }
+
+    /**
+     * Transmait le CV pdf.
+     */
     public function cvjuju()
     {
         $file = 'public/pdf/CV_julien_carre.pdf';
         if (file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
+            header('Content-Length: '.filesize($file));
             readfile($file);
         }
     }
