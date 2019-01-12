@@ -119,7 +119,7 @@ class BackendController
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier cette article.';
         } else {
-            $_SESSION['flash']['success'] = 'Votre article à bien été modifier.';
+            $_SESSION['flash']['success'] = 'Votre article a bien été modifier.';
         }
         header('Location: /admin');
     }
@@ -132,7 +132,7 @@ class BackendController
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de suprrimer cette article.';
         } else {
-            $_SESSION['flash']['success'] = 'Votre article à bien été supprimer.';
+            $_SESSION['flash']['success'] = 'Votre article a bien été supprimer.';
         }
         header('Location: /admin');
     }
@@ -156,7 +156,7 @@ class BackendController
         if ($affectedLines === false) {
             $_SESSION['flash']['danger'] = 'Impossible de modifier le commentaire !';
         } else {
-            $_SESSION['flash']['success'] = 'Votre commentaire à bien été modifier.';
+            $_SESSION['flash']['success'] = 'Votre commentaire a bien été modifier.';
         }
 
         header('Location: /admin');

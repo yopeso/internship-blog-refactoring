@@ -211,7 +211,7 @@ class PostManager extends Database
         $sql = 'SELECT * FROM authors';
         $result = $this->sql($sql);
 
-        $author = [];
+        $authors = [];
 
         foreach ($result as $row) {
             $authorId = $row['id'];
