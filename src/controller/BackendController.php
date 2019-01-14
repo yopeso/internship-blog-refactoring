@@ -94,7 +94,7 @@ class BackendController
         header('Location: /admin');
     }
 
-    public function post(int $id)
+    public function post($id)
     {
         $data_post = $this->postManager->getPost($id);
         $data_authors = $this->postManager->getAllAuthors();
@@ -103,7 +103,7 @@ class BackendController
         $_SESSION['flash'] = array();
     }
 
-    public function editPostManager(int $id)
+    public function editPostManager($id)
     {
         $title = $this->verif->check($_POST['title']);
 
@@ -137,7 +137,7 @@ class BackendController
         header('Location: /admin');
     }
 
-    public function comment(int $id)
+    public function comment($id)
     {
         $comment = $this->commentManager->getComment($id);
 
@@ -145,7 +145,7 @@ class BackendController
         $_SESSION['flash'] = array();
     }
 
-    public function editComment(int $id)
+    public function editComment($id)
     {
         $author = $this->verif->check($_POST['author']);
 
@@ -162,7 +162,7 @@ class BackendController
         header('Location: /admin');
     }
 
-    public function removeCommentManager(int $id)
+    public function removeCommentManager($id)
     {
         $affectedLines = $this->commentManager->removeComment($id);
         if ($affectedLines === false) {

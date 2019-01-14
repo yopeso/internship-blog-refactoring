@@ -15,7 +15,7 @@ class FormManager
      * @param string $email
      * @param string $message
      */
-    public function fromTraiment($nom, $prenom, $email, $message): void
+    public function fromTraiment($nom, $prenom, $email, $message)
     {
         $entetemail = "From: Blog Projet OpenClassroom <julienroquai@hotmail.fr>\r\n";
         $entetemail .= "Reply-To: julienroquai@hotmail.fr\n";

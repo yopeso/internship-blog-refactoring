@@ -46,7 +46,7 @@ class CompteController
         }
     }
 
-    public function comment(int $id)
+    public function comment($id)
     {
         $comment = $this->commentManager->getComment($id);
 
@@ -59,7 +59,7 @@ class CompteController
         }
     }
 
-    public function addComment(int $id)
+    public function addComment($id)
     {
         $author = $this->verif->check($_POST['author']);
 
@@ -77,7 +77,7 @@ class CompteController
         header('Location: /user');
     }
 
-    public function editComment(int $id)
+    public function editComment($id)
     {
         $author = $this->verif->check($_POST['author']);
 
@@ -93,7 +93,7 @@ class CompteController
         header('Location: /user');
     }
 
-    public function removeCommentManager(int $id)
+    public function removeCommentManager($id)
     {
         $comment = $this->commentManager->getComment($id);
 

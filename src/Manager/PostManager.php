@@ -14,7 +14,7 @@ class PostManager extends Database
     /**
      * @return object $articleTotalesReq
      */
-    public function getPostsTotal(): object
+    public function getPostsTotal()
     {
         $sql = 'SELECT id FROM posts';
         $result = $this->sql($sql);
@@ -30,7 +30,7 @@ class PostManager extends Database
      *
      * @return array $listposts
      */
-    public function getPosts(int $depart, int $articlesParPage): array
+    public function getPosts($depart, $articlesParPage)
     {
         $sql = 'SELECT id, title, chapo, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC LIMIT :depart , :articlesparpage';
         $bind = [[':depart', $depart, \PDO::PARAM_INT], [':articlesparpage', $articlesParPage, \PDO::PARAM_INT]];
@@ -53,7 +53,7 @@ class PostManager extends Database
      *
      * @return object $post
      */
-    public function getPost(int $postId): object
+    public function getPost($postId)
     {
         $sql = 'SELECT posts.id, 
                     posts.id_author, 
@@ -84,7 +84,7 @@ class PostManager extends Database
      *
      * @return array $req
      */
-    public function getPostPreview(): array
+    public function getPostPreview()
     {
         $sql = 'SELECT id, title, DATE_FORMAT(creation_date, \'%d/%m/%Y \') AS creation_date_fr FROM posts ORDER BY creation_date DESC';
         $result = $this->sql($sql);
@@ -108,9 +108,9 @@ class PostManager extends Database
      * @param string $content
      * @param int    $idUser
      *
-     * @return object mixed
+     * @return object
      */
-    public function setPost(int $id, string $title, int $idAuthor, string $chapo, string $content, int $idUser): object
+    public function setPost($id, $title, $idAuthor, $chapo, $content, $idUser)
     {
         $sql = 'UPDATE posts SET title = :title, id_author = :id_author, chapo = :chapo, content = :content, id_user = :iduser ,creation_date = NOW() WHERE id = :id';
         $parameters = [':id' => $id,
@@ -134,7 +134,7 @@ class PostManager extends Database
      *
      * @return object
      */
-    public function addPost(string $title, int $idAuthor, string $chapo, string $content, int $idUser): object
+    public function addPost(string $title, $idAuthor, $chapo, $content, $idUser)
     {
         $sql = 'INSERT INTO posts (title, id_author, chapo, content, id_user, creation_date) VALUES (:title, :id_author, :chapo, :content, :iduser, NOW())';
         $parameters = [':title' => $title,
@@ -154,7 +154,7 @@ class PostManager extends Database
      *
      * @return object
      */
-    public function removePost(int $postId): object
+    public function removePost($postId)
     {
         $sql = 'DELETE FROM posts WHERE id = :postId';
         $parameters = [':postId' => $postId];
@@ -170,7 +170,7 @@ class PostManager extends Database
      *
      * @return object $article retourne l'objet construit
      */
-    private function buildObject(array $row): object
+    private function buildObject($row)
     {
         $article = new Post();
 
@@ -204,7 +204,7 @@ class PostManager extends Database
      *
      * @return array
      */
-    public function getAllAuthors(): array
+    public function getAllAuthors()
     {
         $sql = 'SELECT * FROM authors';
         $result = $this->sql($sql);
@@ -226,7 +226,7 @@ class PostManager extends Database
      *
      * @return object
      */
-    private function buildObjectAuthor(array $row): object
+    private function buildObjectAuthor($row)
     {
         $author = new Author();
         $author->setId($row['id']);

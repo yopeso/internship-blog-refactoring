@@ -20,7 +20,7 @@ class Author
      *
      * @return self
      */
-    public function setId(int $id): self
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -40,7 +40,7 @@ class Author
      *
      * @return self
      */
-    public function setAuthor(string $author): self
+    public function setAuthor(string $author)
     {
         $this->author = $author;
 

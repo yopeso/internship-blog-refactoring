@@ -17,7 +17,7 @@ class CommentManager extends Database
      *
      * @return array $comments
      */
-    public function getComments(int $postId): array
+    public function getComments($postId)
     {
         $sql = 'SELECT id, id_user, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE post_id = :postId and valid = 1 ORDER BY comment_date DESC';
         $parameters = [':postId' => $postId];
@@ -40,7 +40,7 @@ class CommentManager extends Database
      *
      * @return object $comment
      */
-    public function getComment(int $commentId): object
+    public function getComment($commentId)
     {
         $sql = 'SELECT id, id_user, author, comment, DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE id = :commentId';
         $parameters = [':commentId' => $commentId];
@@ -62,7 +62,7 @@ class CommentManager extends Database
      *
      * @return array $comments
      */
-    public function getUserComment(int $userId): array
+    public function getUserComment($userId)
     {
         $sql = 'SELECT id, post_id, author, comment, valid,DATE_FORMAT(comment_date, \'%d/%m/%Y \') AS comment_date_fr FROM comments WHERE id_user = :userId ORDER BY comment_date DESC';
         $parameters = [':userId' => $userId];
@@ -88,7 +88,7 @@ class CommentManager extends Database
      *
      * @return object
      */
-    public function postComment(int $id, int $userId, string $author, string $comment): object
+    public function postComment($id, $userId, $author, $comment)
     {
         $sql = 'INSERT INTO comments(post_id, id_user, author, comment, comment_date, valid) VALUES(?, ?, ?, ?, NOW(), 0)';
         $parameters = [$id, $userId, $author, $comment];
@@ -106,7 +106,7 @@ class CommentManager extends Database
      *
      * @return object
      */
-    public function updateComment(int $commentId, string $author, string $comment): object
+    public function updateComment($commentId, $author, $comment)
     {
         $date = date('Y-m-d');
 
@@ -125,7 +125,7 @@ class CommentManager extends Database
      *
      * @return array $comments
      */
-    public function getCommentsInvalid(): array
+    public function getCommentsInvalid()
     {
         $sql = 'SELECT id, author, comment FROM comments WHERE valid = 0 ORDER BY comment_date DESC ';
         $result = $this->sql($sql);
@@ -147,7 +147,7 @@ class CommentManager extends Database
      *
      * @return object
      */
-    public function setCommentValid(int $commentId): object
+    public function setCommentValid($commentId)
     {
         $sql = 'UPDATE comments SET valid = :valid WHERE id = :id';
         $parameters = [':id' => $commentId,
@@ -164,7 +164,7 @@ class CommentManager extends Database
      *
      * @return object
      */
-    public function removeComment(int $id): object
+    public function removeComment($id)
     {
         $sql = 'DELETE FROM comments WHERE id = :id';
         $parameters = [':id' => $id];
@@ -180,7 +180,7 @@ class CommentManager extends Database
      *
      * @return object $comment retourne l'objet construit
      */
-    private function buildObject(array $row): object
+    private function buildObject($row)
     {
         $comment = new Comment();
 

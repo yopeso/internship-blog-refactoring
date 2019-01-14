@@ -23,7 +23,7 @@ class User
      *
      * @return self
      */
-    public function setId(int $id): self
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -43,7 +43,7 @@ class User
      *
      * @return self
      */
-    public function setUsername(string $username): self
+    public function setUsername(string $username)
     {
         $this->username = $username;
 
@@ -63,7 +63,7 @@ class User
      *
      * @return self
      */
-    public function setPassword(string $password): self
+    public function setPassword(string $password)
     {
         $this->password = $password;
 
@@ -83,7 +83,7 @@ class User
      *
      * @return self
      */
-    public function setEmail(string $email): self
+    public function setEmail(string $email)
     {
         $this->email = $email;
 
@@ -103,7 +103,7 @@ class User
      *
      * @return self
      */
-    public function setStatus(int $status): self
+    public function setStatus($status)
     {
         $this->status = $status;
 

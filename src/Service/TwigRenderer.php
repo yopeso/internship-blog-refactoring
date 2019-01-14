@@ -19,7 +19,7 @@ class TwigRenderer
      * @param string $view  lien de la vue
      * @param array  $prams données envoyer dans la vue
      */
-    public function render($view, array $prams = [])
+    public function render($view, $prams = [])
     {
         $loader = new Twig_Loader_Filesystem('public/view');
         $this->twig = new Twig_Environment($loader, [
