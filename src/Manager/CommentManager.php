@@ -51,7 +51,7 @@ class CommentManager extends Database
         if ($row) {
             return $this->buildObject($row);
         } else {
-            echo 'Aucun commentaire existant avec cet identifiant';
+            $_SESSION['flash']['danger'] = 'Aucun commentaire existant avec cet identifiant';
         }
     }
 
@@ -183,20 +183,16 @@ class CommentManager extends Database
     private function buildObject(array $row): object
     {
         $comment = new Comment();
-        if (!empty($row['id'])) {
-            $comment->setId($row['id']);
-        }
+
+        $comment->setId($row['id']);
+        $comment->setAuthor($row['author']);
+        $comment->setComment($row['comment']);
+
         if (!empty($row['post_id'])) {
             $comment->setPostId($row['post_id']);
         }
         if (!empty($row['id_user'])) {
             $comment->setIdUser($row['id_user']);
-        }
-        if (!empty($row['author'])) {
-            $comment->setAuthor($row['author']);
-        }
-        if (!empty($row['comment'])) {
-            $comment->setComment($row['comment']);
         }
         if (!empty($row['comment_date_fr'])) {
             $comment->setCommentDate($row['comment_date_fr']);

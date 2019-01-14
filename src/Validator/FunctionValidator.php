@@ -20,7 +20,7 @@ class FunctionValidator
 
             return $data;
         } else {
-            return $data = flase;
+            return false;
             $_SESSION['flash']['danger'] = 'Les champs ne sont pas remplis';
             header('Location: /admin');
         }

@@ -26,8 +26,11 @@ abstract class Database
             $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return $this->connection;
-        } catch (\Exception $errorConnection) {
-            die('Erreur de connection :'.$errorConnection->getMessage());
+        } catch (\Exception $e) {
+            $errorConnection = $e->getMessage();
+            $_SESSION['errorMessage'] = $errorConnection;
+            header('HTTP/1.1 404 Not Found');
+            header('Location: /404');
         }
     }
 

@@ -173,9 +173,10 @@ class PostManager extends Database
     private function buildObject(array $row): object
     {
         $article = new Post();
-        if (!empty($row['id'])) {
-            $article->setId($row['id']);
-        }
+
+        $article->setId($row['id']);
+        $article->setTitle($row['title']);
+
         if (!empty($row['id_author'])) {
             $article->setidAuthor($row['id_author']);
         }
@@ -184,9 +185,6 @@ class PostManager extends Database
         }
         if (!empty($row['id_user'])) {
             $article->setIdUser($row['id_user']);
-        }
-        if (!empty($row['title'])) {
-            $article->setTitle($row['title']);
         }
         if (!empty($row['content'])) {
             $article->setContent($row['content']);
