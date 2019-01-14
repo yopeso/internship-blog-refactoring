@@ -25,7 +25,7 @@ class Comment
      *
      * @return self
      */
-    public function setId(?int $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -45,7 +45,7 @@ class Comment
      *
      * @return self
      */
-    public function setPostId(?int $postId)
+    public function setPostId($postId)
     {
         $this->postId = $postId;
 
@@ -65,7 +65,7 @@ class Comment
      *
      * @return self
      */
-    public function setIdUser(?int $idUser)
+    public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
 
@@ -85,7 +85,7 @@ class Comment
      *
      * @return self
      */
-    public function setAuthor(?string $author)
+    public function setAuthor($author)
     {
         $this->author = $author;
 
@@ -105,7 +105,7 @@ class Comment
      *
      * @return self
      */
-    public function setComment(?string $comment)
+    public function setComment($comment)
     {
         $this->comment = $comment;
 
@@ -125,7 +125,7 @@ class Comment
      *
      * @return self
      */
-    public function setCommentDate(?string $commentDate)
+    public function setCommentDate($commentDate)
     {
         $this->commentDate = $commentDate;
 
@@ -145,7 +145,7 @@ class Comment
      *
      * @return self
      */
-    public function setCommentValid(?int $commentValid)
+    public function setCommentValid($commentValid)
     {
         $this->commentValid = $commentValid;
 
