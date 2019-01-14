@@ -15,7 +15,7 @@ class LoginCompteManager extends Database
      *
      * @param string $username
      *
-     * @return object $user
+     * @return mixed $user
      */
     public function getLogin(string $username)
     {
@@ -120,7 +120,7 @@ class LoginCompteManager extends Database
      *
      * @param array $row envoi le résultat de la requête sql
      *
-     * @return object $article retourne l'objet construit
+     * @return mixed $article retourne l'objet construit
      */
     private function buildObject($row)
     {

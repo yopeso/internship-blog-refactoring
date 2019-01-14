@@ -38,7 +38,7 @@ class CommentManager extends Database
      *
      * @param int $commentId id du commentaire
      *
-     * @return object $comment
+     * @return mixed $comment
      */
     public function getComment($commentId)
     {
@@ -86,7 +86,7 @@ class CommentManager extends Database
      * @param string $author
      * @param string $comment
      *
-     * @return object
+     * @return mixed
      */
     public function postComment($id, $userId, $author, $comment)
     {
@@ -104,7 +104,7 @@ class CommentManager extends Database
      * @param string $author
      * @param string $comment
      *
-     * @return object
+     * @return mixed
      */
     public function updateComment($commentId, $author, $comment)
     {
@@ -145,7 +145,7 @@ class CommentManager extends Database
      *
      * @param int $commentId
      *
-     * @return object
+     * @return mixed
      */
     public function setCommentValid($commentId)
     {
@@ -162,7 +162,7 @@ class CommentManager extends Database
      *
      * @param int $id
      *
-     * @return object
+     * @return mixed
      */
     public function removeComment($id)
     {
@@ -178,7 +178,7 @@ class CommentManager extends Database
      *
      * @param array $row envoi le résultat de la requête sql
      *
-     * @return object $comment retourne l'objet construit
+     * @return mixed $comment retourne l'objet construit
      */
     private function buildObject($row)
     {

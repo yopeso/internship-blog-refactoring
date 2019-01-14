@@ -12,7 +12,7 @@ use App\Service\Database;
 class PostManager extends Database
 {
     /**
-     * @return object $articleTotalesReq
+     * @return mixed $articleTotalesReq
      */
     public function getPostsTotal()
     {
@@ -51,7 +51,7 @@ class PostManager extends Database
      *
      * @param int $postId
      *
-     * @return object $post
+     * @return mixed $post
      */
     public function getPost($postId)
     {
@@ -108,7 +108,7 @@ class PostManager extends Database
      * @param string $content
      * @param int    $idUser
      *
-     * @return object
+     * @return mixed
      */
     public function setPost($id, $title, $idAuthor, $chapo, $content, $idUser)
     {
@@ -132,7 +132,7 @@ class PostManager extends Database
      * @param string $content
      * @param int    $idUser
      *
-     * @return object
+     * @return mixed
      */
     public function addPost(string $title, $idAuthor, $chapo, $content, $idUser)
     {
@@ -152,7 +152,7 @@ class PostManager extends Database
      *
      * @param int $postId
      *
-     * @return object
+     * @return mixed
      */
     public function removePost($postId)
     {
@@ -168,7 +168,7 @@ class PostManager extends Database
      *
      * @param array $row envoi le résultat de la requête sql
      *
-     * @return object $article retourne l'objet construit
+     * @return mixed $article retourne l'objet construit
      */
     private function buildObject($row)
     {
@@ -224,7 +224,7 @@ class PostManager extends Database
      *
      * @param array $row
      *
-     * @return object
+     * @return mixed
      */
     private function buildObjectAuthor($row)
     {
