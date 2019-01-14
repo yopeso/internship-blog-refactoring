@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use Twig_Extension_Debug;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 
@@ -26,7 +25,6 @@ class TwigRenderer
             'cache' => false, // __DIR__ . /tmp',
             'debug' => true,
         ]);
-        $this->twig->addExtension(new Twig_Extension_Debug());
         if (isset($_SESSION['flash'])) {
             $this->twig->addGlobal('session', $_SESSION);
         }
