@@ -25,4 +25,15 @@ class FunctionValidator
             header('Location: /admin');
         }
     }
+
+    public function checkforcontent($data)
+    {
+        if (isset($data) && ($data != '')) {
+            return $data;
+        } else {
+            return false;
+            $_SESSION['flash']['danger'] = 'Les champs ne sont pas remplis';
+            header('Location: /admin');
+        }
+    }
 }

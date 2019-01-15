@@ -77,11 +77,11 @@ class BackendController
     {
         $title = $this->verif->check($_POST['title']);
 
-        $chapo = $this->verif->check($_POST['chapo']);
+        $chapo = $this->verif->checkforcontent($_POST['chapo']);
 
         $idAuthor = $this->verif->check($_POST['id_author']);
 
-        $content = $this->verif->check($_POST['content']);
+        $content = $this->verif->checkforcontent($_POST['content']);
 
         $idUser = $this->verif->check($_SESSION['auth']->getId());
 
@@ -107,11 +107,11 @@ class BackendController
     {
         $title = $this->verif->check($_POST['title']);
 
-        $chapo = $this->verif->check($_POST['chapo']);
+        $chapo = $this->verif->checkforcontent($_POST['chapo']);
 
         $idAuthor = $this->verif->check($_POST['id_author']);
 
-        $content = $this->verif->check($_POST['content']);
+        $content = $this->verif->checkforcontent($_POST['content']);
 
         $idUser = $this->verif->check($_SESSION['auth']->getId());
 
