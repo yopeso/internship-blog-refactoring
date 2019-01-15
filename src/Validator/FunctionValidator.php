@@ -26,7 +26,7 @@ class FunctionValidator
         }
     }
 
-    public function checkforcontent($data)
+    public function checkForContent($data)
     {
         if (isset($data) && ($data != '')) {
             return $data;
