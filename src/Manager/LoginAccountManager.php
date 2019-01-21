@@ -8,7 +8,7 @@ use App\Service\Database;
 /**
  * LoginCompteManagaer regroupe tout les requêtes lié a l'identification, inscription de l'utilisateur et l'admin.
  */
-class LoginCompteManager extends Database
+class LoginAccountManager extends Database
 {
     /**
      * retourne les informations de l'utilisateur ou l'admin.

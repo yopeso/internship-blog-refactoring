@@ -7,9 +7,9 @@ use App\Manager\CommentManager;
 use App\Validator\FunctionValidator;
 
 /**
- * CompteController est le controller de l'espace utilisateur.
+ * AccountController est le controller de l'espace utilisateur.
  */
-class CompteController
+class AccountController
 {
     private $renderer;
     private $verif;
@@ -35,13 +35,13 @@ class CompteController
         }
     }
 
-    public function interfaceCompte()
+    public function interfaceAccount()
     {
         if (isset($_SESSION['auth'])) {
             $userId = $this->verif->check($_SESSION['auth']->getId());
 
             $comments = $this->commentManager->getUserComment($userId);
-            $this->renderer->render('compte/compteView', ['data_comments' => $comments]);
+            $this->renderer->render('Account/AccountView', ['data_comments' => $comments]);
             $_SESSION['flash'] = array();
         }
     }
@@ -54,7 +54,7 @@ class CompteController
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
             header('Location: /user');
         } else {
-            $this->renderer->render('compte/editComment', ['data_comment' => $comment]);
+            $this->renderer->render('Account/editComment', ['data_comment' => $comment]);
             $_SESSION['flash'] = array();
         }
     }

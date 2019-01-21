@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Service\TwigRenderer;
 use App\Manager\CommentManager;
 use App\Manager\FormManager;
-use App\Manager\LoginCompteManager;
+use App\Manager\LoginAccountManager;
 use App\Manager\PostManager;
 use App\Validator\FunctionValidator;
 
@@ -25,7 +25,7 @@ class FrontendController
     {
         $this->verif = new FunctionValidator();
         $this->renderer = new TwigRenderer();
-        $this->loginManager = new LoginCompteManager();
+        $this->loginManager = new LoginAccountManager();
         $this->postManager = new PostManager();
         $this->commentManager = new CommentManager();
         $this->formManager = new FormManager();

@@ -19,11 +19,11 @@ try {
     $router->post('/register', 'Frontend#register');
     $router->post('/contactform', 'Frontend#contactForm');
     // Parti USER
-    $router->post('/user-addComment-:id', 'Compte#addComment')->with('id', '[0-9]+');
-    $router->post('/user-editComment-:id', 'Compte#editComment')->with('id', '[0-9]+');
-    $router->get('/user-comment-:id', 'Compte#comment')->with('id', '[0-9]+');
-    $router->get('/user-removeComment-:id', 'Compte#removeCommentManager')->with('id', '[0-9]+');
-    $router->get('/user', 'Compte#interfaceCompte');
+    $router->post('/user-addComment-:id', 'Account#addComment')->with('id', '[0-9]+');
+    $router->post('/user-editComment-:id', 'Account#editComment')->with('id', '[0-9]+');
+    $router->get('/user-comment-:id', 'Account#comment')->with('id', '[0-9]+');
+    $router->get('/user-removeComment-:id', 'Account#removeCommentManager')->with('id', '[0-9]+');
+    $router->get('/user', 'Account#interfaceAccount');
     // Parti ADMIN
     $router->get('/admin-deleteComment-:id', 'Backend#removeCommentManager')->with('id', '[0-9]+');
     $router->post('/admin-editComment-:id', 'Backend#editComment')->with('id', '[0-9]+');
