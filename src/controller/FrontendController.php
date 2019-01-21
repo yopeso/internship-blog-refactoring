@@ -59,10 +59,10 @@ class FrontendController
     public function connect()
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
-            throw new \Exception('Votre pseudo '.$_POST['username']." n'est pas valide (alphanumérique)");
+            $_SESSION['flash']['danger'] = 'Votre pseudo '.$_POST['username']." n'est pas valide (alphanumérique)";
         }
         if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
-            throw new \Exception("Votre password n'est pas valide (alphanumérique)");
+            $_SESSION['flash']['danger'] = "Votre password n'est pas valide (alphanumérique)";
         }
         $username = strip_tags(htmlspecialchars($_POST['username']));
         $password = strip_tags(htmlspecialchars($_POST['password']));
@@ -94,11 +94,14 @@ class FrontendController
      */
     public function register()
     {
-        $this->loginManager->checkUsername();
-        $this->loginManager->checkEmail();
-        $this->loginManager->checkPassword();
+        if ($this->loginManager->checkUsername()) {
+            if ($this->loginManager->checkEmail()) {
+                if ($this->loginManager->checkPassword()) {
+                    $this->loginManager->registerUser();
+                }
+            }
+        }
 
-        $this->loginManager->registerUser();
         header('Location: /login');
     }
 

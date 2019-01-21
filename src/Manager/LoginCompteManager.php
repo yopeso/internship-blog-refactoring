@@ -28,7 +28,8 @@ class LoginCompteManager extends Database
         if ($row) {
             return $this->buildObject($row);
         } else {
-            echo 'Aucun Utilisateur existant avec cet identifiant';
+            $_SESSION['flash']['danger'] = 'Aucun Utilisateur existant avec cet identifiant';
+            header('Location: /login');
         }
     }
 
@@ -48,8 +49,9 @@ class LoginCompteManager extends Database
             $req = $this->sql($sql, $parameters);
             $user = $req->fetch();
             if ($user) {
-                $_SESSION['flash']['danger'] = 'Ce pseudo est déjà pris.';
-                header('Location: /login');
+                return false;
+            } else {
+                return true;
             }
         }
     }
@@ -73,7 +75,10 @@ class LoginCompteManager extends Database
 
             if ($user) {
                 $_SESSION['flash']['danger'] = 'Cet email est déjà utilisé pour un autre compte.';
-                header('Location: /login');
+
+                return false;
+            } else {
+                return true;
             }
         }
     }
@@ -85,11 +90,15 @@ class LoginCompteManager extends Database
     {
         if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
             $_SESSION['flash']['danger'] = 'vous devez rentrer les mêmes mot de passe';
-            header('Location: /login');
+
+            return false;
         }
         if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
             $_SESSION['flash']['danger'] = 'Votre password n\'est pas valide (alphanumérique)';
-            header('Location: /login');
+
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -109,7 +118,7 @@ class LoginCompteManager extends Database
         $entetemail .= 'X-Mailer: PHP/'.phpversion()."\n";
         $entetemail .= "Content-Type: text/plain; charset=utf8\r\n";
         $objet = 'Comfirmation de la création de votre compte sur le blog de juju';
-        $message_email = 'Votre compte a bien été créé '.$_POST['username'].', vous pouvez maintenant vous connecter.';
+        $message_email = 'Votre compte a bien été créé '.$_POST['username'].', vous pouvez maintenant vous connecter. Rendez-vous sur http://blog.juliencarre.fr/login';
 
         mail($_POST['email'], $objet, $message_email, $entetemail);
         $_SESSION['flash']['success'] = 'Votre compte à bien été créé.';
