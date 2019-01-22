@@ -41,7 +41,7 @@ class AccountController
             $userId = $this->verif->check($_SESSION['auth']->getId());
 
             $comments = $this->commentManager->getUserComment($userId);
-            $this->renderer->render('Account/AccountView', ['data_comments' => $comments]);
+            $this->renderer->render('account/accountView', ['data_comments' => $comments]);
             $_SESSION['flash'] = array();
         }
     }
