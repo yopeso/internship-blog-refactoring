@@ -99,7 +99,7 @@ class LoginAccountManager extends Database
             $_SESSION['flash']['danger'] = 'Votre password n\'est pas valide (alphanumérique)';
             $validPass2 = false;
         }
-        if ($validPass1 || $validPass2) {
+        if ($validPass1 && $validPass2) {
             return true;
         } else {
             return false;
