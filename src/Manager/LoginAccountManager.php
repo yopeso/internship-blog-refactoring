@@ -88,17 +88,21 @@ class LoginAccountManager extends Database
      */
     public function checkPassword()
     {
+        $validPass1 = true;
+        $validPass2 = true;
+
         if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
             $_SESSION['flash']['danger'] = 'vous devez rentrer les mêmes mot de passe';
-
-            return false;
+            $validPass1 = false;
         }
         if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
             $_SESSION['flash']['danger'] = 'Votre password n\'est pas valide (alphanumérique)';
-
-            return false;
-        } else {
+            $validPass2 = false;
+        }
+        if ($validPass1 || $validPass2) {
             return true;
+        } else {
+            return false;
         }
     }
 
