@@ -109,7 +109,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `status`) VALUES
-(1, 'julien', '$2y$10$tjXyORUg4t8xKrBUZJkY1u.15ve.o.XuTt8Gw1YqDoHSKoRekrY/S', 'julienroquai@gmail.com', 1);
+(1, 'julien', '$2y$10$tjXyORUg4t8xKrBUZJkY1u.15ve.o.XuTt8Gw1YqDoHSKoRekrY/S', 'test@gmail.com', 1);
 
 --
 -- Index pour les tables exportées
