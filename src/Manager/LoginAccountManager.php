@@ -17,7 +17,7 @@ class LoginAccountManager extends Database
      *
      * @return mixed $user
      */
-    public function getLogin(string $username)
+    public function getLogin($username)
     {
         $sql = 'SELECT * FROM users WHERE username = :username';
         $parameters = ['username' => $username];
@@ -40,7 +40,8 @@ class LoginAccountManager extends Database
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
             $_SESSION['flash']['danger'] = 'Votre pseudo n\'est pas valide (alphanumérique)';
-            header('Location: /login');
+
+            return false;
         } else {
             $username = htmlspecialchars($_POST['username']);
 
@@ -63,7 +64,8 @@ class LoginAccountManager extends Database
     {
         if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
             $_SESSION['flash']['danger'] = 'Votre email n\'est pas valide.';
-            header('Location: /login');
+
+            return false;
         } else {
             $email = $_POST['email'];
 
@@ -88,21 +90,16 @@ class LoginAccountManager extends Database
      */
     public function checkPassword()
     {
-        $validPass1 = true;
-        $validPass2 = true;
-
-        if (empty($_POST['password']) && $_POST['password'] != $_POST['password_confirm']) {
+        if (empty($_POST['password']) || $_POST['password'] != $_POST['password_confirm']) {
             $_SESSION['flash']['danger'] = 'vous devez rentrer les mêmes mot de passe';
-            $validPass1 = false;
-        }
-        if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
-            $_SESSION['flash']['danger'] = 'Votre password n\'est pas valide (alphanumérique)';
-            $validPass2 = false;
-        }
-        if ($validPass1 && $validPass2) {
-            return true;
-        } else {
+
             return false;
+        } elseif (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
+            $_SESSION['flash']['danger'] = 'Votre password n\'est pas valide (alphanumérique)';
+
+            return false;
+        } else {
+            return true;
         }
     }
 

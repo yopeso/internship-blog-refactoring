@@ -60,30 +60,32 @@ class FrontendController
     {
         if (empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])) {
             $_SESSION['flash']['danger'] = 'Votre pseudo '.$_POST['username']." n'est pas valide (alphanumérique)";
-        }
-        if (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
+            header('Location: /login');
+        } elseif (empty($_POST['password']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['password'])) {
             $_SESSION['flash']['danger'] = "Votre password n'est pas valide (alphanumérique)";
-        }
-        $username = strip_tags(htmlspecialchars($_POST['username']));
-        $password = strip_tags(htmlspecialchars($_POST['password']));
-
-        $user = $this->loginManager->getLogin($username);
-
-        if (!$user) {
-            $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
             header('Location: /login');
         } else {
-            $isPasswordCorrect = password_verify($password, $user->getPassword());
+            $username = strip_tags(htmlspecialchars($_POST['username']));
+            $password = strip_tags(htmlspecialchars($_POST['password']));
 
-            if ($isPasswordCorrect != 1) {
+            $user = $this->loginManager->getLogin($username);
+
+            if (!$user) {
                 $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
                 header('Location: /login');
             } else {
-                $_SESSION['auth'] = $user;
-                if ($_SESSION['auth']->getStatus() == 1) {
-                    header('Location: /admin');
+                $isPasswordCorrect = password_verify($password, $user->getPassword());
+
+                if ($isPasswordCorrect != 1) {
+                    $_SESSION['flash']['danger'] = 'Mauvais identifiant ou mot de passe !';
+                    header('Location: /login');
                 } else {
-                    header('Location: /user');
+                    $_SESSION['auth'] = $user;
+                    if ($_SESSION['auth']->getStatus() == 1) {
+                        header('Location: /admin');
+                    } else {
+                        header('Location: /user');
+                    }
                 }
             }
         }
