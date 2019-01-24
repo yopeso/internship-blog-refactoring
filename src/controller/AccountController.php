@@ -54,7 +54,7 @@ class AccountController
             $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
             header('Location: /user');
         } else {
-            $this->renderer->render('Account/editComment', ['data_comment' => $comment]);
+            $this->renderer->render('account/editComment', ['data_comment' => $comment]);
             $_SESSION['flash'] = array();
         }
     }
