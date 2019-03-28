@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+{% use '/account/_layout_menu.html.twig' %}
+
+{% block title %}Snow Tricks {% endblock %}
+{% block header %}
+    <!-- Header -->
+{% endblock %}
+
+{% block content %}
+
+    <section class="bg-light" id="portfolio">
+        <div class="container">
+            <div class="row">
+                {% block menu %}
+                    {{ parent() }}
+                {% endblock %}
+                <div class="col-md-9 col-sm-12 mb-5" style="margin: auto;">
+                    <div class="card">
+                        <div class="media-body ">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <h3 class="mb-4 mt-2">Bibliothèque de vidéos</h3>
+                                    <div class="form-group">
+                                        {{ form_start(form) }}
+                                        {{ form_row(form.name) }}
+                                        {{ form_row(form.platform) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-success float-right mb-3">Sauvegarder
+                                    </button>
+                                </div>
+                                {{ form_end(form) }}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="card">
+                <div class="media-body ">
+                    <div class="card-body">
+                        <div class="card-text mb-3">
+                            <div class="form-group">
+                                <h4>Vos Videos</h4>
+                                <div class="container mt-3 " style="height:400pt;overflow:auto">
+                                    <div class="row">
+                                        {% for video in videos %}
+                                            <div class="col-md-3 col-sm-5 mb-3 videoparent"
+                                                 data-idvideo="{{ video.id }}"
+                                                 data-link="{{ path('delete_video', {'id': video.id}) }}">
+                                                <div class="card">
+                                                    {% if video.platform == false %}
+                                                        <iframe width="auto" height="auto"
+                                                                src="https://www.youtube.com/embed/{{ video.name }}"
+                                                                frameborder="0"
+                                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowfullscreen></iframe>
+                                                    {% else %}
+                                                        <iframe frameborder="0" width="auto" height="auto"
+                                                                src="https://www.dailymotion.com/embed/video/{{ video.name }}"
+                                                                allowfullscreen allow="autoplay"></iframe>
+                                                    {% endif %}
+                                                    <div class="card-body">
+                                                        <p>{{ video.name }}</p>
+                                                        <!--
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                        -->
+                                                        <button class="btn btn-danger suppr-video float-right">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        <div class="modal" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog" style="margin-top: 100px; display: none;"
+                                                 role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Comfirmer votre action</h5>
+                                                        <button type="button" class="close close-spe"
+                                                                data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Voulez-vous supprimer votre video id:
+                                                            <spam class="info-data"></spam>
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a class="link-delete" href="">
+                                                            <button type="button" class="btn btn-primary">
+                                                                supprimer
+                                                            </button>
+                                                        </a>
+                                                        <button type="button" class="btn btn-secondary close-spe"
+                                                                data-dismiss="modal">Annuler
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            //Comfirmation de supprétion(Boutton 'OUI' ou 'NON' )
+
+            $('.suppr-video').click(function () {
+
+                var idData = $(this).parents('.videoparent').data('idvideo');
+                $('.info-data').text(idData);
+
+                var idLink = $(this).parents('.videoparent').data('link');
+
+                $('.link-delete').attr('href', idLink);
+
+                $('.modal').fadeIn(500, function () {
+
+                    $('.modal-dialog').slideDown(300);
+
+
+                });
+
+
+                // Fermeture
+
+                $('.close-spe').click(function () {
+
+                    $('.modal').fadeOut(500);
+                    $('.modal-dialog').hide();
+
+                });
+
+
+            })
+        });
+    </script>
+{% endblock %}

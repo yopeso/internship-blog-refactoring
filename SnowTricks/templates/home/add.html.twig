@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snow Tricks {% endblock %}
+{% block header %}
+    <!-- Header -->
+
+
+
+{% endblock %}
+
+{% block content %}
+
+    <section class="bg-light" id="portfolio">
+        <div class="container">
+            <div class="card">
+                <div class="row ">
+                    <div class="col-md-12 mb-2">
+                        <header class="masthead card-img-top"
+                                style=" background-image: url('https://via.placeholder.com/550');">
+                            <div class="intro-text">
+                                <div class="intro-lead-in">Ajouter un trick</div>
+                                <span>Fomulaire</span>
+                            </div>
+                        </header>
+                    </div>
+                </div>
+
+                <div class="media-body ">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <div class="form-group">
+                                {{ form_start(form) }}
+                                {{ form_row(form.name) }}
+                            </div>
+                        </div>
+                        <div class="card-text">
+                            <div class="form-group">
+                                {{ form_row(form.content) }}
+                            </div>
+                        </div>
+                        <div class="card-text">
+                            <div class="form-group">
+                                {{ form_row(form.trickCategory) }}
+                            </div>
+                        </div>
+                        <div class="card-text mb-3">
+                            <div class="form-group">
+                                {{ form_row(form.pictureDefault) }}
+                            </div>
+                        </div>
+
+                        <div class="card-text mb-3">
+                            <div class="form-group">
+                                {{ form_label(form.pictures) }}
+                                <div class="container mt-3" style="height:400pt;overflow:auto">
+                                    <div class="row">
+                                        {% for choice in form.pictures.vars.choices %}
+                                            <div class="col-md-3 col-sm-5 mb-3">
+                                                <div class="card">
+                                                    <img class="card-img-top"
+                                                         src="{{ asset('uploads/pictures/'~choice.data.name) }}"
+                                                         alt="{{ choice.data.alt }}">
+                                                    <div class="card-body">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="{{ choice.value }}"
+                                                                   name="{{ form.pictures.vars.full_name }}[]"
+                                                                   value="{{ choice.value }}" {{ choice.value == form.pictures.vars.data }}>
+                                                            <label class="form-check-label"
+                                                                   for="{{ choice.value }}">{{ choice.value }} : {{ choice.data.alt }}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {{ form_errors(form.pictures) }}
+                            </div>
+                        </div>
+                        {% do form.pictures.setRendered() %}
+                        <div class="card-text mb-3">
+                            <div class="form-group">
+                                {{ form_label(form.videos) }}
+                                <div class="container mt-3" style="height:400pt;overflow:auto">
+                                    <div class="row">
+                                        {% for choice in form.videos.vars.choices %}
+                                            <div class="col-md-3 col-sm-5 mb-3">
+                                                <div class="card">
+                                                    {% if choice.data.platform == false %}
+                                                        <iframe width="auto" height="auto"
+                                                                src="https://www.youtube.com/embed/{{ choice.data.name }}"
+                                                                frameborder="0"
+                                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowfullscreen></iframe>
+                                                    {% else %}
+                                                        <iframe frameborder="0" width="auto" height="auto"
+                                                                src="https://www.dailymotion.com/embed/video/{{ choice.data.name }}"
+                                                                allowfullscreen allow="autoplay"></iframe>
+                                                    {% endif %}
+                                                    <div class="card-body">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                   id="{{ choice.value }}"
+                                                                   name="{{ form.videos.vars.full_name }}[]"
+                                                                   value="{{ choice.value }}" {{ choice.value == form.videos.vars.data }}>
+                                                            <label class="form-check-label"
+                                                                   for="{{ choice.value }}">{{ choice.value }} : {{ choice.data.name }}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {{ form_errors(form.videos) }}
+                            </div>
+                        </div>
+                        {% do form.videos.setRendered() %}
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-success float-right mb-3">Créer</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% use '/account/_layout_menu.html.twig' %}
+
+{% block title %}Snow Tricks {% endblock %}
+{% block header %}
+    <!-- Header -->
+{% endblock %}
+
+{% block content %}
+
+    <section id="services">
+        <div class="container ">
+            <div class="row">
+                {% block menu %}
+                    {{ parent() }}
+                {% endblock %}
+                <div class="col-md-6 col-sm-12">
+                    <div class="card  ml-auto mr-auto">
+
+                        <div class="media-body ">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    <div class="form-group">
+                                        <h3 class="mb-5 mt-4">Photo de profile
+                                            {% if form.vars.value.pathPicture is defined %}
+                                            <img class="float-right mr-3 rounded-circle embed-responsive"
+                                                 src="{{ asset('uploads/pictures/'~ form.vars.value.pathPicture) }}"
+                                                 style="max-width: 65px;"
+                                                 alt="...">
+                                            {% else %}
+                                                <img src="http://placehold.it/65X65"
+                                                     class="float-right mr-3 rounded-circle embed-responsive" style="max-width: 65px;"
+                                                     alt="photo de profile default">
+                                            {% endif %}
+                                        </h3>
+
+                                        {{ form_start(form) }}
+                                        {{ form_row(form.file) }}
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-success float-right mb-3">
+                                        {{ (form.vars.value.pathPicture is defined) ? "Modifer" : "Ajouter une image"}}
+                                    </button>
+                                </div>
+
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
