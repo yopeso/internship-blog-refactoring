@@ -1,0 +1,57 @@
+<?php return [PHP_INT_MAX, static function () {
+
+    return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+        $o = [
+            clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Symfony\\Component\\Validator\\Constraints\\Image'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Image')),
+        ],
+        null,
+        [
+            'stdClass' => [
+                'mimeTypes' => [
+                    [
+                        'image/jpeg',
+                        'image/jpg',
+                        'image/png',
+                    ],
+                ],
+                'minWidth' => [
+                    400,
+                ],
+                'maxWidth' => [
+                    4000,
+                ],
+                'maxHeight' => [
+                    2000,
+                ],
+                'minHeight' => [
+                    200,
+                ],
+                'mimeTypesMessage' => [
+                    'Veuillez selectionner une image en .jpg, .jpeg ou .png',
+                ],
+                'maxWidthMessage' => [
+                    'L\'image est trop grande, largeur max:4000',
+                ],
+                'minWidthMessage' => [
+                    'L\'image est trop petit, largeur minimun: 400',
+                ],
+                'maxHeightMessage' => [
+                    'L\'image est trop grande, hauteur max:2000',
+                ],
+                'minHeightMessage' => [
+                    'L\'image est trop petit, hauteur minimun: 200',
+                ],
+                'groups' => [
+                    [
+                        'Default',
+                    ],
+                ],
+            ],
+        ],
+        [
+            $o[0],
+        ],
+        []
+    );
+
+}];
