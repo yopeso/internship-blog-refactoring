@@ -12,10 +12,3 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
-
-RUN curl -sS https://get.symfony.com/cli/installer | bash &&\
-    mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
-
-RUN symfony check:requirements
-
-ENTRYPOINT ["symfony", "server:start", "--dir", "/app/rest_api/public"]
