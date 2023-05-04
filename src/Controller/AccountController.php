@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Manager\SessionManager;
 use App\Service\TwigRenderer;
 use App\Manager\CommentManager;
 use App\Validator\FunctionValidator;
@@ -14,25 +15,16 @@ class AccountController
     private $renderer;
     private $verif;
     private $commentManager;
+    private $sessionManager;
 
-    public function __construct()
+    public function __construct(CommentManager $commentManager, SessionManager $sessionManager)
     {
         $this->verif = new FunctionValidator();
         $this->renderer = new TwigRenderer();
-        $this->commentManager = new CommentManager();
+        $this->commentManager = $commentManager;
+        $this->sessionManager = $sessionManager;
 
-        if (empty($_SESSION)) {
-            $_SESSION['init'] = 1;
-        }
-
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        if (!isset($_SESSION['auth'])) {
-            $_SESSION['flash']['danger'] = 'Vous n\'avez pas le droit d\'accéder à cette page';
-            header('Location: /login');
-        }
+        $this->sessionManager->initSession();
     }
 
     public function interfaceAccount()
@@ -49,10 +41,14 @@ class AccountController
     public function comment($id)
     {
         $comment = $this->commentManager->getComment($id);
+        $authenticatedUser = $this->sessionManager->getAuthenticatedUser();
 
-        if ($_SESSION['auth']->getStatus() != 1 && $_SESSION['auth']->getId() != $comment->getIdUser()) {
-            $_SESSION['flash']['danger'] = 'Vous n\'avez pas les droits pour modifier ce commentaire';
-            header('Location: /user');
+        if ($authenticatedUser->getStatus() != 1 && $authenticatedUser->getId() != $comment->getIdUser()) {
+            $this->sessionManager->addFlashMessage(
+                'Vous n\'avez pas les droits pour modifier ce commentaire',
+                'danger'
+            );
+            $this->sessionManager->redirectTo('/user');
         } else {
             $this->renderer->render('account/editComment', ['data_comment' => $comment]);
             $_SESSION['flash'] = array();
